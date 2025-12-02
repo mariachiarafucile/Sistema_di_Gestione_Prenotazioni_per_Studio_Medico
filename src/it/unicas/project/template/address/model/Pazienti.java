@@ -138,4 +138,5 @@ public class Pazienti {
         return nome.getValue() + ", " + cognome.getValue() + ", " + dataNascita.getValue() + ", " + codiceFiscale.getValue() + ", " + indirizzo.getValue() + ", " + telefono.getValue() + ", " + email.getValue() + ", " + noteCliniche.getValue();
     }
 
+
 }
