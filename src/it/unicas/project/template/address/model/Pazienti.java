@@ -1,58 +1,47 @@
 package it.unicas.project.template.address.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.beans.property.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 
 /**
- * Model class for a Amici.
- *
- * @author Mario Molinara
+ * Model class for Pazienti.
  */
-public class Amici {
+public class Pazienti {
 
     private StringProperty nome;
     private StringProperty cognome;
+    private StringProperty dataNascita;
+    private StringProperty codiceFiscale;
+    private StringProperty indirizzo;
     private StringProperty telefono;
     private StringProperty email;
-    private StringProperty compleanno;
-    private IntegerProperty idAmici;  //wrapper
-
-    //private static String attributoStaticoDiEsempio;
+    private StringProperty noteCliniche;
+    //wrapper
 
     /**
      * Default constructor.
      */
-    public Amici() {
-        this(null, null);
+    public Pazienti() {
+        this(null, null, null, null, null, null, null, null);
     }
 
-    public Amici(String nome, String cognome, String telefono, String email, String compleanno, Integer idColleghi) {
+    public Pazienti(String nome, String cognome, String dataNascita, String codiceFiscale, String indirizzo, String telefono, String email, String noteCliniche) {
         this.nome = new SimpleStringProperty(nome);
         this.cognome = new SimpleStringProperty(cognome);
+        this.dataNascita = new SimpleStringProperty(dataNascita);
+        this.codiceFiscale = new SimpleStringProperty(codiceFiscale);
+        this.indirizzo = new SimpleStringProperty(indirizzo);
         this.telefono = new SimpleStringProperty(telefono);
         this.email = new SimpleStringProperty(email);
-        this.compleanno = new SimpleStringProperty(compleanno);
-        if (idColleghi != null){
-            this.idAmici = new SimpleIntegerProperty(idColleghi);
-        } else {
-            this.idAmici = null;
-        }
+        this.noteCliniche = new SimpleStringProperty(noteCliniche);
     }
 
-    /**
+    /*/**
      * Constructor with some initial data.
      *
      * @param nome
      * @param cognome
      */
-    public Amici(String nome, String cognome) {
+   /*public Amici(String nome, String cognome) {
         this.nome = new SimpleStringProperty(nome);
         this.cognome = new SimpleStringProperty(cognome);
         // Some initial dummy data, just for convenient testing.
@@ -60,20 +49,21 @@ public class Amici {
         this.email = new SimpleStringProperty("email@email.com");
         this.compleanno = new SimpleStringProperty("24-10-2017");
         this.idAmici = null;
+    }*/
+
+
+    public String getCodiceFiscale(){
+        if (codiceFiscale == null){
+            codiceFiscale= new SimpleStringProperty("");
+        }
+        return codiceFiscale.get();
     }
 
-    public Integer getIdAmici(){
-        if (idAmici == null){
-            idAmici = new SimpleIntegerProperty(-1);
+    public void setCodiceFiscale(String codiceFiscale) {
+        if (this.codiceFiscale == null){
+            this.codiceFiscale = new SimpleStringProperty();
         }
-        return idAmici.get();
-    }
-
-    public void setIdAmici(Integer idAmici) {
-        if (this.idAmici == null){
-            this.idAmici = new SimpleIntegerProperty();
-        }
-        this.idAmici.set(idAmici);
+        this.codiceFiscale.set(codiceFiscale);
     }
 
     public String getNome() {
@@ -100,6 +90,30 @@ public class Amici {
         return cognome;
     }
 
+    public String getDataNascita() {
+        return dataNascita.get();
+    }
+
+    public void setDataNascita(String dataNascita) {
+        this.dataNascita.set(dataNascita);
+    }
+
+    public StringProperty dataNascitaProperty() {
+        return dataNascita;
+    }
+
+    public String getIndirizzo() {
+        return indirizzo.get();
+    }
+
+    public void setIndirizzo(String indirizzo) {
+        this.indirizzo.set(indirizzo);
+    }
+
+    public StringProperty indirizzoProperty() {
+        return indirizzo;
+    }
+    
     public String getTelefono() {
         return telefono.get();
     }
@@ -123,30 +137,26 @@ public class Amici {
     public StringProperty emailProperty() {
         return email;
     }
-    
-    public String getCompleanno() {
-        return compleanno.getValue();
+
+    public String getNoteCliniche() {
+        return noteCliniche.get();
     }
 
-    public void setCompleanno(String compleanno) {
-        this.compleanno.set(compleanno);
+    public void setNoteCliniche(String noteCliniche) {
+        this.noteCliniche.set(noteCliniche);
     }
 
-    public StringProperty compleannoProperty() {
-        return compleanno;
+    public StringProperty noteClinicheProperty() {
+        return noteCliniche;
     }
 
 
     public String toString(){
-        return nome.getValue() + ", " + cognome.getValue() + ", " + telefono.getValue() + ", " + email.getValue() + ", " + compleanno.getValue() + ", (" + idAmici.getValue() + ")";
+        return nome.getValue() + ", " + cognome.getValue() + ", " + dataNascita.getValue() + ", " + codiceFiscale.getValue() + ", " + indirizzo.getValue() + ", " + telefono.getValue() + ", " + email.getValue() + ", " + noteCliniche.getValue();
     }
 
 
-    public static void main(String[] args) {
-
-
-
-        // https://en.wikipedia.org/wiki/Observer_pattern
+    /*public static void main(String[] args) {
         Amici collega = new Amici();
         collega.setNome("Ciao");
         MyChangeListener myChangeListener = new MyChangeListener();
@@ -200,6 +210,6 @@ public class Amici {
         System.out.println("Size: "+observableList.size());
 
     }
-
+*/
 
 }
