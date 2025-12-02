@@ -81,5 +81,6 @@ public class Segretari {
         return nome.getValue() + ", " + cognome.getValue() + ", " + email.getValue() + ", " + password.getValue();
     }
 
+
 }
 
