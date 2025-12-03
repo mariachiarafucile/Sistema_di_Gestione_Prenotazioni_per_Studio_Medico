@@ -20,6 +20,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -48,22 +49,160 @@ public class MainApp extends Application {
         return colleghiData;
     }
 
-  @Override
-  public void start(Stage primaryStage) {
-    this.primaryStage = primaryStage;
-    this.primaryStage.setTitle("Amici app");
+    @Override
+    public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        this.primaryStage.setTitle("My Clinic App");
 
-    // Set the application icon.
-    primaryStage.getIcons().add(new Image("file:resources/images/address_book_32.png"));
+// Set application icon
+        primaryStage.getIcons().add(new Image("file:resources/images/logo.png"));
 
-    initRootLayout();
-    showColleghiOverview();
+// Mostra subito la schermata di identificazione
+        showIdentificazione();
 
-    primaryStage.show();
+        primaryStage.show();
+
+    }
+
+    public void showIdentificazione() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/Identificazione.fxml"));
+            VBox identificazione = loader.load();
+
+            // Crea una scena direttamente con VBox
+            Scene scene = new Scene(identificazione);
+            primaryStage.setScene(scene);
+
+            primaryStage.setOnCloseRequest(windowEvent ->
+            {
+                windowEvent.consume();
+                handleExit();
+            });
+
+            // Collega controller ↔ main app
+            IdentificazioneController controller = loader.getController();
+            controller.setMainApp(this);
+
+        } catch (IOException e) {
+            e.printStackTrace();
 
 
-  }
+        }
 
+    }
+
+    public void showLogin(String role) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/Login.fxml"));
+            VBox page = loader.load();
+
+            Scene scene = new Scene(page);
+            primaryStage.setScene(scene);
+
+            LoginController controller = loader.getController();
+            controller.setMainApp(this);
+            controller.setLoginMode(role);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showRegistrazioneSegretario() {
+        try {
+            // 1. Carica il FXML della registrazione del segretario
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/RegistrazioneSegretario.fxml"));
+            VBox page = loader.load();
+
+            // 2. Crea un nuovo stage per la finestra di registrazione
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Registrazione Segretario");
+            dialogStage.initModality(Modality.WINDOW_MODAL); // blocca la finestra principale
+            dialogStage.initOwner(primaryStage); // rende la finestra figlia della principale
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // 3. Passa eventuale riferimento al MainApp nel controller
+            RegistrazioneSegretarioController controller = loader.getController();
+            controller.setMainApp(this); // se vuoi avere accesso al main app dal controller
+
+            // 4. Mostra la finestra
+            dialogStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showRegistrazioneMedico() {
+        try {
+            // 1. Carica il FXML della registrazione del medico
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/RegistrazioneMedico.fxml"));
+            VBox page = loader.load();
+
+            // 2. Crea un nuovo stage per la finestra di registrazione
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Registrazione Medico");
+            dialogStage.initModality(Modality.WINDOW_MODAL); // blocca la finestra principale
+            dialogStage.initOwner(primaryStage); // rende la finestra figlia della principale
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // 3. Passa eventuale riferimento al MainApp nel controller
+            RegistrazioneMedicoController controller = loader.getController();
+            controller.setMainApp(this); // per avere accesso al main app dal controller
+
+            // 4. Mostra la finestra
+            dialogStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showSegretarioDashboard() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/SegretarioDashboard.fxml"));
+            BorderPane dashboard = loader.load();
+
+            // Crea la scena con la dashboard
+            Scene scene = new Scene(dashboard);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
+            // Passa il riferimento al MainApp nel controller
+            SegretarioDashboardController controller = loader.getController();
+            controller.setMainApp(this);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showMedicoDashboard() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/MedicoDashboard.fxml"));
+            BorderPane dashboard = loader.load();
+
+            // Crea la scena con la dashboard
+            Scene scene = new Scene(dashboard);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
+            // Passa il riferimento al MainApp nel controller
+            MedicoDashboardController controller = loader.getController();
+            controller.setMainApp(this);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Initializes the root layout and tries to load the last opened
      * Amici file.
@@ -100,12 +239,11 @@ public class MainApp extends Application {
      */
     public void handleExit() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Are you sure?");
-        alert.setHeaderText("Exit");
-        alert.setContentText("Exit from application.");
+        alert.setTitle("Sei sicuro di voler uscire?");
+        alert.setHeaderText("Esci dall'applicazione");
 
-        ButtonType buttonTypeOne = new ButtonType("Yes");
-        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType buttonTypeOne = new ButtonType("Si");
+        ButtonType buttonTypeCancel = new ButtonType("Annulla", ButtonBar.ButtonData.CANCEL_CLOSE);
 
         alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
 
@@ -300,6 +438,6 @@ class MyEventHandler implements EventHandler<WindowEvent> {
     @Override
     public void handle(WindowEvent windowEvent) {
         windowEvent.consume();
-        //handleExit();
+        // handleExit();
     }
 }
