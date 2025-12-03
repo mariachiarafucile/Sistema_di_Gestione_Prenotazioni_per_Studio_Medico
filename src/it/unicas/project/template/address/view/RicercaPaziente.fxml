@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="it.unicas.project.template.address.view.RicercaPazienteController"
+      alignment="TOP_CENTER"
+      spacing="15"
+      prefWidth="500" prefHeight="600"
+      style="-fx-background-color: #E0F7FA; -fx-padding: 20;">
+
+    <Label text="Ricerca Pazienti"
+           style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+
+
+    <TextField fx:id="cfField"
+               promptText="Codice Fiscale"
+               prefWidth="300"
+               maxWidth="300"
+               minWidth="300"/>
+
+    <Button text="Cerca" fx:id="cercaButton" onAction="#onCerca" prefWidth="120"/>
+
+    <!-- Spazio per i risultati della ricerca -->
+    <VBox fx:id="risultatiBox" spacing="10" prefWidth="460" prefHeight="400">
+
+    </VBox>
+
+</VBox>

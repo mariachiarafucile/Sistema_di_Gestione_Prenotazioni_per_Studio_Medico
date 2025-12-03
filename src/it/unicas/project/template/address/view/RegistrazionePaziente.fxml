@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="it.unicas.project.template.address.view.RegistrazionePazienteController"
+      alignment="CENTER" spacing="15"
+      prefWidth="500" prefHeight="600"
+      style="-fx-background-color: #E0F7FA; -fx-padding: 20;">
+
+    <!-- Titolo -->
+    <Label text="Registrazione Paziente"
+           style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+
+    <!-- Campi di inserimento -->
+    <TextField fx:id="nomeField" promptText="Nome" prefWidth="300"/>
+    <TextField fx:id="cognomeField" promptText="Cognome" prefWidth="300"/>
+    <DatePicker fx:id="dataNascitaField" promptText="Data di nascita" prefWidth="500"/>
+    <TextField fx:id="codiceFiscaleField" promptText="Codice Fiscale" prefWidth="300"/>
+    <TextField fx:id="indirizzoField" promptText="Indirizzo" prefWidth="300"/>
+    <TextField fx:id="telefonoField" promptText="Telefono" prefWidth="300"/>
+    <TextField fx:id="emailField" promptText="Email" prefWidth="300"/>
+    <TextArea fx:id="noteClinicheField" promptText="Note cliniche" prefWidth="300" prefHeight="100"/>
+
+    <!-- Pulsanti conferma e annulla -->
+    <HBox spacing="20" alignment="CENTER">
+        <Button text="Conferma" onAction="#onRegistra" prefWidth="100"/>
+        <Button text="Annulla" onAction="#onAnnulla" prefWidth="100"/>
+    </HBox>
+
+</VBox>
