@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:controller="it.unicas.project.template.address.view.IdentificazioneController"
+      xmlns:fx="http://javafx.com/fxml"
+      spacing="15" alignment="CENTER"
+      prefWidth="700" prefHeight="400"
+      style="-fx-background-color: #E0F7FA; -fx-padding: 20;">
+
+    <!-- Titolo principale -->
+    <Label text="Benvenuto" style="-fx-font-size: 32px; -fx-font-weight: bold;"/>
+
+    <!-- Sottotitolo -->
+    <Label text="Seleziona il tuo ruolo" style="-fx-font-size: 20px; -fx-padding: 0 0 10 0;"/>
+
+    <!-- Icone e pulsanti -->
+    <HBox spacing="100" alignment="CENTER">
+        <!-- Medico -->
+        <VBox spacing="15" alignment="CENTER"
+              style="-fx-border-color: gray; -fx-border-width: 2; -fx-padding: 20; -fx-background-radius: 10; -fx-border-radius: 10;">
+            <ImageView fx:id="medicoImageView" fitHeight="120" preserveRatio="true" smooth="true"/>
+            <Button fx:id="medicoButton" text="Accedi come Medico" prefWidth="150"/>
+        </VBox>
+
+        <!-- Segretario -->
+        <VBox spacing="15" alignment="CENTER"
+              style="-fx-border-color: gray; -fx-border-width: 2; -fx-padding: 20; -fx-background-radius: 10; -fx-border-radius: 10;">
+            <ImageView fx:id="segretarioImageView" fitHeight="120" preserveRatio="true" smooth="true"/>
+            <Button fx:id="segretarioButton" text="Accedi come Segretario" prefWidth="150"/>
+        </VBox>
+    </HBox>
+
+</VBox>
