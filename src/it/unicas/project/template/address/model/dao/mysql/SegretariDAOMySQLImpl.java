@@ -183,5 +183,6 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
     }
 
 
+
 }
 
