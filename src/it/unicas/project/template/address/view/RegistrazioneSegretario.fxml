@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="it.unicas.project.template.address.view.RegistrazioneSegretarioController"
+      alignment="CENTER"
+      spacing="20"
+      prefWidth="700" prefHeight="400"
+      style="-fx-background-color: #E0F7FA; -fx-padding: 20;">
+
+    <!-- Titolo -->
+    <Label text="Crea il tuo account"
+           style="-fx-font-size: 28px; -fx-font-weight: bold;"/>
+
+    <!-- Riquadro bianco centrale più piccolo -->
+    <HBox alignment="CENTER">
+        <VBox spacing="10" alignment="CENTER"
+              prefWidth="300" maxWidth="300" prefHeight="220"
+              style="-fx-border-color: gray; -fx-border-width: 2;
+                     -fx-padding: 15; -fx-background-radius: 10; -fx-border-radius: 10;
+                     -fx-background-color: white;">
+
+            <TextField fx:id="nomeField" promptText="Nome" prefWidth="160"/>
+            <TextField fx:id="cognomeField" promptText="Cognome" prefWidth="160"/>
+            <TextField fx:id="emailField" promptText="Email" prefWidth="160"/>
+            <PasswordField fx:id="passwordField" promptText="Password" prefWidth="160"/>
+
+            <Button text="Registrati" onAction="#onRegister" prefWidth="160"/>
+            <Button text="Indietro" onAction="#onBack" prefWidth="160"/>
+        </VBox>
+    </HBox>
+</VBox>
