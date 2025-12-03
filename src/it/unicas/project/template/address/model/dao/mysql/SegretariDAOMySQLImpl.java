@@ -93,6 +93,24 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
         return lista;
     }
 
+    //Query per la ricerca delle credenziali del segretario
+    public boolean existsSegretario(String email, String password) throws DAOException {
+        String sql = "SELECT COUNT(*) AS cnt FROM segretari WHERE email='" + email +
+                "' AND password='" + password + "';";
+
+        try {
+            Statement st = DAOMySQLSettings.getStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            if (rs.next()) {
+                return rs.getInt("cnt") > 0;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("In existsSegretario(): " + e.getMessage());
+        }
+        return false;
+    }
+
     @Override
     public void delete(Segretari s) throws DAOException {
         if (s == null || s.getEmail() == null){
@@ -120,7 +138,7 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
 
         String query = "INSERT INTO segretari (nome, cognome, email, password) VALUES  ('" +
                 s.getNome() + "', '" + s.getCognome() + "', '" +
-                 "', '" + s.getEmail() + "', '" + s.getPassword() + "');";
+                "', '" + s.getEmail() + "', '" + s.getPassword() + "');";
         try {
             logger.info("SQL: " + query);
         } catch (NullPointerException nullPointerException){
