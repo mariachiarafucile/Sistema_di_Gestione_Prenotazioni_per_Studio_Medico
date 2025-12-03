@@ -143,4 +143,5 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
             throw new DAOException("In executeUpdate(): " + e.getMessage());
         }
     }
+
 }
