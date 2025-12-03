@@ -101,6 +101,26 @@ public class MediciDAOMySQLImpl implements DAO<Medici> {
         return lista;
     }
 
+    //Query per la ricerca delle credenziali del medico
+    public boolean existsMedico(String email, String password) throws DAOException {
+        String sql = "SELECT COUNT(*) AS cnt FROM medici WHERE email='" + email +
+                "' AND password='" + password + "';";
+
+        try {
+            Statement st = DAOMySQLSettings.getStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            if (rs.next()) {
+                return rs.getInt("cnt") > 0;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("In existsMedico(): " + e.getMessage());
+        }
+        return false;
+    }
+
+
+
     @Override
     public void delete(Medici m) throws DAOException {
         if (m == null || m.getEmail() == null){
