@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="it.unicas.project.template.address.view.ReportController"
+      alignment="TOP_CENTER"
+      spacing="30"
+      prefWidth="500"
+      prefHeight="600"
+      style="-fx-background-color: #E0F7FA; -fx-padding: 20;">
+
+    <!-- Titolo -->
+    <Label text="Report Mensile"
+           style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+
+    <!-- Barra di selezione mese -->
+    <HBox alignment="CENTER" spacing="10">
+        <ComboBox fx:id="mesePicker" prefWidth="200"/>
+        <Button fx:id="scaricaButton" style="-fx-background-color: transparent; -fx-padding: 0;">
+            <ImageView fx:id="iconaScarica" fitWidth="15" fitHeight="15" pickOnBounds="true"/>
+        </Button>
+    </HBox>
+
+    <!-- Etichette report-->
+    <VBox spacing="10" alignment="TOP_LEFT" style="-fx-padding: 20 0 0 0;">
+        <Label fx:id="visitePagateLabel" text="Numero visite pagate: "/>
+        <Label fx:id="visiteDaSaldareLabel" text="Numero visite da saldare: "/>
+        <Label fx:id="totaleIncassatoLabel" text="Totale incassato: "/>
+        <Label fx:id="totaleDaIncassareLabel" text="Totale da incassare: "/>
+    </VBox>
+
+</VBox>

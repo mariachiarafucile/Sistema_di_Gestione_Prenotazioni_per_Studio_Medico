@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="it.unicas.project.template.address.view.MedicoDashboardController"
+            prefWidth="900" prefHeight="600"
+            style="-fx-background-color: #E0F7FA;">
+
+    <center>
+        <VBox alignment="CENTER" spacing="50" style="-fx-alignment: center;">
+
+            <!-- Titolo -->
+            <Label text="Benvenuto nella tua area personale!"
+                   style="-fx-font-size: 25px; -fx-font-weight: bold;"/>
+            <!-- Sottotitolo -->
+            <Label text="Scegli un'opzione dal menu"
+                   style="-fx-font-size: 18px; -fx-text-fill: #555555;"/>
+
+            <!-- HBox centrata con icone -->
+            <HBox alignment="CENTER"
+                  spacing="50"
+                  style="-fx-alignment: center;">
+
+                <!-- Icona Ricerca Paziente -->
+                <VBox alignment="CENTER" spacing="10">
+                    <Button fx:id="ricercaPazienteButton"
+                            prefWidth="150" prefHeight="150"
+                            style="-fx-background-color: white;
+                                   -fx-border-color: #CCCCCC;
+                                   -fx-border-width: 2;
+                                   -fx-border-radius: 20;
+                                   -fx-background-radius: 20;">
+                    </Button>
+                    <Label text="Ricerca Paziente"/>
+                </VBox>
+
+                <!-- Icona Calendario -->
+                <VBox alignment="CENTER" spacing="10">
+                    <Button fx:id="calendarioButton"
+                            prefWidth="150" prefHeight="150"
+                            style="-fx-background-color: white;
+                                   -fx-border-color: #CCCCCC;
+                                   -fx-border-width: 2;
+                                   -fx-border-radius: 20;
+                                   -fx-background-radius: 20;">
+                    </Button>
+                    <Label text="Calendario"/>
+                </VBox>
+
+                <!-- Icona Inserisci Fasce Orarie -->
+                <VBox alignment="CENTER" spacing="10">
+                    <Button fx:id="fasceOrarieButton"
+                            prefWidth="150" prefHeight="150"
+                            style="-fx-background-color: white;
+                                   -fx-border-color: #CCCCCC;
+                                   -fx-border-width: 2;
+                                   -fx-border-radius: 20;
+                                   -fx-background-radius: 20;">
+                    </Button>
+                    <Label text="Inserisci Fascia Oraria"/>
+                </VBox>
+
+            </HBox>
+
+        </VBox>
+    </center>
+
+</BorderPane>
