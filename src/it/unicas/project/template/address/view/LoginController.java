@@ -12,6 +12,8 @@ import javafx.scene.control.*;
 
 import java.util.Optional;
 
+import static it.unicas.project.template.address.model.AlertUtils.showErrorAlert;
+
 public class LoginController {
 
     @FXML
@@ -48,7 +50,7 @@ public class LoginController {
                 + user + " / " + pass);
 
         if (user.isEmpty() || pass.isEmpty()) {
-            showErrorAlert();
+            showErrorAlert("Credenziali non valide. Riprova.");
             return;
         }
 
@@ -57,7 +59,7 @@ public class LoginController {
             boolean valid = ((MediciDAOMySQLImpl) dao).existsMedico(user, pass);
 
             if (!valid) {
-                showErrorAlert();
+                showErrorAlert("Credenziali non valide. Riprova.");
                 return;
             }
             mainApp.showMedicoDashboard();
@@ -67,9 +69,10 @@ public class LoginController {
             boolean valid = ((SegretariDAOMySQLImpl) dao).existsSegretario(user, pass);
 
             if (!valid) {
-                showErrorAlert();
+                showErrorAlert("Credenziali non valide. Riprova.");
                 return;
                }
+
             mainApp.showSegretarioDashboard();
             }
         }
@@ -90,9 +93,5 @@ public class LoginController {
         mainApp.showIdentificazione();
     }
 
-    public void showErrorAlert() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setContentText("Credenziali non valide. Riprova.");
-        alert.showAndWait();
-    }
+
 }
