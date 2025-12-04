@@ -137,8 +137,7 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
 
 
         String query = "INSERT INTO segretari (nome, cognome, email, password) VALUES  ('" +
-                s.getNome() + "', '" + s.getCognome() + "', '" +
-                "', '" + s.getEmail() + "', '" + s.getPassword() + "');";
+                s.getNome() + "', '" + s.getCognome() + "', '" + s.getEmail() + "', '" + s.getPassword() + "');";
         try {
             logger.info("SQL: " + query);
         } catch (NullPointerException nullPointerException){
@@ -146,7 +145,6 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
         }
         executeUpdate(query);
     }
-
 
     @Override
     public void update(Segretari s) throws DAOException {
