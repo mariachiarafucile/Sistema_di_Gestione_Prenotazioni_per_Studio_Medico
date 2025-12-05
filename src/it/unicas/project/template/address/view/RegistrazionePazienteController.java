@@ -7,18 +7,11 @@ import it.unicas.project.template.address.model.dao.DAO;
 import it.unicas.project.template.address.model.dao.DAOException;
 import it.unicas.project.template.address.model.dao.mysql.PazientiDAOMySQLImpl;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.DayOfWeek;
-import java.time.format.TextStyle;
-import java.util.Locale;
 
 import static it.unicas.project.template.address.model.AlertUtils.showConfirmationAlert;
 import static it.unicas.project.template.address.model.AlertUtils.showErrorAlert;
@@ -27,29 +20,23 @@ public class RegistrazionePazienteController {
 
     @FXML private TextField nomeField;
     @FXML private TextField cognomeField;
+    @FXML private TextField dataNascitaField;
     @FXML private TextField codiceFiscaleField;
     @FXML private TextField indirizzoField;
     @FXML private TextField telefonoField;
     @FXML private TextField emailField;
     @FXML private TextArea noteClinicheField;
-    @FXML private TextField dataNascitaFieldVisibile;
-    @FXML private Button calendarToggleButton;
-    @FXML private VBox calendarContainer;
-    @FXML private GridPane calendarioGrid;
-    @FXML private Label meseLabel;
-    @FXML private Button prevMonthButton;
-    @FXML private Button nextMonthButton;
 
     private MainApp mainApp;
     private Stage dialogStage;
-    private YearMonth meseCorrente;
 
-    public void setMainApp(MainApp mainApp) { this.mainApp = mainApp; }
-    public void setDialogStage(Stage stage) { this.dialogStage = stage; }
+    public void setMainApp(MainApp mainApp) {
+        this.mainApp = mainApp;
+    }
 
     @FXML
     private void initialize() {
-        // Carica logo
+        // Quando la scena è pronta, allora carichiamo il logo
         nomeField.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 newScene.windowProperty().addListener((obs2, oldWindow, newWindow) -> {
@@ -64,82 +51,17 @@ public class RegistrazionePazienteController {
                 });
             }
         });
-
-        // Inizializza calendario
-        meseCorrente = YearMonth.now();
-        aggiornaCalendario();
-
-        // Mostra/nascondi calendario completo
-        calendarToggleButton.setOnAction(e -> {
-            boolean isVisible = calendarContainer.isVisible();
-            calendarContainer.setVisible(!isVisible);
-            calendarContainer.setManaged(!isVisible);
-        });
-
-        prevMonthButton.setOnAction(e -> {
-            meseCorrente = meseCorrente.minusMonths(1);
-            aggiornaCalendario();
-        });
-
-        nextMonthButton.setOnAction(e -> {
-            meseCorrente = meseCorrente.plusMonths(1);
-            aggiornaCalendario();
-        });
     }
 
-    private void aggiornaCalendario() {
-        calendarioGrid.getChildren().clear();
-
-        meseLabel.setText(meseCorrente.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault())
-                + " " + meseCorrente.getYear());
-
-        DayOfWeek[] order = {DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
-                DayOfWeek.THURSDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY};
-
-        // Intestazione giorni
-        for (int c = 0; c < 7; c++) {
-            Label h = new Label(order[c].getDisplayName(TextStyle.SHORT, Locale.getDefault()));
-            h.setMinSize(30, 30);
-            h.setAlignment(Pos.CENTER);
-            h.setStyle("-fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 2;");
-            calendarioGrid.add(h, c, 0);
-        }
-
-        LocalDate firstDay = meseCorrente.atDay(1);
-        int firstColumn = firstDay.getDayOfWeek().getValue() - 1;
-        int giorniNelMese = meseCorrente.lengthOfMonth();
-
-        int col = firstColumn;
-        int row = 1;
-
-        for (int day = 1; day <= giorniNelMese; day++) {
-            LocalDate date = meseCorrente.atDay(day);
-
-            Label lbl = new Label(String.valueOf(day));
-            lbl.setMinSize(30, 30);
-            lbl.setAlignment(Pos.CENTER);
-            lbl.setStyle("-fx-font-size: 10px; -fx-padding: 4; -fx-border-color: #cccccc; -fx-alignment: center; -fx-cursor: hand;");
-
-            lbl.setOnMouseClicked(evt -> {
-                dataNascitaFieldVisibile.setText(date.toString());
-                calendarContainer.setVisible(false);
-                calendarContainer.setManaged(false);
-            });
-
-            calendarioGrid.add(lbl, col, row);
-            col++;
-            if (col > 6) {
-                col = 0;
-                row++;
-            }
-        }
+    public void setDialogStage(Stage stage) {
+        this.dialogStage = stage;
     }
 
     @FXML
     private void onRegistra() {
         String nome = nomeField.getText();
         String cognome = cognomeField.getText();
-        String dataNascita = dataNascitaFieldVisibile.getText();
+        String dataNascita = dataNascitaField.getText();
         String cf = codiceFiscaleField.getText();
         String indirizzo = indirizzoField.getText();
         String telefono = telefonoField.getText();
@@ -166,10 +88,16 @@ public class RegistrazionePazienteController {
             }
         }
 
-        //Converte temporalmente la data di nascita in LocalDate per la validazione
-        LocalDate dataNascitaLD = LocalDate.parse(dataNascita);
-        if (!dataNascitaLD.isBefore(LocalDate.now())) {
-            showErrorAlert("La data di nascita non può essere oggi o futura.");
+        // converte temporaneamente la data di nascita in LocalDate per la validazione
+        try {
+            LocalDate dataNascitaLD = LocalDate.parse(dataNascita);
+
+            if (!dataNascitaLD.isBefore(LocalDate.now())) {
+                showErrorAlert("La data di nascita non può essere oggi o futura.");
+                return;
+            }
+        } catch (Exception e) {
+            showErrorAlert("Formato della data non valido. Usa YYYY-MM-DD");
             return;
         }
 
@@ -177,7 +105,7 @@ public class RegistrazionePazienteController {
             showErrorAlert("Il codice fiscale deve essere lungo esattamente 16 caratteri.");
             return;
         } else {
-            // Controllo che siano solo caratteri alfanumerici
+            // Controlla che tutti i caratteri siano alfanumerici
             boolean valido = true;
             for (int i = 0; i < cf.length(); i++) {
                 char c = cf.charAt(i);
@@ -200,12 +128,12 @@ public class RegistrazionePazienteController {
             }
         }
 
-        if (!telefonoValido(telefono)) {
+        if(!telefonoValido(telefono)){
             showErrorAlert("Il numero di telefono deve contenere esattamente 10 cifre.");
             return;
         }
 
-        if (!emailValida(email)) {
+        if(!emailValida(email)){
             showErrorAlert("L'email inserita non è valida.");
             return;
         }
@@ -238,13 +166,11 @@ public class RegistrazionePazienteController {
             return false;
         }
 
-
-        for (char c : telefono.toCharArray()) {
-            if (!Character.isDigit(c)) {
+        for (char c : telefono.toCharArray()){
+            if (!Character.isDigit(c)){
                 return false;
             }
         }
-
         return true;
     }
 
