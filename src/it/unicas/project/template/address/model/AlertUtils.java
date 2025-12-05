@@ -1,8 +1,12 @@
 package it.unicas.project.template.address.model;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
+import java.util.Optional;
 
 public class AlertUtils {
 
@@ -24,7 +28,7 @@ public class AlertUtils {
 
     // Alert di conferma
     public static void showConfirmationAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(message);
 
         try {
@@ -37,4 +41,33 @@ public class AlertUtils {
 
         alert.showAndWait();
     }
+
+    public static void alertExit() {
+
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Sei sicuro di voler uscire?");
+        alert.setHeaderText("Esci dall'applicazione");
+
+        try {
+            Image logo = new Image(AlertUtils.class.getResourceAsStream("/images/logo.png"));
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(logo);
+        } catch (Exception e) {
+            // ignora se logo non trovato
+            System.out.println("Logo non trovato");
+        }
+
+        ButtonType buttonTypeOne = new ButtonType("Si");
+        ButtonType buttonTypeCancel = new ButtonType("Annulla", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeOne){
+            System.exit(0);
+        }
+
+
+    }
+
 }
