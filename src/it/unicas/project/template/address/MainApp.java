@@ -25,6 +25,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import static it.unicas.project.template.address.model.AlertUtils.showErrorAlert;
+import static it.unicas.project.template.address.model.AlertUtils.alertExit;
+
 public class MainApp extends Application {
 
     private Stage primaryStage;
@@ -77,7 +80,7 @@ public class MainApp extends Application {
             primaryStage.setOnCloseRequest(windowEvent ->
             {
                 windowEvent.consume();
-                handleExit();
+                alertExit();
             });
 
             // Collega controller ↔ main app
@@ -237,7 +240,7 @@ public class MainApp extends Application {
     /**
      * Closes the application.
      */
-    public void handleExit() {
+   public void handleExit() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Sei sicuro di voler uscire?");
         alert.setHeaderText("Esci dall'applicazione");
