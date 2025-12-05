@@ -129,7 +129,7 @@ public class MedicoDashboardController {
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(mainApp.getPrimaryStage());
 
-            Scene scene = new Scene(page, 500, 600);
+            Scene scene = new Scene(page, 800, 600);
             dialogStage.setScene(scene);
 
             CalendarioMedicoController controller = loader.getController();
