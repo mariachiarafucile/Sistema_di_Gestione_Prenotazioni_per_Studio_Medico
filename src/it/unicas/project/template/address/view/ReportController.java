@@ -34,6 +34,25 @@ public class ReportController {
 
     @FXML
     private void initialize() {
+
+        // --- Aggiunta del logo nella finestra ---
+        scaricaButton.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                newScene.windowProperty().addListener((obs2, oldWindow, newWindow) -> {
+                    if (newWindow != null) {
+                        try {
+                            Image logo = new Image(
+                                    ReportController.class.getResourceAsStream("/images/logo.png")
+                            );
+                            ((Stage) newWindow).getIcons().add(logo);
+                        } catch (Exception e) {
+                            System.out.println("Logo non trovato");
+                        }
+                    }
+                });
+            }
+        });
+
         // Carica icona
         if (scaricaButton != null) {
             try {
