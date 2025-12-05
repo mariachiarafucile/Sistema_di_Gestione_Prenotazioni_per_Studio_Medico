@@ -3,6 +3,7 @@ package it.unicas.project.template.address.view;
 import it.unicas.project.template.address.MainApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -31,6 +32,25 @@ public class InserimentoFasceController {
 
     @FXML
     private void initialize() {
+
+        // --- Aggiunta del logo nella finestra ---
+        calendarioGrid.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                newScene.windowProperty().addListener((obs2, oldWindow, newWindow) -> {
+                    if (newWindow != null) {
+                        try {
+                            Image logo = new Image(
+                                    CalendarioMedicoController.class.getResourceAsStream("/images/logo.png")
+                            );
+                            ((Stage) newWindow).getIcons().add(logo);
+                        } catch (Exception e) {
+                            System.out.println("Logo non trovato");
+                        }
+                    }
+                });
+            }
+        });
+
         meseCorrente = YearMonth.now();
         popolaCalendario();
 
