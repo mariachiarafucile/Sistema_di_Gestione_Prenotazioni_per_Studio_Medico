@@ -6,7 +6,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
+import it.unicas.project.template.address.model.Pazienti;
+import java.util.List;
+import it.unicas.project.template.address.model.dao.mysql.PazientiDAOMySQLImpl;
+
+import static it.unicas.project.template.address.model.AlertUtils.showErrorAlert;
 
 public class RicercaPazienteController {
 
@@ -19,6 +26,14 @@ public class RicercaPazienteController {
     private MainApp mainApp;
 
     private Stage dialogStage;
+
+    @FXML
+    private VBox risultatiBox;
+    @FXML
+    private Button modificaBtn;
+    @FXML
+    private Button visiteBtn;
+
 
 
     public void setMainApp(MainApp mainApp) {
@@ -51,11 +66,53 @@ public class RicercaPazienteController {
     private void onCerca() {
         String cf = cfField.getText();
         if (cf == null || cf.trim().isEmpty()) {
-            System.out.println("Inserisci un Codice Fiscale valido");
+            showErrorAlert("Inserire un codice fiscale valido.");
             return;
         }
 
-        // TODO: inserire la logica di ricerca paziente nel database
+        // --- LOGICA DI RICERCA DEL PAZIENTE ---
+        try {
+            // Pulisco eventuali risultati precedenti
+            risultatiBox.getChildren().clear();
+
+            // Creo un oggetto filtro con il CF
+            Pazienti filtro = new Pazienti();
+            filtro.setCodiceFiscale(cf.trim());
+
+            // Uso il DAO esistente per cercare il paziente
+            List<Pazienti> lista = PazientiDAOMySQLImpl.getInstance().select(filtro);
+
+            if (lista.isEmpty()) {
+                risultatiBox.getChildren().add(new Label("❌ Nessun paziente trovato"));
+                return;
+            }
+
+            // CF è univoco, prendo il primo elemento
+            Pazienti p = lista.get(0);
+
+            // Creo le label per visualizzare i dati
+            Label nomeLbl = new Label("Nome: " + p.getNome());
+            Label cognomeLbl = new Label("Cognome: " + p.getCognome());
+            Label cfLbl = new Label("Codice Fiscale: " + p.getCodiceFiscale());
+            Label dataLbl = new Label("Data di nascita: " + p.getDataNascita());
+            Label indirizzoLbl = new Label("Indirizzo: " + p.getIndirizzo());
+            Label telefonoLbl = new Label("Telefono: " + p.getTelefono());
+            Label emailLbl = new Label("Email: " + p.getEmail());
+            Label noteLbl = new Label("Note cliniche: " + (p.getNoteCliniche() != null ? p.getNoteCliniche() : "-"));
+
+            // Rende visibili i bottoni centrati in fondo
+            modificaBtn.setVisible(true);
+            visiteBtn.setVisible(true);
+
+            risultatiBox.getChildren().addAll(
+                    nomeLbl, cognomeLbl, cfLbl, dataLbl, indirizzoLbl, telefonoLbl, emailLbl, noteLbl
+            );
+
+        } catch (Exception e) {
+            risultatiBox.getChildren().add(new Label("❌ Errore nella ricerca: " + e.getMessage()));
+            e.printStackTrace();
+        }
+
         System.out.println("Ricerca paziente con CF: " + cf);
     }
 }

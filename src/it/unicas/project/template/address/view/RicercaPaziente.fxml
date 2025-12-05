@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.layout.HBox?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="it.unicas.project.template.address.view.RicercaPazienteController"
       alignment="TOP_CENTER"
@@ -27,7 +28,11 @@
 
     <!-- Spazio per i risultati della ricerca -->
     <VBox fx:id="risultatiBox" spacing="10" prefWidth="460" prefHeight="400">
-
     </VBox>
 
+    <!-- Bottoni nascosti inizialmente -->
+    <HBox spacing="20" alignment="CENTER">
+        <Button fx:id="modificaBtn" text="Modifica dati" visible="false"/>
+        <Button fx:id="visiteBtn" text="Visualizza visite" visible="false"/>
+    </HBox>
 </VBox>
