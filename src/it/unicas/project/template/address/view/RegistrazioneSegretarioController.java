@@ -1,6 +1,7 @@
 package it.unicas.project.template.address.view;
 
 import it.unicas.project.template.address.MainApp;
+import it.unicas.project.template.address.model.AlertUtils;
 import it.unicas.project.template.address.model.Segretari;
 import it.unicas.project.template.address.model.dao.DAO;
 import it.unicas.project.template.address.model.dao.DAOException;
@@ -8,9 +9,10 @@ import it.unicas.project.template.address.model.dao.mysql.SegretariDAOMySQLImpl;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import javafx.scene.image.Image;
 
-import static it.unicas.project.template.address.model.AlertUtils.showConfirmationAlert;
-import static it.unicas.project.template.address.model.AlertUtils.showErrorAlert;
+import static it.unicas.project.template.address.model.AlertUtils.*;
 
 public class RegistrazioneSegretarioController {
 
@@ -28,6 +30,25 @@ public class RegistrazioneSegretarioController {
     public void setMainApp(MainApp mainApp) {
 
         this.mainApp = mainApp;
+    }
+
+    @FXML
+    private void initialize() {
+        // Quando la scena è pronta, allora carichiamo il logo
+        nomeField.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                newScene.windowProperty().addListener((obs2, oldWindow, newWindow) -> {
+                    if (newWindow != null) {
+                        try {
+                            Image logo = new Image(AlertUtils.class.getResourceAsStream("/images/logo.png"));
+                            ((Stage) newWindow).getIcons().add(logo);
+                        } catch (Exception e) {
+                            System.out.println("Logo non trovato");
+                        }
+                    }
+                });
+            }
+        });
     }
 
     @FXML
@@ -50,7 +71,7 @@ public class RegistrazioneSegretarioController {
         }
 
         for (char c : cognome.toCharArray()) {
-            if (!Character.isLetter(c) && c != ' ' && c != '\'') {
+            if (!Character.isLetter(c) && c != ' ') {
                 showErrorAlert("Il cognome deve contenere solo lettere.");
                 return;
             }
@@ -70,6 +91,13 @@ public class RegistrazioneSegretarioController {
         DAO dao = SegretariDAOMySQLImpl.getInstance();
         dao.insert(segretario);
         showConfirmationAlert("Account creato correttamente");
+
+        // Chiude la finestra di registrazione
+        nomeField.getScene().getWindow().hide();
+
+        // Reindirizza alla pagina di login
+        mainApp.showLogin("SEGRETARIO");  // Metodo nel MainApp per mostrare il login
+
     } catch (DAOException e) {
         e.printStackTrace();
         showErrorAlert("L'email inserita è già utilizzata da un altro utente.");
@@ -80,6 +108,7 @@ public class RegistrazioneSegretarioController {
 
     @FXML
     private void onBack() {
+
         nomeField.getScene().getWindow().hide();
     }
 
