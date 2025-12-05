@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 
 import java.time.*;
 import java.time.format.TextStyle;
@@ -35,6 +36,25 @@ public class CalendarioMedicoController {
 
     @FXML
     private void initialize() {
+
+        // --- Aggiunta del logo nella finestra ---
+        calendarioGrid.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                newScene.windowProperty().addListener((obs2, oldWindow, newWindow) -> {
+                    if (newWindow != null) {
+                        try {
+                            Image logo = new Image(
+                                    CalendarioMedicoController.class.getResourceAsStream("/images/logo.png")
+                            );
+                            ((Stage) newWindow).getIcons().add(logo);
+                        } catch (Exception e) {
+                            System.out.println("Logo non trovato");
+                        }
+                    }
+                });
+            }
+        });
+
         meseCorrente = YearMonth.now();
 
         aggiornaCalendario();
