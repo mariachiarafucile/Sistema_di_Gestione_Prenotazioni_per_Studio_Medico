@@ -152,7 +152,7 @@ public class PazientiDAOMySQLImpl implements DAO<Pazienti> {
         verifyObject(p);
 
         String query = "UPDATE pazienti SET nome = '" + p.getNome() + "', cognome = '" + p.getCognome() + "',  dataNascita = '" + p.getDataNascita() + "', indirizzo = '" + p.getIndirizzo() + "', telefono = '" + p.getTelefono() + "'" + ", email = '" + p.getEmail() + "', noteCliniche = '" + p.getNoteCliniche() + "'";
-        query = query + " WHERE codiceFiscale = " + p.getCodiceFiscale() + ";";
+        query = query + " WHERE codiceFiscale = '" + p.getCodiceFiscale() + "';";
         logger.info("SQL: " + query);
 
         executeUpdate(query);
