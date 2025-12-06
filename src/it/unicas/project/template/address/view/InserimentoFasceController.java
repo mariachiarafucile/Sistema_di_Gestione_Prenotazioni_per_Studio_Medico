@@ -1,6 +1,10 @@
 package it.unicas.project.template.address.view;
 
 import it.unicas.project.template.address.MainApp;
+import it.unicas.project.template.address.model.FasceOrarie;
+import it.unicas.project.template.address.model.dao.DAO;
+import it.unicas.project.template.address.model.dao.DAOException;
+import it.unicas.project.template.address.model.dao.mysql.FasceOrarieDAOMySQLImpl;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -11,6 +15,9 @@ import javafx.stage.Stage;
 import java.time.*;
 import java.time.format.TextStyle;
 import java.util.Locale;
+
+import static it.unicas.project.template.address.model.AlertUtils.showConfirmationAlert;
+import static it.unicas.project.template.address.model.AlertUtils.showErrorAlert;
 
 public class InserimentoFasceController {
 
@@ -70,11 +77,23 @@ public class InserimentoFasceController {
             oraInizioCombo.getItems().add(String.format("%02d:30", h));
         }
 
-        for (int h = 9; h <= 20; h++) {
-            oraFineCombo.getItems().add(String.format("%02d:30", h));
+        // ORARI DI INIZIO: 09:00 → 19:30
+        for (int h = 9; h <= 19; h++) {
+            oraInizioCombo.getItems().add(String.format("%02d:00", h));
+            oraInizioCombo.getItems().add(String.format("%02d:30", h));
         }
 
-        salvaButton.setOnAction(e -> salvaFascia());
+        // ORARI DI FINE: 09:30 → 20:00
+        oraFineCombo.getItems().add("09:30");  // primo orario
+
+        for (int h = 10; h <= 20; h++) {
+            oraFineCombo.getItems().add(String.format("%02d:00", h));
+            // aggiungo solo fino a 20:00, quindi mezz'ora la aggiungo solo se h < 20
+            if (h < 20) {
+                oraFineCombo.getItems().add(String.format("%02d:30", h));
+            }
+        }
+
     }
 
     private void popolaCalendario() {
@@ -121,15 +140,48 @@ public class InserimentoFasceController {
             }
         }
     }
-
+    @FXML
     private void salvaFascia() {
         if (giornoSelezionato == null || oraInizioCombo.getValue() == null || oraFineCombo.getValue() == null) {
             System.out.println("Seleziona giorno e orari!");
             return;
         }
 
+        // Controllo data non passata
+        if (giornoSelezionato.isBefore(LocalDate.now())) {
+            showErrorAlert("Non puoi selezionare una data passata!");
+            return;
+        }
+
+        String data = giornoSelezionato.toString();
+        String oraInizio = oraInizioCombo.getValue();
+        String oraFine = oraFineCombo.getValue();
+
+        // Controllo orario
+        LocalTime inizio = LocalTime.parse(oraInizio);
+        LocalTime fine = LocalTime.parse(oraFine);
+        if (!inizio.isBefore(fine)) {
+            showErrorAlert("L'orario di inizio deve essere precedente all'orario di fine!");
+            return;
+        }
         System.out.println("Fascia inserita: " + giornoSelezionato + " " + oraInizioCombo.getValue() + " - " + oraFineCombo.getValue());
-        // TODO: inviare al DB
+
+        try {
+
+            // ID null -> MySQL lo genera
+            FasceOrarie fascia = new FasceOrarie(null, data, oraInizio, oraFine);
+
+            DAO dao = FasceOrarieDAOMySQLImpl.getInstance();
+            dao.insert(fascia);
+
+            showConfirmationAlert("Fascia oraria inserita correttamente.");
+
+            dialogStage.close();
+
+        } catch (DAOException e) {
+            e.printStackTrace();
+            showErrorAlert("Errore nel salvataggio: " + e.getMessage());
+        }
 
         dialogStage.close();
     }

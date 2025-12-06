@@ -14,7 +14,11 @@ public class FasceOrarie {
     }
 
     public FasceOrarie(Integer idFasciaOraria, String data, String oraInizio, String oraFine) {
-        this.idFasciaOraria = new SimpleIntegerProperty(idFasciaOraria);
+        if (idFasciaOraria != null) {
+            this.idFasciaOraria = new SimpleIntegerProperty(idFasciaOraria);
+        } else {
+            this.idFasciaOraria = null; // resta null finché DB non genera l'ID
+        }
         this.data = new SimpleStringProperty(data);
         this.oraInizio = new SimpleStringProperty(oraInizio);
         this.oraFine = new SimpleStringProperty(oraFine);

@@ -49,5 +49,5 @@
     </GridPane>
 
     <Button text="Salva" fx:id="salvaButton"
-            style="-fx-padding: 6 12; -fx-font-size: 14;"/>
+            style="-fx-padding: 6 12; -fx-font-size: 14;" onAction="#salvaFascia"/>
 </VBox>

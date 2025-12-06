@@ -94,8 +94,7 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
         verifyObject(f);
 
         String sql =
-                "INSERT INTO fasceOrarie (idFasciaOraria, data, oraInizio, oraFine) VALUES ('" +
-                        f.getIdFasciaOraria() + "', '" +
+                "INSERT INTO fasceOrarie (data, oraInizio, oraFine) VALUES ('" +
                         f.getData() + "', '" +
                         f.getOraInizio() + "', '" +
                         f.getOraFine() + "');";
@@ -125,8 +124,7 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
     }
 
     private void verifyObject(FasceOrarie f) throws DAOException {
-        if (f == null ||
-                f.getIdFasciaOraria() == null ||
+        if (f == null ||f.getIdFasciaOraria()==null||
                 f.getData() == null ||
                 f.getOraInizio() == null ||
                 f.getOraFine() == null) {
