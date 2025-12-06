@@ -3,13 +3,19 @@ package it.unicas.project.template.address.view;
 import it.unicas.project.template.address.MainApp;
 import it.unicas.project.template.address.model.AlertUtils;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import it.unicas.project.template.address.model.Pazienti;
+
+import java.io.IOException;
 import java.util.List;
 import it.unicas.project.template.address.model.dao.mysql.PazientiDAOMySQLImpl;
 
@@ -34,6 +40,7 @@ public class RicercaPazienteController {
     @FXML
     private Button visiteBtn;
 
+    private Pazienti pazienteTrovato;
 
 
     public void setMainApp(MainApp mainApp) {
@@ -89,6 +96,7 @@ public class RicercaPazienteController {
 
             // CF è univoco, prendo il primo elemento
             Pazienti p = lista.get(0);
+            this.pazienteTrovato = p;
 
             // Creo le label per visualizzare i dati
             Label nomeLbl = new Label("Nome: " + p.getNome());
@@ -115,4 +123,32 @@ public class RicercaPazienteController {
 
         System.out.println("Ricerca paziente con CF: " + cf);
     }
+
+    @FXML
+    private void onModifica() {
+
+        boolean ok = mainApp.showModificaPazienteDialog(pazienteTrovato);
+
+        if (ok) {
+
+            // Qui mettiamo tutto il codice che aggiorna la GUI
+
+            risultatiBox.getChildren().clear();
+
+            Label nomeLbl = new Label("Nome: " + pazienteTrovato.getNome());
+            Label cognomeLbl = new Label("Cognome: " + pazienteTrovato.getCognome());
+            Label cfLbl = new Label("Codice Fiscale: " + pazienteTrovato.getCodiceFiscale());
+            Label dataLbl = new Label("Data di nascita: " + pazienteTrovato.getDataNascita());
+            Label indirizzoLbl = new Label("Indirizzo: " + pazienteTrovato.getIndirizzo());
+            Label telefonoLbl = new Label("Telefono: " + pazienteTrovato.getTelefono());
+            Label emailLbl = new Label("Email: " + pazienteTrovato.getEmail());
+            Label noteLbl = new Label("Note cliniche: " + pazienteTrovato.getNoteCliniche());
+
+            risultatiBox.getChildren().addAll(
+                    nomeLbl, cognomeLbl, cfLbl, dataLbl, indirizzoLbl,
+                    telefonoLbl, emailLbl, noteLbl
+            );
+        }
+    }
+
 }

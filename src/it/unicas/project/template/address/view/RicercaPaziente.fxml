@@ -32,7 +32,7 @@
 
     <!-- Bottoni nascosti inizialmente -->
     <HBox spacing="20" alignment="CENTER">
-        <Button fx:id="modificaBtn" text="Modifica dati" visible="false"/>
+        <Button fx:id="modificaBtn" text="Modifica dati" visible="false" onAction="#onModifica"/>
         <Button fx:id="visiteBtn" text="Visualizza visite" visible="false"/>
     </HBox>
 </VBox>

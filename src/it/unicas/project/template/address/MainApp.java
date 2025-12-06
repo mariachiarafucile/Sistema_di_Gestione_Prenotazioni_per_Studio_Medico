@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.prefs.Preferences;
 
 import it.unicas.project.template.address.model.Amici;
+import it.unicas.project.template.address.model.Pazienti;
 import it.unicas.project.template.address.model.dao.mysql.DAOMySQLSettings;
 import it.unicas.project.template.address.view.*;
 import javafx.application.Application;
@@ -206,6 +207,35 @@ public class MainApp extends Application {
             e.printStackTrace();
         }
     }
+
+    public boolean showModificaPazienteDialog(Pazienti p) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/ModificaPaziente.fxml"));
+            VBox page = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Modifica Paziente");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            ModificaPazienteController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setMainApp(this);
+            controller.setPaziente(p);
+
+            dialogStage.showAndWait();
+            return controller.isOkClicked();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
     /**
      * Initializes the root layout and tries to load the last opened
      * Amici file.
