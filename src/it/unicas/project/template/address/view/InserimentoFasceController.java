@@ -71,12 +71,6 @@ public class InserimentoFasceController {
             popolaCalendario();
         });
 
-        // Inserisce orari (inizio 09:00 - 19:00, fine 09:30 - 20:00)
-        for (int h = 9; h <= 19; h++) {
-            oraInizioCombo.getItems().add(String.format("%02d:00", h));
-            oraInizioCombo.getItems().add(String.format("%02d:30", h));
-        }
-
         // ORARI DI INIZIO: 09:00 → 19:30
         for (int h = 9; h <= 19; h++) {
             oraInizioCombo.getItems().add(String.format("%02d:00", h));
@@ -84,12 +78,13 @@ public class InserimentoFasceController {
         }
 
         // ORARI DI FINE: 09:30 → 20:00
-        oraFineCombo.getItems().add("09:30");  // primo orario
+        // Primo orario fisso: 09:30
+        oraFineCombo.getItems().add("09:30");
 
+        // Da 10:00 fino a 20:00 ogni 30 minuti
         for (int h = 10; h <= 20; h++) {
             oraFineCombo.getItems().add(String.format("%02d:00", h));
-            // aggiungo solo fino a 20:00, quindi mezz'ora la aggiungo solo se h < 20
-            if (h < 20) {
+            if (h < 20) {  // aggiungo :30 solo fino alle 19:30
                 oraFineCombo.getItems().add(String.format("%02d:30", h));
             }
         }

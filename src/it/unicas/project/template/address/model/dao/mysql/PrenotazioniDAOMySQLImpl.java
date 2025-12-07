@@ -37,13 +37,13 @@ public class PrenotazioniDAOMySQLImpl implements DAO<Prenotazioni> {
 
         try {
 
-            if (q == null || q.getIdPrenotazioni() == null) {
+            if (q == null || q.getPazienteCodiceFiscale() == null) {
                 throw new DAOException("In select: idPrenotazioni cannot be null");
             }
 
             Statement st = DAOMySQLSettings.getStatement();
 
-            String sql = "SELECT * FROM prenotazioni WHERE idPrenotazioni = '" + q.getIdPrenotazioni() + "';";
+            String sql = "SELECT * FROM prenotazioni WHERE paziente_codiceFiscale = '" + q.getPazienteCodiceFiscale() + "';";
 
             try {
                 logger.info("SQL: " + sql);

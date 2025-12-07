@@ -39,9 +39,16 @@ public class RicercaPazienteController {
     private Button modificaBtn;
     @FXML
     private Button visiteBtn;
+    @FXML
+    private Button prenotaBtn;
 
     private Pazienti pazienteTrovato;
 
+    private String loginMode; // "MEDICO" o "SEGRETARIO"
+
+    public void setLoginRole(String role) {
+        this.loginMode = role;
+    }
 
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
@@ -108,9 +115,12 @@ public class RicercaPazienteController {
             Label emailLbl = new Label("Email: " + p.getEmail());
             Label noteLbl = new Label("Note cliniche: " + (p.getNoteCliniche() != null ? p.getNoteCliniche() : "-"));
 
-            // Rende visibili i bottoni centrati in fondo
-            modificaBtn.setVisible(true);
-            visiteBtn.setVisible(true);
+            if ("SEGRETARIO".equals(loginMode)) {
+                // Rende visibili i bottoni centrati in fondo
+                modificaBtn.setVisible(true);
+                visiteBtn.setVisible(true);
+                prenotaBtn.setVisible(true);
+            }
 
             risultatiBox.getChildren().addAll(
                     nomeLbl, cognomeLbl, cfLbl, dataLbl, indirizzoLbl, telefonoLbl, emailLbl, noteLbl
@@ -149,6 +159,11 @@ public class RicercaPazienteController {
                     telefonoLbl, emailLbl, noteLbl
             );
         }
+    }
+
+    @FXML
+    private void onPrenotazioni() {
+        mainApp.showListaPrenotazioniDialog(pazienteTrovato.getCodiceFiscale());
     }
 
 }

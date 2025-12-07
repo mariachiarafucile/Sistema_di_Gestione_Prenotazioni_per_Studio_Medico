@@ -34,5 +34,6 @@
     <HBox spacing="20" alignment="CENTER">
         <Button fx:id="modificaBtn" text="Modifica dati" visible="false" onAction="#onModifica"/>
         <Button fx:id="visiteBtn" text="Visualizza visite" visible="false"/>
+        <Button fx:id="prenotaBtn" text="Prenotazioni" visible="false" onAction="#onPrenotazioni"/>
     </HBox>
 </VBox>

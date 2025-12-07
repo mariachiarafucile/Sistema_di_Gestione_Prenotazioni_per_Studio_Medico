@@ -7,9 +7,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Modality;
 
 
 public class SegretarioDashboardController {
@@ -52,7 +49,7 @@ public class SegretarioDashboardController {
                 System.out.println("Errore caricamento immagine iconaRicerca: " + e.getMessage());
             }
 
-            ricercaButton.setOnAction(e -> apriRicercaPaziente());
+            ricercaButton.setOnAction(e -> mainApp.showRicercaPazienteDialog("SEGRETARIO"));
         }
 
         if (aggiungiButton != null) {
@@ -70,7 +67,7 @@ public class SegretarioDashboardController {
                 System.out.println("Errore caricamento immagine iconaAggiungi: " + e.getMessage());
             }
 
-            aggiungiButton.setOnAction(e -> apriAggiungiPaziente());
+            aggiungiButton.setOnAction(e -> mainApp.showAggiungiPazienteDialog());
         }
 
         if (portafoglioButton != null) {
@@ -88,97 +85,9 @@ public class SegretarioDashboardController {
                 System.out.println("Errore caricamento immagine iconaPortafoglio: " + e.getMessage());
             }
 
-            portafoglioButton.setOnAction(e -> apriReport());
+            portafoglioButton.setOnAction(e -> mainApp.ShowReportDialog());
         }
     }
-
-    @FXML
-    private void apriRicercaPaziente() {
-        System.out.println("Apri pannello Ricerca Pazienti");
-            try {
-                // 1. Carica l'FXML della ricerca pazienti
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(MainApp.class.getResource("view/RicercaPaziente.fxml"));
-                VBox page = loader.load();
-
-                // 2. Crea un nuovo stage per la finestra
-                Stage dialogStage = new Stage();
-                dialogStage.setTitle("Ricerca Pazienti");
-                dialogStage.initModality(Modality.WINDOW_MODAL); // blocca la finestra principale
-                dialogStage.initOwner(mainApp.getPrimaryStage()); // finestra figlia della principale
-
-                Scene scene = new Scene(page, 500, 600);
-                dialogStage.setScene(scene);
-
-                // 3. Passa eventuale riferimento al MainApp nel controller
-                RicercaPazienteController controller = loader.getController();
-                controller.setMainApp(mainApp);
-                controller.setDialogStage(dialogStage);
-
-                // 4. Mostra la finestra e aspetta la chiusura
-                dialogStage.showAndWait();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-
-
-    @FXML
-    private void apriAggiungiPaziente() {
-        System.out.println("Apri pannello Aggiungi Paziente");
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/RegistrazionePaziente.fxml"));
-            VBox page = loader.load();
-
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Registrazione Paziente");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(mainApp.getPrimaryStage());
-            Scene scene = new Scene(page);
-            dialogStage.setScene(scene);
-
-            RegistrazionePazienteController controller = loader.getController();
-            controller.setDialogStage(dialogStage);
-            controller.setMainApp(mainApp);
-
-            dialogStage.showAndWait();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-
-
-    @FXML
-    private void apriReport() {
-        System.out.println("Apri pannello Report");
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/Report.fxml"));
-            VBox page = loader.load();
-
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Report Mensile");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(mainApp.getPrimaryStage());
-            Scene scene = new Scene(page);
-            dialogStage.setScene(scene);
-
-            ReportController controller = loader.getController();
-            controller.setDialogStage(dialogStage);
-            controller.setMainApp(mainApp);
-
-            dialogStage.showAndWait();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
     public void setStage(Stage stage) {
         this.stage = stage;

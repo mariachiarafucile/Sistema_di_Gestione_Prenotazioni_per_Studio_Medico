@@ -26,7 +26,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import static it.unicas.project.template.address.model.AlertUtils.showErrorAlert;
 import static it.unicas.project.template.address.model.AlertUtils.alertExit;
 
 public class MainApp extends Application {
@@ -208,6 +207,148 @@ public class MainApp extends Application {
         }
     }
 
+    public void showRicercaPazienteDialog(String loginMode) {
+        System.out.println("Apri pannello Ricerca Paziente");
+        try {
+            // 1. Carica l'FXML della ricerca pazienti
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/RicercaPaziente.fxml"));
+            VBox page = loader.load();
+
+            // 2. Crea un nuovo stage per la finestra
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Ricerca Pazienti");
+            dialogStage.initModality(Modality.WINDOW_MODAL); // blocca la finestra principale
+            dialogStage.initOwner(primaryStage); // finestra figlia della principale
+
+            Scene scene = new Scene(page, 500, 600);
+            dialogStage.setScene(scene);
+
+            // 3. Passa eventuale riferimento al MainApp nel controller
+            RicercaPazienteController controller = loader.getController();
+
+            controller.setMainApp(this);
+            controller.setDialogStage(dialogStage);
+
+            // PASSA IL RUOLO
+            controller.setLoginRole(loginMode);
+
+            // 4. Mostra la finestra e aspetta la chiusura
+            dialogStage.showAndWait();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showCalendarioDialog() {
+        System.out.println("Apri pannello Calendario");
+        try {
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/CalendarioMedico.fxml"));
+            VBox page = loader.load();
+
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Calendario Medico");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+
+            Scene scene = new Scene(page, 800, 600);
+            dialogStage.setScene(scene);
+
+            CalendarioMedicoController controller = loader.getController();
+            controller.setMainApp(this);
+            controller.setDialogStage(dialogStage);
+
+            dialogStage.showAndWait();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showInserimentoFasceDialog() {
+        System.out.println("Apri pannello Inserimento Fasce Orarie");
+        try {
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/InserimentoFasce.fxml"));
+            VBox page = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Inserimento Fasce Orarie");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+
+            Scene scene = new Scene(page, 500, 600);
+            dialogStage.setScene(scene);
+
+            InserimentoFasceController controller = loader.getController();
+            controller.setMainApp(this);
+            controller.setDialogStage(dialogStage);
+
+            dialogStage.showAndWait();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void showAggiungiPazienteDialog() {
+        System.out.println("Apri pannello Aggiungi Paziente");
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/RegistrazionePaziente.fxml"));
+            VBox page = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Registrazione Paziente");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            RegistrazionePazienteController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setMainApp(this);
+
+            dialogStage.showAndWait();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void ShowReportDialog() {
+        System.out.println("Apri pannello Report");
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/Report.fxml"));
+            VBox page = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Report Mensile");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            ReportController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setMainApp(this);
+
+            dialogStage.showAndWait();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public boolean showModificaPazienteDialog(Pazienti p) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -235,6 +376,33 @@ public class MainApp extends Application {
         }
     }
 
+    public void showListaPrenotazioniDialog(String codiceFiscale) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/it/unicas/project/template/address/view/ListaPrenotazioni.fxml"));
+
+            VBox page = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Prenotazioni paziente");
+            stage.initOwner(primaryStage);  // finestra principale
+            stage.initModality(Modality.WINDOW_MODAL);
+
+            Scene scene = new Scene(page);
+            stage.setScene(scene);
+
+            // Controller
+            ListaPrenotazioniController controller = loader.getController();
+            controller.setDialogStage(stage);
+            controller.setMainApp(this);
+            controller.setPazienteCF(codiceFiscale);
+
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Initializes the root layout and tries to load the last opened

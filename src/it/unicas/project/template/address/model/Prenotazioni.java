@@ -13,12 +13,19 @@ public class Prenotazioni {
         this(null, "", "", null);
     }
 
-    public Prenotazioni(Integer idPrenotazioni, String pazienteCodiceFiscale,
-                        String medicoEmail, Integer fasciaOrariaId) {
-        this.idPrenotazioni = new SimpleIntegerProperty(idPrenotazioni);
+    public Prenotazioni(Integer idPrenotazioni, String pazienteCodiceFiscale, String medicoEmail, Integer fasciaOrariaId) {
+        if (idPrenotazioni != null) {
+            this.idPrenotazioni = new SimpleIntegerProperty(idPrenotazioni);
+        } else {
+            this.idPrenotazioni = null; // resta null finché DB non genera l'ID
+        }
         this.pazienteCodiceFiscale = new SimpleStringProperty(pazienteCodiceFiscale);
         this.medicoEmail = new SimpleStringProperty(medicoEmail);
-        this.fasciaOrariaId = new SimpleIntegerProperty(fasciaOrariaId);
+        if (fasciaOrariaId != null) {
+            this.fasciaOrariaId = new SimpleIntegerProperty(fasciaOrariaId);
+        } else {
+            this.fasciaOrariaId = null;
+        }
     }
 
     public Integer getIdPrenotazioni() {
