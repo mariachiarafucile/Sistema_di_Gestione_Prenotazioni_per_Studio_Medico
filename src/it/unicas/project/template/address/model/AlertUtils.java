@@ -42,6 +42,30 @@ public class AlertUtils {
         alert.showAndWait();
     }
 
+    public static void showQuestionAlert(String message, Runnable onYes) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText(message);
+
+        try {
+            Image logo = new Image(AlertUtils.class.getResourceAsStream("/images/logo.png"));
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(logo);
+        } catch (Exception e) {
+            System.out.println("Logo non trovato");
+        }
+
+        ButtonType yesButton = new ButtonType("Sì");
+        ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(yesButton, noButton);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == yesButton) {
+            if (onYes != null) {
+                onYes.run();
+            }
+        }
+    }
+
     public static void alertExit() {
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
