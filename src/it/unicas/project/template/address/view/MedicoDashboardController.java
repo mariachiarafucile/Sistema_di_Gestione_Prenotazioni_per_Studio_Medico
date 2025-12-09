@@ -41,25 +41,6 @@ public class MedicoDashboardController {
             ricercaPazienteButton.setOnAction(e -> mainApp.showRicercaPazienteDialog("MEDICO"));
         }
 
-        if (calendarioButton != null) {
-            try {
-                Image img = new Image(getClass().getResourceAsStream("/images/calendar.png"));
-                ImageView iv = new ImageView(img);
-                iv.setFitWidth(75);
-                iv.setFitHeight(75);
-                iv.setPreserveRatio(true);
-
-                calendarioButton.setGraphic(iv);
-                calendarioButton.setText("");
-                calendarioButton.setStyle("-fx-content-display: center;");
-
-            } catch (Exception e) {
-                System.out.println("Errore caricamento immagine iconaCalendario: " + e.getMessage());
-            }
-
-            calendarioButton.setOnAction(e -> mainApp.showCalendarioDialog());
-        }
-
         if (fasceOrarieButton != null) {
             try {
                 Image img = new Image(getClass().getResourceAsStream("/images/iconaInserisciFascia.png")); // metti l'icona
