@@ -208,7 +208,7 @@ public class MainApp extends Application {
     }
 
     public void showRicercaPazienteDialog(String loginMode) {
-        System.out.println("Apri pannello Ricerca Paziente");
+        System.out.println("Apri pannello di Ricerca Paziente");
         try {
             // 1. Carica l'FXML della ricerca pazienti
             FXMLLoader loader = new FXMLLoader();
@@ -230,38 +230,10 @@ public class MainApp extends Application {
             controller.setMainApp(this);
             controller.setDialogStage(dialogStage);
 
-            // PASSA IL RUOLO
+            // Passa il ruolo di login
             controller.setLoginRole(loginMode);
 
             // 4. Mostra la finestra e aspetta la chiusura
-            dialogStage.showAndWait();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void showCalendarioDialog() {
-        System.out.println("Apri pannello Calendario");
-        try {
-
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/CalendarioMedico.fxml"));
-            VBox page = loader.load();
-
-
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Calendario Medico");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(primaryStage);
-
-            Scene scene = new Scene(page, 800, 600);
-            dialogStage.setScene(scene);
-
-            CalendarioMedicoController controller = loader.getController();
-            controller.setMainApp(this);
-            controller.setDialogStage(dialogStage);
-
             dialogStage.showAndWait();
 
         } catch (Exception e) {
@@ -385,13 +357,12 @@ public class MainApp extends Application {
 
             Stage stage = new Stage();
             stage.setTitle("Prenotazioni paziente");
-            stage.initOwner(primaryStage);  // finestra principale
+            stage.initOwner(primaryStage);
             stage.initModality(Modality.WINDOW_MODAL);
 
             Scene scene = new Scene(page);
             stage.setScene(scene);
 
-            // Controller
             ListaPrenotazioniController controller = loader.getController();
             controller.setDialogStage(stage);
             controller.setMainApp(this);
