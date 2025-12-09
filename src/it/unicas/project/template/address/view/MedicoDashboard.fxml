@@ -39,19 +39,6 @@
                     <Label text="Ricerca Paziente"/>
                 </VBox>
 
-                <!-- Icona Calendario -->
-                <VBox alignment="CENTER" spacing="10">
-                    <Button fx:id="calendarioButton"
-                            prefWidth="150" prefHeight="150"
-                            style="-fx-background-color: white;
-                                   -fx-border-color: #CCCCCC;
-                                   -fx-border-width: 2;
-                                   -fx-border-radius: 20;
-                                   -fx-background-radius: 20;">
-                    </Button>
-                    <Label text="Calendario"/>
-                </VBox>
-
                 <!-- Icona Inserisci Fasce Orarie -->
                 <VBox alignment="CENTER" spacing="10">
                     <Button fx:id="fasceOrarieButton"
