@@ -37,7 +37,7 @@ public class PrenotazioniDAOMySQLImpl implements DAO<Prenotazioni> {
 
         try {
 
-            if (q == null || q.getPazienteCodiceFiscale() == null) {
+            if (q == null || q.getIdPrenotazioni() == null) {
                 throw new DAOException("In select: idPrenotazioni cannot be null");
             }
 
@@ -94,8 +94,7 @@ public class PrenotazioniDAOMySQLImpl implements DAO<Prenotazioni> {
         verifyObject(q);
 
         String sql =
-                "INSERT INTO prenotazioni (idPrenotazioni, paziente_codiceFiscale, medico_email, fasciaOrariaId) VALUES ('" +
-                        q.getIdPrenotazioni() + "', '" +
+                "INSERT INTO prenotazioni (paziente_codiceFiscale, medico_email, fasciaOrariaId) VALUES ('" +
                         q.getPazienteCodiceFiscale() + "', '" +
                         q.getMedicoEmail() + "', '" +
                         q.getFasciaOrariaId() + "');";

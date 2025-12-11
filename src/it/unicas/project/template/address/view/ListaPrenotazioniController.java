@@ -224,9 +224,7 @@ public class ListaPrenotazioniController {
 
     @FXML
     private void onNuovaPrenotazione() {
-        if (mainApp != null) {
-            // mainApp.showNuovaPrenotazioneDialog(codiceFiscalePaziente);
-        }
+             mainApp.showFormPrenotazioneDialog(codiceFiscalePaziente);
     }
 
     @FXML

@@ -62,7 +62,7 @@ public class LoginController {
                 showErrorAlert("Credenziali non valide. Riprova.");
                 return;
             }
-            mainApp.showMedicoDashboard();
+            mainApp.showMedicoDashboard(user);
         }
         if (loginMode.equals("SEGRETARIO")) {
             DAO<Segretari> dao = SegretariDAOMySQLImpl.getInstance();
@@ -72,7 +72,6 @@ public class LoginController {
                 showErrorAlert("Credenziali non valide. Riprova.");
                 return;
                }
-
             mainApp.showSegretarioDashboard();
             }
         }

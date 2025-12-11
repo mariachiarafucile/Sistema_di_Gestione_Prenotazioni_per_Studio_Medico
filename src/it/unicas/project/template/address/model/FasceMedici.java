@@ -1,0 +1,57 @@
+package it.unicas.project.template.address.model;
+
+import javafx.beans.property.*;
+
+public class FasceMedici {
+
+    private IntegerProperty idFasciaOraria;
+    private StringProperty medicoEmail;
+
+    public FasceMedici() { this(null, "");}
+
+    public FasceMedici(Integer idFasciaOraria, String medicoEmail) {
+        if (idFasciaOraria != null) {
+            this.idFasciaOraria = new SimpleIntegerProperty(idFasciaOraria);
+        } else {
+            this.idFasciaOraria = null; // resta null finché DB non genera l'ID della fascia
+        }
+        this.medicoEmail = new SimpleStringProperty(medicoEmail);
+    }
+
+    // Getter e Setter
+    public Integer getIdFasciaOraria() {
+        if (idFasciaOraria == null) {
+            idFasciaOraria = new SimpleIntegerProperty(-1);
+        }
+        return idFasciaOraria.get();
+    }
+
+    public void setIdFasciaOraria(Integer idFasciaOraria) {
+        if (this.idFasciaOraria == null) {
+            this.idFasciaOraria = new SimpleIntegerProperty();
+        }
+        this.idFasciaOraria.set(idFasciaOraria);
+    }
+
+    public IntegerProperty idFasciaOrariaProperty() {
+        return idFasciaOraria;
+    }
+
+    public String getMedicoEmail() {
+        return medicoEmail.get();
+    }
+
+    public void setMedicoEmail(String medicoEmail) {
+        this.medicoEmail.set(medicoEmail);
+    }
+
+    public StringProperty medicoEmailProperty() {
+        return medicoEmail;
+    }
+
+    @Override
+    public String toString() {
+        return idFasciaOraria.getValue() + ", " +
+                medicoEmail.getValue();
+    }
+}

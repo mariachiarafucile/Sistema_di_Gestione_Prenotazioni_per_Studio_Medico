@@ -19,6 +19,12 @@ public class MedicoDashboardController {
 
     private MainApp mainApp;
 
+    private String emailMedicoCorrente;
+
+    public void setEmailMedicoCorrente(String email) {
+        this.emailMedicoCorrente = email;
+    }
+
     @FXML
     private void initialize() {
         // Carica immagini
@@ -57,7 +63,7 @@ public class MedicoDashboardController {
                 System.out.println("Errore caricamento immagine iconaFasce: " + e.getMessage());
             }
 
-            fasceOrarieButton.setOnAction(e -> mainApp.showInserimentoFasceDialog());
+            fasceOrarieButton.setOnAction(e -> mainApp.showInserimentoFasceDialog(emailMedicoCorrente));
         }
     }
 

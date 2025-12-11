@@ -1,9 +1,11 @@
 package it.unicas.project.template.address.view;
 
 import it.unicas.project.template.address.MainApp;
+import it.unicas.project.template.address.model.FasceMedici;
 import it.unicas.project.template.address.model.FasceOrarie;
 import it.unicas.project.template.address.model.dao.DAO;
 import it.unicas.project.template.address.model.dao.DAOException;
+import it.unicas.project.template.address.model.dao.mysql.FasceMediciDAOMySQLImpl;
 import it.unicas.project.template.address.model.dao.mysql.FasceOrarieDAOMySQLImpl;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -36,6 +38,12 @@ public class InserimentoFasceController {
     private LocalDate giornoSelezionato;
 
     private YearMonth meseCorrente;
+
+    private String emailMedicoCorrente;
+
+    public void setEmailMedicoCorrente(String email) {
+        this.emailMedicoCorrente = email;
+    }
 
     @FXML
     private void initialize() {
@@ -159,18 +167,31 @@ public class InserimentoFasceController {
             showErrorAlert("L'orario di inizio deve essere precedente all'orario di fine!");
             return;
         }
+
+        if (inizio.equals(fine)) {
+            showErrorAlert("L'orario di inizio non può essere uguale all'orario di fine!");
+            return;
+        }
         System.out.println("Fascia inserita: " + giornoSelezionato + " " + oraInizioCombo.getValue() + " - " + oraFineCombo.getValue());
 
         try {
 
-            // ID null -> MySQL lo genera
+            // Crea la fascia oraria senza ID (MySQL lo genera)
             FasceOrarie fascia = new FasceOrarie(null, data, oraInizio, oraFine);
 
-            DAO dao = FasceOrarieDAOMySQLImpl.getInstance();
-            dao.insert(fascia);
+            // Inserisci la fascia nel DB
+            FasceOrarieDAOMySQLImpl fasciaDAO = (FasceOrarieDAOMySQLImpl) FasceOrarieDAOMySQLImpl.getInstance();
+            fasciaDAO.insert(fascia); // l'ID viene impostato direttamente dentro 'fascia'
+            System.out.println("Fascia ID: " + fascia.getIdFasciaOraria());
+            System.out.println("Email medico: " + emailMedicoCorrente);
+            // Collega la fascia al medico corrente
+                FasceMedici fasceMedico = new FasceMedici(fascia.getIdFasciaOraria(), emailMedicoCorrente);
 
+                FasceMediciDAOMySQLImpl fasceMedicoDAO = (FasceMediciDAOMySQLImpl) FasceMediciDAOMySQLImpl.getInstance();
+                fasceMedicoDAO.insert(fasceMedico);
+
+            // Mostra conferma
             showConfirmationAlert("Fascia oraria inserita correttamente.");
-
             dialogStage.close();
 
         } catch (DAOException e) {

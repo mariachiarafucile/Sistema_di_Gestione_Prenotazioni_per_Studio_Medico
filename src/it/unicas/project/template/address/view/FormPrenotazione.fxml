@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="12" xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="it.unicas.project.template.address.view.FormPrenotazioneController">
+
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15"/>
+    </padding>
+
+    <!-- Navigazione mese -->
+    <HBox spacing="10" alignment="CENTER">
+        <Button fx:id="prevButton" text="←" minWidth="40"/>
+        <Label fx:id="meseLabel" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+        <Button fx:id="nextButton" text="→" minWidth="40"/>
+    </HBox>
+
+    <!-- Calendario -->
+    <GridPane fx:id="calendarioGrid" hgap="5" vgap="5"/>
+
+    <!-- Giorno selezionato -->
+    <Label fx:id="giornoSelezionatoLabel"
+           text="Nessun giorno selezionato"
+           style="-fx-font-size: 14px;"/>
+
+    <Separator/>
+
+    <!-- Medico -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Medico:" minWidth="80"/>
+        <TextField fx:id="medicoField" promptText="Nome medico"/>
+    </HBox>
+
+    <!-- Orari -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Ora inizio:" minWidth="80"/>
+        <ComboBox fx:id="oraInizioCombo" prefWidth="120"/>
+
+        <Label text="Ora fine:" minWidth="70"/>
+        <ComboBox fx:id="oraFineCombo" prefWidth="120"/>
+    </HBox>
+
+    <Separator/>
+
+    <!-- Pulsanti -->
+    <HBox spacing="15" alignment="CENTER_RIGHT">
+        <Button text="Salva" onAction="#onSalva"/>
+        <Button text="Annulla" onAction="#onAnnulla"/>
+    </HBox>
+
+</VBox>

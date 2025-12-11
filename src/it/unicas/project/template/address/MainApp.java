@@ -14,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
@@ -187,7 +188,7 @@ public class MainApp extends Application {
         }
     }
 
-    public void showMedicoDashboard() {
+    public void showMedicoDashboard(String emailMedicoCorrente) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/MedicoDashboard.fxml"));
@@ -201,6 +202,9 @@ public class MainApp extends Application {
             // Passa il riferimento al MainApp nel controller
             MedicoDashboardController controller = loader.getController();
             controller.setMainApp(this);
+
+            // Passa l'email del medico corrente
+              controller.setEmailMedicoCorrente(emailMedicoCorrente);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -241,7 +245,7 @@ public class MainApp extends Application {
         }
     }
 
-    public void showInserimentoFasceDialog() {
+    public void showInserimentoFasceDialog(String emailMedicoCorrente) {
         System.out.println("Apri pannello Inserimento Fasce Orarie");
         try {
 
@@ -260,6 +264,8 @@ public class MainApp extends Application {
             InserimentoFasceController controller = loader.getController();
             controller.setMainApp(this);
             controller.setDialogStage(dialogStage);
+            // Passa l'email del medico corrente
+            controller.setEmailMedicoCorrente(emailMedicoCorrente);
 
             dialogStage.showAndWait();
 
@@ -374,6 +380,36 @@ public class MainApp extends Application {
             e.printStackTrace();
         }
     }
+
+    public boolean showFormPrenotazioneDialog(String codiceFiscalePaziente) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/it/unicas/project/template/address/view/FormPrenotazione.fxml"));
+            Parent page = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Form Prenotazione");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Passaggio dati al controller
+            FormPrenotazioneController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setPazienteCF(codiceFiscalePaziente);
+
+            dialogStage.showAndWait();
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     /**
      * Initializes the root layout and tries to load the last opened

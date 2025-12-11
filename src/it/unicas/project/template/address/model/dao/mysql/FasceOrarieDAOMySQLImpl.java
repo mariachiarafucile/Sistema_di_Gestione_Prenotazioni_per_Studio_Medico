@@ -93,6 +93,8 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
 
         verifyObject(f);
 
+        int generatedId = -1;
+
         String sql =
                 "INSERT INTO fasceOrarie (data, oraInizio, oraFine) VALUES ('" +
                         f.getData() + "', '" +
@@ -105,8 +107,27 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
             System.out.println("SQL: " + sql);
         }
 
-        executeUpdate(sql);
+
+        try {
+            Statement st = DAOMySQLSettings.getStatement();
+
+            // Esegui l'insert e recupera le chiavi generate
+            st.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+
+            ResultSet rs = st.getGeneratedKeys();
+            if (rs.next()) {
+                generatedId = rs.getInt(1);
+                f.setIdFasciaOraria(generatedId);
+            }
+
+            DAOMySQLSettings.closeStatement(st);
+        } catch (SQLException e) {
+            throw new DAOException("In insert(): " + e.getMessage());
+        }
+
+
     }
+
 
     @Override
     public void update(FasceOrarie f) throws DAOException {
