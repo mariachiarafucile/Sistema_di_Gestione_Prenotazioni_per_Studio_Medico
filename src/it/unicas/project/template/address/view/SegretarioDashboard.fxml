@@ -15,7 +15,7 @@
         <VBox alignment="CENTER" spacing="50">
 
             <!-- Titolo -->
-            <Label text="Benvenuto nella tua area personale, scegli un'opzione dal menu:"
+            <Label text="Benvenuto nella tua area personale!"
                    style="-fx-font-size: 25px; -fx-font-weight: bold;"/>
 
             <!-- Sottotitolo -->
