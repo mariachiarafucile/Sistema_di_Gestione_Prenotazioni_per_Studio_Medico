@@ -30,9 +30,9 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
     public static void main(String args[]) throws DAOException {
         PagamentiDAOMySQLImpl c = new PagamentiDAOMySQLImpl();
 
-        c.insert(new Pagamenti(1,"Pagata",50.00,2,"sara.vettese@uni.it"));
-        c.insert(new Pagamenti(2,"Da saldare",75.00,3,"elisa.quagliozzi@uni.it"));
-        c.insert(new Pagamenti(3,"Pagata",60.00,1,"lorenza.martini@uni.it"));
+        c.insert(new Pagamenti(1,"pagata",50.00,2,"sara.vettese@uni.it"));
+        c.insert(new Pagamenti(2,"da saldare",75.00,3,"elisa.quagliozzi@uni.it"));
+        c.insert(new Pagamenti(3,"pagata",60.00,1,"lorenza.martini@uni.it"));
 
 
         List<Pagamenti> list = c.select(null);
@@ -164,6 +164,45 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
         } catch (SQLException e) {
             throw new DAOException("In insert(): " + e.getMessage());
         }
+    }
+
+    // DTO per i risultati del report
+    public static class ReportResult {
+        public int visitePagate;
+        public int visiteDaSaldare;
+        public double totaleIncassato;
+        public double totaleDaIncassare;
+    }
+
+    public ReportResult getReportByMonth(int mese) throws DAOException {
+        ReportResult result = new ReportResult();
+
+        String query = "SELECT " +
+                "SUM(CASE WHEN LOWER(p.stato) = 'pagato' THEN 1 ELSE 0 END) AS visitePagate, " +
+                "SUM(CASE WHEN LOWER(p.stato) = 'pagato' THEN p.importo ELSE 0 END) AS totaleIncassato, " +
+                "SUM(CASE WHEN LOWER(p.stato) = 'da saldare' THEN 1 ELSE 0 END) AS visiteDaSaldare, " +
+                "SUM(CASE WHEN LOWER(p.stato) = 'da saldare' THEN p.importo ELSE 0 END) AS totaleDaIncassare " +
+                "FROM pagamenti p " +
+                "JOIN visite v ON p.visitaIdVisita = v.idVisita " +
+                "WHERE MONTH(STR_TO_DATE(v.dataOra, '%Y-%m-%d %H:%i:%s')) = " + mese + ";";
+
+        try {
+            Statement st = DAOMySQLSettings.getStatement();
+            ResultSet rs = st.executeQuery(query);
+
+            if (rs.next()) {
+                result.visitePagate = rs.getInt("visitePagate");
+                result.totaleIncassato = rs.getDouble("totaleIncassato");
+                result.visiteDaSaldare = rs.getInt("visiteDaSaldare");
+                result.totaleDaIncassare = rs.getDouble("totaleDaIncassare");
+            }
+
+            DAOMySQLSettings.closeStatement(st);
+        } catch (SQLException e) {
+            throw new DAOException("In getReportByMonth(): " + e.getMessage());
+        }
+
+        return result;
     }
 
 
