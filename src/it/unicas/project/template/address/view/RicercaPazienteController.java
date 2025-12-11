@@ -4,11 +4,14 @@ import it.unicas.project.template.address.MainApp;
 import it.unicas.project.template.address.model.AlertUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -41,6 +44,8 @@ public class RicercaPazienteController {
     private Button visiteBtn;
     @FXML
     private Button prenotaBtn;
+    @FXML
+    private Button modificaNoteBtn;
 
     private Pazienti pazienteTrovato;
 
@@ -122,6 +127,10 @@ public class RicercaPazienteController {
                 prenotaBtn.setVisible(true);
             }
 
+            if ("MEDICO".equals(loginMode)) {
+                modificaNoteBtn.setVisible(true);
+            }
+
             risultatiBox.getChildren().addAll(
                     nomeLbl, cognomeLbl, cfLbl, dataLbl, indirizzoLbl, telefonoLbl, emailLbl, noteLbl
             );
@@ -142,7 +151,6 @@ public class RicercaPazienteController {
         if (ok) {
 
             // Qui mettiamo tutto il codice che aggiorna la GUI
-
             risultatiBox.getChildren().clear();
 
             Label nomeLbl = new Label("Nome: " + pazienteTrovato.getNome());
@@ -160,6 +168,50 @@ public class RicercaPazienteController {
             );
         }
     }
+
+    @FXML
+    private void onModificaNoteCliniche() {
+
+        // Apri una finestra di dialogo SOLO per modificare le note cliniche
+        TextField input = new TextField(pazienteTrovato.getNoteCliniche());
+        Stage stage = new Stage();
+        try {
+            Image logo = new Image(AlertUtils.class.getResourceAsStream("/images/logo.png"));
+            stage.getIcons().add(logo);
+        } catch (Exception ex) {
+            System.out.println("Logo non trovato");
+        }
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Modifica Note Cliniche");
+
+        VBox box = new VBox(10, new Label("Modifica Note Cliniche:"), input);
+        box.setPadding(new Insets(15));
+        Button salva = new Button("Salva");
+        salva.setOnAction(e -> {
+            //Aggiorno l'oggetto in memoria
+            pazienteTrovato.setNoteCliniche(input.getText());
+            // Aggiorno il DB
+            try {
+                PazientiDAOMySQLImpl.getInstance().update(pazienteTrovato);
+            } catch (Exception ex) {
+                showErrorAlert("Errore aggiornamento DB: " + ex.getMessage());
+            }
+            stage.close();
+
+            // Aggiorno solo la GUI
+            onCerca(); // ricarica i dati mostrati
+        });
+
+        HBox buttons = new HBox(salva);
+        buttons.setAlignment(Pos.CENTER_RIGHT);
+        buttons.setPadding(new Insets(5, 0, 0, 0));
+
+        box.getChildren().add(buttons);
+
+        stage.setScene(new Scene(box, 350, 150));
+        stage.showAndWait();
+    }
+
 
     @FXML
     private void onPrenotazioni() {
