@@ -123,12 +123,16 @@ public class RicercaPazienteController {
             if ("SEGRETARIO".equals(loginMode)) {
                 // Rende visibili i bottoni centrati in fondo
                 modificaBtn.setVisible(true);
+                modificaBtn.setManaged(true);
                 visiteBtn.setVisible(true);
+                visiteBtn.setManaged(true);
                 prenotaBtn.setVisible(true);
+                prenotaBtn.setManaged(true);
             }
 
             if ("MEDICO".equals(loginMode)) {
                 modificaNoteBtn.setVisible(true);
+                modificaNoteBtn.setManaged(true);
             }
 
             risultatiBox.getChildren().addAll(
