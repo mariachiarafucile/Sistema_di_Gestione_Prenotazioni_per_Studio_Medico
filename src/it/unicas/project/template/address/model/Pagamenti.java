@@ -10,23 +10,23 @@ public class Pagamenti {
     private IntegerProperty idPagamento;
     private StringProperty stato;
     private DoubleProperty importo;
-    private IntegerProperty visitaIdVisita;
     private StringProperty emailSegretario;
+    private IntegerProperty visitaIdVisita;
     //wrapper
 
     /**
      * Default constructor.
      */
     public Pagamenti() {
-        this(null, null, null, null,null);
+        this(null, null, null, null, null);
     }
 
-    public Pagamenti(Integer idPagamento, String stato, Double importo, Integer visitaIdVisita, String emailSegretario) {
+    public Pagamenti(Integer idPagamento, String stato, Double importo, String emailSegretario, Integer visitaIdVisita) {
         this.idPagamento = new SimpleIntegerProperty(idPagamento);
         this.stato = new SimpleStringProperty(stato);
         this.importo = new SimpleDoubleProperty(importo);
-        this.visitaIdVisita = new SimpleIntegerProperty(visitaIdVisita);
         this.emailSegretario = new SimpleStringProperty(emailSegretario);
+        this.visitaIdVisita = new SimpleIntegerProperty(visitaIdVisita);
     }
 
     public Integer getIdPagamento(){
@@ -93,7 +93,7 @@ public class Pagamenti {
 
 
     public String toString(){
-        return idPagamento.getValue() + ", " + stato.getValue() + ", " + importo.getValue() + ", " + visitaIdVisita.getValue() + ", " + emailSegretario.getValue();
+        return idPagamento.getValue() + ", " + stato.getValue() + ", " + importo.getValue() + ", " + emailSegretario.getValue() + ", " + visitaIdVisita.getValue();
     }
 
 
