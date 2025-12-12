@@ -3,7 +3,6 @@ package it.unicas.project.template.address.view;
 import it.unicas.project.template.address.MainApp;
 import it.unicas.project.template.address.model.FasceMedici;
 import it.unicas.project.template.address.model.FasceOrarie;
-import it.unicas.project.template.address.model.dao.DAO;
 import it.unicas.project.template.address.model.dao.DAOException;
 import it.unicas.project.template.address.model.dao.mysql.FasceMediciDAOMySQLImpl;
 import it.unicas.project.template.address.model.dao.mysql.FasceOrarieDAOMySQLImpl;
@@ -16,6 +15,7 @@ import javafx.stage.Stage;
 
 import java.time.*;
 import java.time.format.TextStyle;
+import java.util.List;
 import java.util.Locale;
 
 import static it.unicas.project.template.address.model.AlertUtils.showConfirmationAlert;
@@ -175,22 +175,30 @@ public class InserimentoFasceController {
         System.out.println("Fascia inserita: " + giornoSelezionato + " " + oraInizioCombo.getValue() + " - " + oraFineCombo.getValue());
 
         try {
+            FasceOrarieDAOMySQLImpl fasciaDAO = (FasceOrarieDAOMySQLImpl) FasceOrarieDAOMySQLImpl.getInstance();
+            FasceMediciDAOMySQLImpl fasceMedicoDAO = (FasceMediciDAOMySQLImpl) FasceMediciDAOMySQLImpl.getInstance();
 
-            // Crea la fascia oraria senza ID (MySQL lo genera)
+            //Creo un oggetto di ricerca
             FasceOrarie fascia = new FasceOrarie(null, data, oraInizio, oraFine);
 
-            // Inserisci la fascia nel DB
-            FasceOrarieDAOMySQLImpl fasciaDAO = (FasceOrarieDAOMySQLImpl) FasceOrarieDAOMySQLImpl.getInstance();
-            fasciaDAO.insert(fascia); // l'ID viene impostato direttamente dentro 'fascia'
-            System.out.println("Fascia ID: " + fascia.getIdFasciaOraria());
-            System.out.println("Email medico: " + emailMedicoCorrente);
-            // Collega la fascia al medico corrente
-                FasceMedici fasceMedico = new FasceMedici(fascia.getIdFasciaOraria(), emailMedicoCorrente);
+            //Cerco se esiste già una fascia identica
+            List<FasceOrarie> fasceTrovate = fasciaDAO.selectByDataOra(fascia);
 
-                FasceMediciDAOMySQLImpl fasceMedicoDAO = (FasceMediciDAOMySQLImpl) FasceMediciDAOMySQLImpl.getInstance();
-                fasceMedicoDAO.insert(fasceMedico);
+            if (fasceTrovate.isEmpty()) {
+                //NON ESISTE -> la creo
+                fasciaDAO.insert(fascia);
+                System.out.println("Creata nuova fascia con ID: " + fascia.getIdFasciaOraria());
+            } else {
+                //ESISTE GIÀ -> uso quella trovata
+                fascia =fasceTrovate.get(0);
+                System.out.println("Fascia già esistente, ID: " + fascia.getIdFasciaOraria());
+            }
 
-            // Mostra conferma
+            //Collego la fascia al medico nella tabella ponte
+            FasceMedici fasceMedico = new FasceMedici(fascia.getIdFasciaOraria(), emailMedicoCorrente);
+            fasceMedicoDAO.insert(fasceMedico);
+
+            //Mostra conferma
             showConfirmationAlert("Fascia oraria inserita correttamente.");
             dialogStage.close();
 

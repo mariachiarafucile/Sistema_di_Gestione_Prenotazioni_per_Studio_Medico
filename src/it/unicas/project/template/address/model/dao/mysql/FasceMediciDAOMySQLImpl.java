@@ -74,7 +74,8 @@ public class FasceMediciDAOMySQLImpl implements DAO<FasceMedici> {
         }
 
         String sql = "DELETE FROM fasceOrarie_has_medici WHERE " +
-                "medicoEmail = '" + fm.getMedicoEmail() + "';";
+                "medicoEmail = '" + fm.getMedicoEmail() +
+                "' AND fasciaOraria_id = '" + fm.getIdFasciaOraria() + "';";
 
         try {
             logger.info("SQL: " + sql);
@@ -105,7 +106,7 @@ public class FasceMediciDAOMySQLImpl implements DAO<FasceMedici> {
 
     @Override
     public void update(FasceMedici fm) throws DAOException {
-        // Non ha molto senso aggiornare la PK in una tabella ponte, quindi lo lasciamo vuoto o lanciamo eccezione
+        // Non ha molto senso aggiornare la PK in una tabella ponte, quindi lo lasciamo vuoto
         throw new DAOException("Update non supportato per FasceMedici");
     }
 

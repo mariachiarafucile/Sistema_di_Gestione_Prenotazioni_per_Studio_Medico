@@ -4,35 +4,43 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="12" xmlns="http://javafx.com/javafx/8"
+<VBox spacing="12"
+      xmlns="http://javafx.com/javafx/8"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="it.unicas.project.template.address.view.FormPrenotazioneController">
+      fx:controller="it.unicas.project.template.address.view.FormPrenotazioneController"
+      style="-fx-background-color: #E0F7FA; -fx-padding: 20;">
 
     <padding>
         <Insets top="15" right="15" bottom="15" left="15"/>
     </padding>
 
     <!-- Navigazione mese -->
-    <HBox spacing="10" alignment="CENTER">
+    <HBox spacing="10"
+          alignment="CENTER">
         <Button fx:id="prevButton" text="←" minWidth="40"/>
         <Label fx:id="meseLabel" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
         <Button fx:id="nextButton" text="→" minWidth="40"/>
     </HBox>
 
-    <!-- Calendario -->
-    <GridPane fx:id="calendarioGrid" hgap="5" vgap="5"/>
+    <!-- Calendario centrato -->
+    <HBox alignment="CENTER">
+        <GridPane fx:id="calendarioGrid"
+                  hgap="5"
+                  vgap="5"
+                  style="-fx-padding: 10;"/>
+    </HBox>
 
     <!-- Giorno selezionato -->
     <Label fx:id="giornoSelezionatoLabel"
            text="Nessun giorno selezionato"
-           style="-fx-font-size: 14px;"/>
+           style="-fx-font-size: 14px; -fx-padding: 5 0 0 0;"/>
 
     <Separator/>
 
     <!-- Medico -->
     <HBox spacing="10" alignment="CENTER_LEFT">
         <Label text="Medico:" minWidth="80"/>
-        <TextField fx:id="medicoField" promptText="Nome medico"/>
+        <TextField fx:id="medicoField" promptText="Email medico"/>
     </HBox>
 
     <!-- Orari -->

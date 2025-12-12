@@ -105,7 +105,24 @@ public class PrenotazioniDAOMySQLImpl implements DAO<Prenotazioni> {
             System.out.println("SQL: " + sql);
         }
 
-        executeUpdate(sql);
+        try {
+            Statement st = DAOMySQLSettings.getStatement();
+
+            // Esegui l'insert e richiedi l'ID generato
+            st.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+
+            ResultSet rs = st.getGeneratedKeys();
+            if (rs.next()) {
+                int generatedId = rs.getInt(1);
+                q.setIdPrenotazioni(generatedId);  // assegna l'ID all'oggetto
+            }
+
+            DAOMySQLSettings.closeStatement(st);
+
+        } catch (SQLException e) {
+            throw new DAOException("In insert(): " + e.getMessage());
+        }
+
     }
 
     @Override

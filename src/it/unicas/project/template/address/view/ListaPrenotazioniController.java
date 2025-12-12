@@ -2,9 +2,11 @@ package it.unicas.project.template.address.view;
 
 import it.unicas.project.template.address.MainApp;
 import it.unicas.project.template.address.model.AlertUtils;
+import it.unicas.project.template.address.model.FasceMedici;
 import it.unicas.project.template.address.model.FasceOrarie;
 import it.unicas.project.template.address.model.Prenotazioni;
 import it.unicas.project.template.address.model.dao.DAO;
+import it.unicas.project.template.address.model.dao.mysql.FasceMediciDAOMySQLImpl;
 import it.unicas.project.template.address.model.dao.mysql.FasceOrarieDAOMySQLImpl;
 import it.unicas.project.template.address.model.dao.mysql.PrenotazioniDAOMySQLImpl;
 import javafx.fxml.FXML;
@@ -169,9 +171,23 @@ public class ListaPrenotazioniController {
                 Hyperlink btnModifica = new Hyperlink("Modifica");
                 btnModifica.setOnAction(event -> {
                     try {
-                        p.setMedicoEmail(p.getMedicoEmail());
-                        daoPren.update(p);
+                        //Recupero la fascia oraria e il mediico associati alla prenotazione
+                        FasceMedici fm = new FasceMedici(
+                                p.getFasciaOrariaId(),
+                                p.getMedicoEmail()
+                        );
+
+                        mainApp.showFormPrenotazioneDialog(codiceFiscalePaziente,p);
                         caricaPrenotazioni();
+
+                        //Ricreo la riga nella tabella ponte
+                        FasceMediciDAOMySQLImpl daoFm =
+                                (FasceMediciDAOMySQLImpl) FasceMediciDAOMySQLImpl.getInstance();
+
+                        daoFm.insert(fm);   // reinserisco la disponibilità
+
+
+
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -183,6 +199,17 @@ public class ListaPrenotazioniController {
                         try {
                             daoPren.delete(p);
                             caricaPrenotazioni();
+
+                            //Ricreo la riga nella tabella ponte
+                            FasceMedici fm = new FasceMedici(
+                                    p.getFasciaOrariaId(),
+                                    p.getMedicoEmail()
+                            );
+
+                            FasceMediciDAOMySQLImpl daoFm =
+                                    (FasceMediciDAOMySQLImpl) FasceMediciDAOMySQLImpl.getInstance();
+
+                            daoFm.insert(fm);   // reinserisco la disponibilità
 
                             if (giornoSelezionato != null) {
                                 List<Prenotazioni> aggiornata =
@@ -224,7 +251,8 @@ public class ListaPrenotazioniController {
 
     @FXML
     private void onNuovaPrenotazione() {
-             mainApp.showFormPrenotazioneDialog(codiceFiscalePaziente);
+        mainApp.showFormPrenotazioneDialog(codiceFiscalePaziente, null);
+        caricaPrenotazioni();
     }
 
     @FXML

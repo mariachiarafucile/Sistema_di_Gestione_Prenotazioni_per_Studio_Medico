@@ -7,6 +7,7 @@ import java.util.prefs.Preferences;
 
 import it.unicas.project.template.address.model.Amici;
 import it.unicas.project.template.address.model.Pazienti;
+import it.unicas.project.template.address.model.Prenotazioni;
 import it.unicas.project.template.address.model.dao.mysql.DAOMySQLSettings;
 import it.unicas.project.template.address.view.*;
 import javafx.application.Application;
@@ -381,7 +382,7 @@ public class MainApp extends Application {
         }
     }
 
-    public boolean showFormPrenotazioneDialog(String codiceFiscalePaziente) {
+    public boolean showFormPrenotazioneDialog(String codiceFiscalePaziente, Prenotazioni prenotazioneDaModificare) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/it/unicas/project/template/address/view/FormPrenotazione.fxml"));
@@ -399,6 +400,7 @@ public class MainApp extends Application {
             FormPrenotazioneController controller = loader.getController();
             controller.setDialogStage(dialogStage);
             controller.setPazienteCF(codiceFiscalePaziente);
+            controller.setPrenotazioneDaModificare(prenotazioneDaModificare);
 
             dialogStage.showAndWait();
 
