@@ -30,9 +30,9 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
     public static void main(String args[]) throws DAOException {
         PagamentiDAOMySQLImpl c = new PagamentiDAOMySQLImpl();
 
-        c.insert(new Pagamenti(1,"pagata",50.00,2,"sara.vettese@uni.it"));
-        c.insert(new Pagamenti(2,"da saldare",75.00,3,"elisa.quagliozzi@uni.it"));
-        c.insert(new Pagamenti(3,"pagata",60.00,1,"lorenza.martini@uni.it"));
+        c.insert(new Pagamenti(1,"pagata",50.00,"sara.vettese@uni.it", 2));
+        c.insert(new Pagamenti(2,"da saldare",75.00,"elisa.quagliozzi@uni.it", 3));
+        c.insert(new Pagamenti(3,"pagata",60.00,"lorenza.martini@uni.it", 1));
 
 
         List<Pagamenti> list = c.select(null);
@@ -44,8 +44,8 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
         toDelete.setIdPagamento(1);
         toDelete.setStato("");
         toDelete.setImporto(null); //(tipo Double può essere null)
-        toDelete.setVisitaIdVisita(null);
         toDelete.setEmailSegretario("");
+        toDelete.setVisitaIdVisita(null);
 
         c.delete(toDelete);
 
@@ -61,7 +61,7 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
     public List<Pagamenti> select(Pagamenti g) throws DAOException {
 
         if (g == null){
-            g = new Pagamenti(null, "", null, null,""); // Cerca tutti gli elementi
+            g = new Pagamenti(null, "", null, "",null); // Cerca tutti gli elementi
         }
 
         ArrayList<Pagamenti> lista = new ArrayList<>();
@@ -85,8 +85,8 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
                 lista.add(new Pagamenti(rs.getInt("idPagamento"),
                         rs.getString("stato"),
                         rs.getDouble("importo"),
-                        rs.getInt("visitaIdVisita"),
-                        rs.getString("emailSegretario")));
+                        rs.getString("emailSegretario"),
+                        rs.getInt("visitaIdVisita")));
             }
             DAOMySQLSettings.closeStatement(st);
 
@@ -119,9 +119,9 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
 
         verifyObject(g);
 
-        String query = "INSERT INTO pagamenti (idPagamento, stato, importo, visitaIdVisita, emailSegretario) VALUES  ('" +
+        String query = "INSERT INTO pagamenti (idPagamento, stato, importo, emailSegretario, visitaIdVisita) VALUES  ('" +
                 g.getIdPagamento() + "', '" + g.getStato() + "', '" +
-                "', '" + g.getImporto() + "', '" + g.getVisitaIdVisita() + "', '" + g.getEmailSegretario() + "');";
+                "', '" + g.getImporto() + "', '" + g.getEmailSegretario() + "', '" + g.getVisitaIdVisita() + "');";
         try {
             logger.info("SQL: " + query);
         } catch (NullPointerException nullPointerException){
@@ -136,7 +136,7 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
 
         verifyObject(g);
 
-        String query = "UPDATE pagamenti SET stato = '" + g.getStato() + "', visitaIdVisita = '" + g.getVisitaIdVisita() + "', emailSegretario = '" + g.getEmailSegretario() + "'";
+        String query = "UPDATE pagamenti SET stato = '" + g.getStato() + "', emailSegretario = '" + g.getEmailSegretario() + "', visitaIdVisita = '" + g.getVisitaIdVisita() + "'";
         query = query + " WHERE idPagamento = " + g.getIdPagamento() + ";";
         logger.info("SQL: " + query);
 
@@ -148,8 +148,8 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
         if (g == null || g.getIdPagamento() == null
                 || g.getStato() == null
                 || g.getImporto() == null
-                || g.getVisitaIdVisita() == null
-                || g.getEmailSegretario() == null) {
+                || g.getEmailSegretario() == null
+                || g.getVisitaIdVisita() == null){
             throw new DAOException("In select: any field can be null");
         }
     }
@@ -165,6 +165,29 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
             throw new DAOException("In insert(): " + e.getMessage());
         }
     }
+
+    public Pagamenti selectByVisitaId(Integer idVisita) throws DAOException {
+        Pagamenti p = null;
+        try {
+            Statement st = DAOMySQLSettings.getStatement();
+            String sql = "SELECT * FROM pagamenti WHERE visitaIdVisita = " + idVisita + " LIMIT 1;";
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.next()) {
+                p = new Pagamenti(
+                        rs.getInt("idPagamento"),
+                        rs.getString("stato"),
+                        rs.getDouble("importo"),
+                        rs.getString("segretarioEmail"), //Visualizzare nome corretto nel proprio database
+                        rs.getInt("visitaIdVisita")
+                );
+            }
+            DAOMySQLSettings.closeStatement(st);
+        } catch (SQLException e) {
+            throw new DAOException("Errore selectByVisitaId(): " + e.getMessage());
+        }
+        return p;
+    }
+
 
     // DTO per i risultati del report
     public static class ReportResult {
