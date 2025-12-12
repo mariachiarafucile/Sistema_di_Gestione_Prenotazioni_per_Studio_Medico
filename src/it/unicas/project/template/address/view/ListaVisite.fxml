@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="it.unicas.project.template.address.view.ListaVisiteController"
+      spacing="15" alignment="TOP_CENTER"
+      style="-fx-background-color: #E0F7FA; -fx-padding: 20;">
+
+    <Label text="Visite del Paziente"
+           style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+
+    <TableView fx:id="visiteTable" prefWidth="550" prefHeight="400">
+        <columns>
+            <TableColumn fx:id="dataCol" text="Data/Ora" prefWidth="150"/>
+            <TableColumn fx:id="prescrizioneCol" text="Prescrizione" prefWidth="250"/>
+            <TableColumn fx:id="segretarioCol" text="Segretario" prefWidth="150"/>
+            <TableColumn fx:id="importoCol" text="Importo" prefWidth="100"/>
+            <TableColumn fx:id="statoCol" text="Stato" prefWidth="100"/>
+        </columns>
+    </TableView>
+
+    <Button fx:id="chiudiBtn" text="Chiudi" prefWidth="120" onAction="#onChiudi"/>
+
+</VBox>
