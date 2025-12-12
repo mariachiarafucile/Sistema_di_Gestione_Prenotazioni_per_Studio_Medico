@@ -412,6 +412,29 @@ public class MainApp extends Application {
         }
     }
 
+    public void showListaVisiteDialog(String codiceFiscale) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/ListaVisite.fxml"));
+            VBox page = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Visite Paziente");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+
+            dialogStage.setScene(new Scene(page));
+
+            ListaVisiteController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setCodiceFiscale(codiceFiscale);
+
+            dialogStage.showAndWait();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Initializes the root layout and tries to load the last opened
