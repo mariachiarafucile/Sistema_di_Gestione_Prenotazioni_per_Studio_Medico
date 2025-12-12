@@ -22,19 +22,17 @@ public class Visite {
     }
 
     public Visite(Integer idVisita, String dataOra, String prescrizione, String pazienteCodiceFiscale, String segretarioEmail) {
-        this.idVisita = new SimpleIntegerProperty(idVisita);
+        this.idVisita = new SimpleIntegerProperty(idVisita != null ? idVisita : 0);
         this.dataOra = new SimpleStringProperty(dataOra);
         this.prescrizione = new SimpleStringProperty(prescrizione);
         this.pazienteCodiceFiscale = new SimpleStringProperty(pazienteCodiceFiscale);
         this.segretarioEmail = new SimpleStringProperty(segretarioEmail);
     }
 
-    public Integer getIdVisita(){
-        if (idVisita == null){
-            idVisita= new SimpleIntegerProperty(-1);
-        }
-        return idVisita.get();
+    public Integer getIdVisita() {
+        return idVisita.get(); // sicuro, non sarà mai null
     }
+
 
     public void setIdVisita(Integer idVisita) {
         if (this.idVisita == null){
@@ -43,6 +41,9 @@ public class Visite {
         this.idVisita.set(idVisita);
     }
 
+    public IntegerProperty idVisitaProperty() {
+        return idVisita;
+    }
     public String getDataOra() {
         return dataOra.get();
     }
