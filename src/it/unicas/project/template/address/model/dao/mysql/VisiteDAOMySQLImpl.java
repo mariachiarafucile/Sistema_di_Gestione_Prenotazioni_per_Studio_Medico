@@ -16,15 +16,15 @@ public class VisiteDAOMySQLImpl implements DAO<Visite> {
 
     private VisiteDAOMySQLImpl(){}
 
-    private static DAO dao = null;
+    private static VisiteDAOMySQLImpl instance = null;
     private static Logger logger = null;
 
-    public static DAO getInstance(){
-        if (dao == null){
-            dao = new VisiteDAOMySQLImpl();
+    public static VisiteDAOMySQLImpl getInstance(){
+        if (instance == null) {
+            instance = new VisiteDAOMySQLImpl();
             logger = Logger.getLogger(VisiteDAOMySQLImpl.class.getName());
         }
-        return dao;
+        return instance;
     }
 
     public static void main(String args[]) throws DAOException {
@@ -120,15 +120,25 @@ public class VisiteDAOMySQLImpl implements DAO<Visite> {
         verifyObject(v);
 
 
-        String query = "INSERT INTO visite (idVisita, dataOra, prescrizione, pazienteCodiceFiscale, segretarioEmail) VALUES  ('" +
-                v.getIdVisita() + "', '" + v.getDataOra() + "', '" +
+        String query = "INSERT INTO visite (dataOra, prescrizione, pazienteCodiceFiscale, segretarioEmail) VALUES  ('" + v.getDataOra() + "', '" +
                 "', '" + v.getPrescrizione() + "', '" + v.getPazienteCodiceFiscale() + "', '" + v.getSegretarioEmail() + "');";
         try {
             logger.info("SQL: " + query);
         } catch (NullPointerException nullPointerException){
             System.out.println("SQL: " + query);
         }
-        executeUpdate(query);
+        try {
+            Statement st = DAOMySQLSettings.getStatement();
+            st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);  // Esegue l'inserimento e permette di recuperare l'id
+            ResultSet rs = st.getGeneratedKeys();
+            if (rs.next()) {
+                v.setIdVisita(rs.getInt(1));  // Aggiorna l’oggetto con l’id generato dal DB
+            }
+            DAOMySQLSettings.closeStatement(st);
+        } catch (SQLException e) {
+            throw new DAOException("Errore insert(): " + e.getMessage());
+        }
+
     }
 
 
@@ -164,6 +174,34 @@ public class VisiteDAOMySQLImpl implements DAO<Visite> {
         } catch (SQLException e) {
             throw new DAOException("In insert(): " + e.getMessage());
         }
+    }
+
+    public List<Visite> selectByCF(String codiceFiscale) throws DAOException {
+        ArrayList<Visite> lista = new ArrayList<>();
+
+        try {
+            Statement st = DAOMySQLSettings.getStatement();
+
+            String sql = "SELECT * FROM visite WHERE pazienteCodiceFiscale = '" + codiceFiscale + "';";
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                Integer id = rs.getObject("idVisita") != null ? (Integer) rs.getObject("idVisita") : 0;
+                lista.add(new Visite(
+                        id,
+                        rs.getString("dataOra"),
+                        rs.getString("prescrizione"),
+                        rs.getString("pazienteCodiceFiscale"),
+                        rs.getString("segretarioEmail")
+                ));
+            }
+            DAOMySQLSettings.closeStatement(st);
+
+        } catch (Exception e) {
+            throw new DAOException("Errore selectByCF(): " + e.getMessage());
+        }
+
+        return lista;
     }
 
 
