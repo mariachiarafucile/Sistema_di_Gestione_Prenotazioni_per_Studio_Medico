@@ -222,4 +222,11 @@ public class RicercaPazienteController {
         mainApp.showListaPrenotazioniDialog(pazienteTrovato.getCodiceFiscale());
     }
 
+    @FXML
+    private void apriListaVisite() {
+        if (pazienteTrovato == null) return;
+
+       mainApp.showListaVisiteDialog(pazienteTrovato.getCodiceFiscale());
+    }
+
 }
