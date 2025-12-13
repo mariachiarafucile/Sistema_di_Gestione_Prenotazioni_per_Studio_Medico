@@ -232,4 +232,45 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
 
         return lista;
     }
+
+    public List<FasceOrarie> selectByDataAndMedico(String data, String emailMedico) throws DAOException {
+
+        ArrayList<FasceOrarie> lista = new ArrayList<>();
+
+        try {
+
+            Statement st = DAOMySQLSettings.getStatement();
+
+            String sql =
+                    "SELECT fo.* FROM fasceOrarie fo " +
+                            "JOIN fasceorarie_has_medici fm ON fo.idFasciaOraria = fm.fasciaOraria_id " +
+                            "WHERE fo.data = '" + data + "' " +
+                            "AND fm.medicoEmail = '" + emailMedico + "';";
+
+            try {
+                logger.info("SQL: " + sql);
+            } catch (NullPointerException nullPointerException) {
+                System.out.println("SQL: " + sql);
+            }
+
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                lista.add(new FasceOrarie(
+                        rs.getInt("idFasciaOraria"),
+                        rs.getString("data"),
+                        rs.getString("oraInizio"),
+                        rs.getString("oraFine")
+                ));
+            }
+
+            DAOMySQLSettings.closeStatement(st);
+
+        } catch (SQLException sq) {
+            throw new DAOException("In selectByDataAndMedico(): " + sq.getMessage());
+        }
+
+        return lista;
+    }
+
 }

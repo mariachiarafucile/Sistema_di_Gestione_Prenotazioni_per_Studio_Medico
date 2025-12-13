@@ -178,6 +178,24 @@ public class InserimentoFasceController {
             FasceOrarieDAOMySQLImpl fasciaDAO = (FasceOrarieDAOMySQLImpl) FasceOrarieDAOMySQLImpl.getInstance();
             FasceMediciDAOMySQLImpl fasceMedicoDAO = (FasceMediciDAOMySQLImpl) FasceMediciDAOMySQLImpl.getInstance();
 
+            //Controllo sovrapposizione fasce orarie
+            List<FasceOrarie> fasceEsistenti =
+                    fasciaDAO.selectByDataAndMedico(data, emailMedicoCorrente);
+
+            for (FasceOrarie f : fasceEsistenti) {
+                LocalTime inizioEsistente = LocalTime.parse(f.getOraInizio());
+                LocalTime fineEsistente   = LocalTime.parse(f.getOraFine());
+
+                // nuovaInizio < esistenteFine AND nuovaFine > esistenteInizio
+                if (inizio.isBefore(fineEsistente) && fine.isAfter(inizioEsistente)) {
+                    showErrorAlert(
+                            "La fascia selezionata si sovrappone a una già esistente (" +
+                                    f.getOraInizio() + " - " + f.getOraFine() + ")"
+                    );
+                    return;
+                }
+            }
+
             //Creo un oggetto di ricerca
             FasceOrarie fascia = new FasceOrarie(null, data, oraInizio, oraFine);
 
