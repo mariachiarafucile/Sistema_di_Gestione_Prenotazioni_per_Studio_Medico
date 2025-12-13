@@ -189,8 +189,8 @@ public class InserimentoFasceController {
                 // nuovaInizio < esistenteFine AND nuovaFine > esistenteInizio
                 if (inizio.isBefore(fineEsistente) && fine.isAfter(inizioEsistente)) {
                     showErrorAlert(
-                            "La fascia selezionata si sovrappone a una già esistente (" +
-                                    f.getOraInizio() + " - " + f.getOraFine() + ")"
+                            "La fascia selezionata si sovrappone a una già esistente.\n\n" +
+                                    "Fascia esistente: " + f.getOraInizio() + " - " + f.getOraFine()
                     );
                     return;
                 }
