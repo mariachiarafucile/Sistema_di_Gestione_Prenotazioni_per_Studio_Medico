@@ -18,8 +18,8 @@ import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
 
-import static it.unicas.project.template.address.model.AlertUtils.showConfirmationAlert;
-import static it.unicas.project.template.address.model.AlertUtils.showErrorAlert;
+import static it.unicas.project.template.address.util.AlertUtils.showConfirmationAlert;
+import static it.unicas.project.template.address.util.AlertUtils.showErrorAlert;
 
 public class InserimentoFasceController {
 
@@ -143,6 +143,7 @@ public class InserimentoFasceController {
             }
         }
     }
+
     @FXML
     private void salvaFascia() {
         if (giornoSelezionato == null || oraInizioCombo.getValue() == null || oraFineCombo.getValue() == null) {
@@ -160,9 +161,19 @@ public class InserimentoFasceController {
         String oraInizio = oraInizioCombo.getValue();
         String oraFine = oraFineCombo.getValue();
 
-        // Controllo orario
         LocalTime inizio = LocalTime.parse(oraInizio);
         LocalTime fine = LocalTime.parse(oraFine);
+
+        // Controllo: se il giorno è oggi, l'orario di inizio non può essere già passato
+        if (giornoSelezionato.equals(LocalDate.now())) {
+            LocalTime oraAttuale = LocalTime.now();
+
+            if (inizio.isBefore(oraAttuale)) {
+                showErrorAlert("Non puoi selezionare un orario di inizio già passato per la giornata di oggi!");
+                return;
+            }
+        }
+
         if (!inizio.isBefore(fine)) {
             showErrorAlert("L'orario di inizio deve essere precedente all'orario di fine!");
             return;
