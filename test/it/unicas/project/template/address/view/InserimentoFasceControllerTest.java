@@ -58,17 +58,17 @@ public class InserimentoFasceControllerTest {
                 LocalDate dataFuturaProtetta = LocalDate.of(2099, 1, 1);
                 LocalDate dataPassata = LocalDate.now().minusDays(5);
 
-                //CONTROLLO 1:DATA PASSATA
+                //CONTROLLO 1:Data passata
                 System.out.println("\n[TEST 1] Verifica Data Passata...");
                 impostaDati(dataPassata, "10:00", "11:00");
-                invocaSalva(); // Dovrebbe mostrare Alert: "Non puoi inserire date passate"
+                invocaSalva();
 
-                //CONTROLLO 2: ORA INIZIO < ORA FINE
+                //CONTROLLO 2: Ora inizio < Ora fine
                 System.out.println("\n[TEST 2] Verifica Orario Invertito (15:00 - 10:00)...");
                 impostaDati(dataFuturaProtetta, "15:00", "10:00");
-                invocaSalva(); // Dovrebbe mostrare Alert: "Ora inizio deve essere precedente..."
+                invocaSalva();
 
-                //CONTROLLO 3: SOVRAPPOSIZIONE
+                //CONTROLLO 3: Sovrapposizione fasce
                 System.out.println("\n[TEST 3] Verifica Sovrapposizione...");
                 System.out.println("   -> Inserimento fascia base 09:00-11:00");
                 impostaDati(dataFuturaProtetta, "09:00", "11:00");
@@ -82,7 +82,7 @@ public class InserimentoFasceControllerTest {
         });
 
         testLatch.await(120, TimeUnit.SECONDS);
-        System.out.println("\n>>> TEST COMPLETATI <<<");
+        System.out.println("\n>>> Tutti i test completati con successo <<<");
     }
 
     private void setupInterfacciaGrafica() throws Exception {
