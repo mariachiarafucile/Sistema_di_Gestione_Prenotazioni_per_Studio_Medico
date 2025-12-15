@@ -10,9 +10,7 @@ import it.unicas.project.template.address.model.dao.mysql.SegretariDAOMySQLImpl;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-import java.util.Optional;
-
-import static it.unicas.project.template.address.model.AlertUtils.showErrorAlert;
+import static it.unicas.project.template.address.util.AlertUtils.showErrorAlert;
 
 public class LoginController {
 
