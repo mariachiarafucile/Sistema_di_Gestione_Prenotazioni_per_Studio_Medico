@@ -1,7 +1,7 @@
 package it.unicas.project.template.address.view;
 
 import it.unicas.project.template.address.MainApp;
-import it.unicas.project.template.address.model.AlertUtils;
+import it.unicas.project.template.address.util.AlertUtils;
 import it.unicas.project.template.address.model.Segretari;
 import it.unicas.project.template.address.model.dao.DAO;
 import it.unicas.project.template.address.model.dao.DAOException;
@@ -12,7 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 
-import static it.unicas.project.template.address.model.AlertUtils.*;
+import static it.unicas.project.template.address.util.AlertUtils.*;
 
 public class RegistrazioneSegretarioController {
 
