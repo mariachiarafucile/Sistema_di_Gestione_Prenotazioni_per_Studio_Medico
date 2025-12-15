@@ -1,7 +1,7 @@
 package it.unicas.project.template.address.view;
 
 import it.unicas.project.template.address.MainApp;
-import it.unicas.project.template.address.model.AlertUtils;
+import it.unicas.project.template.address.util.AlertUtils;
 import it.unicas.project.template.address.model.Medici;
 import it.unicas.project.template.address.model.dao.DAO;
 import it.unicas.project.template.address.model.dao.DAOException;
@@ -12,8 +12,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import static it.unicas.project.template.address.model.AlertUtils.showConfirmationAlert;
-import static it.unicas.project.template.address.model.AlertUtils.showErrorAlert;
+import static it.unicas.project.template.address.util.AlertUtils.showConfirmationAlert;
+import static it.unicas.project.template.address.util.AlertUtils.showErrorAlert;
 
 public class RegistrazioneMedicoController {
 
