@@ -12,8 +12,12 @@ Il sistema offre funzionalità per la gestione di pazienti e medici, prenotazion
 - [Architettura del progetto](#architettura-del-sistema)
 - [Prerequisiti](#prerequisiti)
 - [Installazione](#installazione)
-- [Configurazione Database] (#configurazione database)
+- [Configurazione Database] (#configurazione-database)
 - [Avvio dell’applicazione](#avvio-dellapplicazione)
+
+
+##Funzionalità principali
+
 
 
 
@@ -21,7 +25,7 @@ Il sistema offre funzionalità per la gestione di pazienti e medici, prenotazion
 - Java, linguaggio di programmazione utilizzato per lo sviluppo dell’applicazione  
 - JavaFX, framework per la realizzazione dell’interfaccia grafica  
 - JDBC, API per l’accesso e la gestione del database  
-- MySQL – sistema di gestione di database relazionale
+- MySQL, sistema di gestione di database relazionale
 
 
 ## Architettura del progetto
