@@ -1,6 +1,7 @@
 package it.unicas.project.template.address.view;
 
 import it.unicas.project.template.address.MainApp;
+import it.unicas.project.template.address.util.AlertUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -140,6 +141,9 @@ public class ReportController {
                     currentTotaleDaIncassare);
 
             System.out.println("Report salvato in: " + fileName);
+
+            AlertUtils.showConfirmationAlert("Report del mese di " + currentMese + " scaricato correttamente.");
+
         } catch (Exception e) {
             System.out.println("Errore nel salvare il report: " + e.getMessage());
         }
