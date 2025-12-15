@@ -36,5 +36,6 @@
         <Button fx:id="visiteBtn" text="Visualizza visite" visible="false" managed="false" onAction="#apriListaVisite"/>
         <Button fx:id="prenotaBtn" text="Prenotazioni" visible="false" managed="false" onAction="#onPrenotazioni"/>
         <Button fx:id="modificaNoteBtn" text="Modifica note cliniche" visible="false" managed="false" onAction="#onModificaNoteCliniche"/>
+        <Button fx:id="aggiungiPrescrizioneBtn" text="Aggiungi prescrizione" visible="false" managed="false" onAction="#onAggiungiPrescrizione"/>
     </HBox>
 </VBox>
