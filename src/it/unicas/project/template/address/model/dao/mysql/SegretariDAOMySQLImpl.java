@@ -16,15 +16,16 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
 
     private SegretariDAOMySQLImpl(){}
 
-    private static DAO dao = null;
     private static Logger logger = null;
 
-    public static DAO getInstance(){
-        if (dao == null){
-            dao = new SegretariDAOMySQLImpl();
+    private static SegretariDAOMySQLImpl instance = null;
+
+    public static SegretariDAOMySQLImpl getInstance(){
+        if (instance == null){
+            instance = new SegretariDAOMySQLImpl();
             logger = Logger.getLogger(SegretariDAOMySQLImpl.class.getName());
         }
-        return dao;
+        return instance;
     }
 
     public static void main(String args[]) throws DAOException {
@@ -180,6 +181,18 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
         }
     }
 
+    public boolean existsByEmail(String email) throws DAOException {
+        try {
+            Statement st = DAOMySQLSettings.getStatement();
+            String sql = "SELECT 1 FROM segretari WHERE email = '" + email + "' LIMIT 1;";
+            ResultSet rs = st.executeQuery(sql);
+            boolean exists = rs.next();
+            DAOMySQLSettings.closeStatement(st);
+            return exists;
+        } catch (SQLException e) {
+            throw new DAOException("existsByEmail(): " + e.getMessage());
+        }
+    }
 
 
 }
