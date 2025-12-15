@@ -5,6 +5,7 @@ import it.unicas.project.template.address.model.dao.DAO;
 import it.unicas.project.template.address.model.dao.DAOException;
 
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -16,15 +17,16 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
 
     private PagamentiDAOMySQLImpl(){}
 
-    private static DAO dao = null;
     private static Logger logger = null;
 
-    public static DAO getInstance(){
-        if (dao == null){
-            dao = new PagamentiDAOMySQLImpl();
+    private static PagamentiDAOMySQLImpl instance = null;
+
+    public static PagamentiDAOMySQLImpl getInstance() {
+        if (instance == null) {
+            instance = new PagamentiDAOMySQLImpl();
             logger = Logger.getLogger(PagamentiDAOMySQLImpl.class.getName());
         }
-        return dao;
+        return instance;
     }
 
     public static void main(String args[]) throws DAOException {
@@ -85,7 +87,7 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
                 lista.add(new Pagamenti(rs.getInt("idPagamento"),
                         rs.getString("stato"),
                         rs.getDouble("importo"),
-                        rs.getString("emailSegretario"),
+                        rs.getString("segretarioEmail"),
                         rs.getInt("visitaIdVisita")));
             }
             DAOMySQLSettings.closeStatement(st);
@@ -113,22 +115,42 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
 
     }
 
-
     @Override
     public void insert(Pagamenti g) throws DAOException {
 
+        // Verifica che i campi obbligatori non siano null
         verifyObject(g);
 
-        String query = "INSERT INTO pagamenti (idPagamento, stato, importo, emailSegretario, visitaIdVisita) VALUES  ('" +
-                g.getIdPagamento() + "', '" + g.getStato() + "', '" +
-                "', '" + g.getImporto() + "', '" + g.getEmailSegretario() + "', '" + g.getVisitaIdVisita() + "');";
-        try {
-            logger.info("SQL: " + query);
-        } catch (NullPointerException nullPointerException){
-            System.out.println("SQL: " + query);
+        String sql = "INSERT INTO pagamenti (stato, importo, segretarioEmail, visitaIdVisita) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement ps = DAOMySQLSettings.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            // Imposta i valori dei parametri
+            ps.setString(1, g.getStato());
+            ps.setDouble(2, g.getImporto());
+            ps.setString(3, g.getEmailSegretario());
+            ps.setInt(4, g.getVisitaIdVisita());
+
+            // Esegue l'INSERT
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows == 0) {
+                throw new DAOException("Insert failed, no rows affected.");
+            }
+
+            // Recupera l'ID generato dal DB e lo imposta sull'oggetto
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    g.setIdPagamento(generatedKeys.getInt(1));
+                } else {
+                    throw new DAOException("Insert failed, no ID obtained.");
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("In insert(): " + e.getMessage());
         }
-        executeUpdate(query);
     }
+
 
 
     @Override
@@ -136,8 +158,8 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
 
         verifyObject(g);
 
-        String query = "UPDATE pagamenti SET stato = '" + g.getStato() + "', emailSegretario = '" + g.getEmailSegretario() + "', visitaIdVisita = '" + g.getVisitaIdVisita() + "'";
-        query = query + " WHERE idPagamento = " + g.getIdPagamento() + ";";
+        String query = "UPDATE pagamenti SET " + "stato = '" + g.getStato() + "', " + "importo = " + g.getImporto() + ", " + "segretarioEmail = '" + g.getEmailSegretario() + "', " + "visitaIdVisita = " + g.getVisitaIdVisita() + " " +
+                "WHERE idPagamento = " + g.getIdPagamento() + ";";
         logger.info("SQL: " + query);
 
         executeUpdate(query);
@@ -145,8 +167,7 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
     }
 
     private void verifyObject(Pagamenti g) throws DAOException {
-        if (g == null || g.getIdPagamento() == null
-                || g.getStato() == null
+        if (g == null || g.getStato() == null
                 || g.getImporto() == null
                 || g.getEmailSegretario() == null
                 || g.getVisitaIdVisita() == null){
@@ -201,8 +222,8 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
         ReportResult result = new ReportResult();
 
         String query = "SELECT " +
-                "SUM(CASE WHEN LOWER(p.stato) = 'pagato' THEN 1 ELSE 0 END) AS visitePagate, " +
-                "SUM(CASE WHEN LOWER(p.stato) = 'pagato' THEN p.importo ELSE 0 END) AS totaleIncassato, " +
+                "SUM(CASE WHEN LOWER(p.stato) = 'pagata' THEN 1 ELSE 0 END) AS visitePagate, " +
+                "SUM(CASE WHEN LOWER(p.stato) = 'pagata' THEN p.importo ELSE 0 END) AS totaleIncassato, " +
                 "SUM(CASE WHEN LOWER(p.stato) = 'da saldare' THEN 1 ELSE 0 END) AS visiteDaSaldare, " +
                 "SUM(CASE WHEN LOWER(p.stato) = 'da saldare' THEN p.importo ELSE 0 END) AS totaleDaIncassare " +
                 "FROM pagamenti p " +
