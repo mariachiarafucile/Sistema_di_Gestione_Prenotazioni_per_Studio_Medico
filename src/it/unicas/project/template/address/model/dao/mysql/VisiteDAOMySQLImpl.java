@@ -3,8 +3,6 @@ package it.unicas.project.template.address.model.dao.mysql;
 import it.unicas.project.template.address.model.Visite;
 import it.unicas.project.template.address.model.dao.DAO;
 import it.unicas.project.template.address.model.dao.DAOException;
-
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -27,40 +25,11 @@ public class VisiteDAOMySQLImpl implements DAO<Visite> {
         return instance;
     }
 
-    public static void main(String args[]) throws DAOException {
-        VisiteDAOMySQLImpl c = new VisiteDAOMySQLImpl();
-
-        c.insert(new Visite(1,"2024-12-01 10:00:00","Farmaco: Relaxinol 20 mg","RNLPLO92C14D612X","sara.vettese@uni.it"));
-        c.insert(new Visite(2,"2025-05-12 11:30:00","Farmaco: Ibuprofen 400mg","CNTMRT95C54H501X","lorenza.martini@uni.it"));
-        c.insert(new Visite(3,"2024-01-25 09:30:00","Farmaco: Pevaryl crema 30g 1% - classe c","BNCMRA90C52F205K","lorenza.martini@uni.it"));
-
-        List<Visite> list = c.select(null);
-        for(int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i));
-        }
-
-        Visite toDelete = new Visite();
-        toDelete.setDataOra("");
-        toDelete.setPrescrizione("");
-        toDelete.setIdVisita(1);
-        toDelete.setPazienteCodiceFiscale("");
-        toDelete.setSegretarioEmail("");
-
-        c.delete(toDelete);
-
-        list = c.select(null);
-
-        for(int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i));
-        }
-
-    }
-
     @Override
     public List<Visite> select(Visite v) throws DAOException {
 
         if (v == null){
-            v = new Visite(null, "", "", "",""); // Cerca tutti gli elementi
+            v = new Visite(null, "", "", "","");
         }
 
         ArrayList<Visite> lista = new ArrayList<>();
@@ -112,7 +81,6 @@ public class VisiteDAOMySQLImpl implements DAO<Visite> {
 
     }
 
-
     @Override
     public void insert(Visite v) throws DAOException {
 
@@ -142,7 +110,6 @@ public class VisiteDAOMySQLImpl implements DAO<Visite> {
         }
 
     }
-
 
     @Override
     public void update(Visite v) throws DAOException {

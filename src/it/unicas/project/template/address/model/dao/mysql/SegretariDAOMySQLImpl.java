@@ -3,8 +3,6 @@ package it.unicas.project.template.address.model.dao.mysql;
 import it.unicas.project.template.address.model.Segretari;
 import it.unicas.project.template.address.model.dao.DAO;
 import it.unicas.project.template.address.model.dao.DAOException;
-
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -28,42 +26,15 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
         return instance;
     }
 
-    public static void main(String args[]) throws DAOException {
-        SegretariDAOMySQLImpl c = new SegretariDAOMySQLImpl();
-
-        c.insert(new Segretari("Sara","Vettese","sara.vettese@uni.it","vett123"));
-        c.insert(new Segretari("Lorenza","Martini","lorenza.martini@uni.it","marti456"));
-        c.insert(new Segretari("Elisa","Quagliozzi","elisa.quagliozzi@uni.it","quag987"));
-
-        List<Segretari> list = c.select(null);
-        for(int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i));
-        }
-
-        Segretari toDelete = new Segretari();
-        toDelete.setNome("");
-        toDelete.setCognome("");
-        toDelete.setEmail("lorenza.martini@uni.it");
-        toDelete.setPassword("");
-
-        c.delete(toDelete);
-
-        list = c.select(null);
-
-        for(int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i));
-        }
-
-    }
-
     @Override
     public List<Segretari> select(Segretari s) throws DAOException {
 
         if (s == null){
-            s = new Segretari("", "", "", ""); // Cerca tutti gli elementi
+            s = new Segretari("", "", "", "");
         }
 
         ArrayList<Segretari> lista = new ArrayList<>();
+
         try{
 
             if (s == null || s.getEmail() == null){
@@ -129,13 +100,10 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
 
     }
 
-
     @Override
     public void insert(Segretari s) throws DAOException {
 
-
         verifyObject(s);
-
 
         String query = "INSERT INTO segretari (nome, cognome, email, password) VALUES  ('" +
                 s.getNome() + "', '" + s.getCognome() + "', '" + s.getEmail() + "', '" + s.getPassword() + "');";
@@ -193,7 +161,6 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
             throw new DAOException("existsByEmail(): " + e.getMessage());
         }
     }
-
 
 }
 

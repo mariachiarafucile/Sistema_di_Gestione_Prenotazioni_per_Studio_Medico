@@ -3,8 +3,6 @@ package it.unicas.project.template.address.model.dao.mysql;
 import it.unicas.project.template.address.model.Pagamenti;
 import it.unicas.project.template.address.model.dao.DAO;
 import it.unicas.project.template.address.model.dao.DAOException;
-
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,41 +27,11 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
         return instance;
     }
 
-    public static void main(String args[]) throws DAOException {
-        PagamentiDAOMySQLImpl c = new PagamentiDAOMySQLImpl();
-
-        c.insert(new Pagamenti(1,"pagata",50.00,"sara.vettese@uni.it", 2));
-        c.insert(new Pagamenti(2,"da saldare",75.00,"elisa.quagliozzi@uni.it", 3));
-        c.insert(new Pagamenti(3,"pagata",60.00,"lorenza.martini@uni.it", 1));
-
-
-        List<Pagamenti> list = c.select(null);
-        for(int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i));
-        }
-
-        Pagamenti toDelete = new Pagamenti();
-        toDelete.setIdPagamento(1);
-        toDelete.setStato("");
-        toDelete.setImporto(null); //(tipo Double può essere null)
-        toDelete.setEmailSegretario("");
-        toDelete.setVisitaIdVisita(null);
-
-        c.delete(toDelete);
-
-        list = c.select(null);
-
-        for(int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i));
-        }
-
-    }
-
     @Override
     public List<Pagamenti> select(Pagamenti g) throws DAOException {
 
         if (g == null){
-            g = new Pagamenti(null, "", null, "",null); // Cerca tutti gli elementi
+            g = new Pagamenti(null, "", null, "",null);
         }
 
         ArrayList<Pagamenti> lista = new ArrayList<>();
@@ -118,26 +86,22 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
     @Override
     public void insert(Pagamenti g) throws DAOException {
 
-        // Verifica che i campi obbligatori non siano null
         verifyObject(g);
 
         String sql = "INSERT INTO pagamenti (stato, importo, segretarioEmail, visitaIdVisita) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement ps = DAOMySQLSettings.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            // Imposta i valori dei parametri
             ps.setString(1, g.getStato());
             ps.setDouble(2, g.getImporto());
             ps.setString(3, g.getEmailSegretario());
             ps.setInt(4, g.getVisitaIdVisita());
 
-            // Esegue l'INSERT
             int affectedRows = ps.executeUpdate();
             if (affectedRows == 0) {
                 throw new DAOException("Insert failed, no rows affected.");
             }
 
-            // Recupera l'ID generato dal DB e lo imposta sull'oggetto
             try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     g.setIdPagamento(generatedKeys.getInt(1));
@@ -150,8 +114,6 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
             throw new DAOException("In insert(): " + e.getMessage());
         }
     }
-
-
 
     @Override
     public void update(Pagamenti g) throws DAOException {
@@ -198,7 +160,7 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
                         rs.getInt("idPagamento"),
                         rs.getString("stato"),
                         rs.getDouble("importo"),
-                        rs.getString("segretarioEmail"), //Visualizzare nome corretto nel proprio database
+                        rs.getString("segretarioEmail"),
                         rs.getInt("visitaIdVisita")
                 );
             }
@@ -210,7 +172,6 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
     }
 
 
-    // DTO per i risultati del report
     public static class ReportResult {
         public int visitePagate;
         public int visiteDaSaldare;

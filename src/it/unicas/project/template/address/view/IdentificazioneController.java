@@ -22,6 +22,10 @@ public class IdentificazioneController {
 
     private MainApp mainApp;
 
+    public void setMainApp(MainApp mainApp) {
+        this.mainApp = mainApp;
+    }
+
     @FXML
     private void initialize() {
 
@@ -37,7 +41,6 @@ public class IdentificazioneController {
             } catch (Exception ignored) {}
         }
 
-        // Eventi pulsanti
         if (medicoButton != null) {
             medicoButton.setOnAction(e -> openMedicoScreen());
         }
@@ -56,7 +59,4 @@ public class IdentificazioneController {
 
     }
 
-    public void setMainApp(MainApp mainApp) {
-        this.mainApp = mainApp;
-    }
 }

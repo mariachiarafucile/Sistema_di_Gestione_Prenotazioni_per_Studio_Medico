@@ -5,7 +5,6 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
 import java.util.Optional;
 
 public class AlertUtils {
@@ -20,7 +19,7 @@ public class AlertUtils {
             Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
             stage.getIcons().add(logo);
         } catch (Exception e) {
-            // ignora se logo non trovato
+            //ignora
         }
 
         alert.showAndWait();
@@ -36,7 +35,7 @@ public class AlertUtils {
             Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
             stage.getIcons().add(logo);
         } catch (Exception e) {
-            // ignora se logo non trovato
+            // ignora
         }
 
         alert.showAndWait();
@@ -77,8 +76,7 @@ public class AlertUtils {
             Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
             stage.getIcons().add(logo);
         } catch (Exception e) {
-            // ignora se logo non trovato
-            System.out.println("Logo non trovato");
+            //ignora
         }
 
         ButtonType buttonTypeOne = new ButtonType("Si");
@@ -90,7 +88,6 @@ public class AlertUtils {
         if (result.get() == buttonTypeOne){
             System.exit(0);
         }
-
 
     }
 

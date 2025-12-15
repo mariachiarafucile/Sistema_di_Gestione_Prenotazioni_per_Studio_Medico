@@ -3,8 +3,6 @@ package it.unicas.project.template.address.model.dao.mysql;
 import it.unicas.project.template.address.model.Pazienti;
 import it.unicas.project.template.address.model.dao.DAO;
 import it.unicas.project.template.address.model.dao.DAOException;
-
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -27,50 +25,11 @@ public class PazientiDAOMySQLImpl implements DAO<Pazienti> {
         return dao;
     }
 
-    public static void main(String args[]) throws DAOException {
-        PazientiDAOMySQLImpl c = new PazientiDAOMySQLImpl();
-
-        c.insert(new Pazienti("Maria","Bianchi","1990-03-12","BNCMRA90C52F205K","Via delle Magnolie 42,Milano (MI)","3289456721","mbianchi@uni.it",null));
-        c.insert(new Pazienti("Martina","Conti","1995-03-14","CNTMRT95C54H501X","Via del Sole 47,Roma(RM)","3471128940","mconti@uni.it",null));
-        c.insert(new Pazienti("Paolo","Rinaldi","1992-05-27","RNLPLO92C14D612X","Via dei Tigli 89,Firenze(FI)","3335802194","prinaldi@uni.it","Diabete tipo 2 controllato"));
-        c.insert(new Pazienti("Alessandro","Ricci","1998-11-09","RCCLSN88S09H501T","Via Verdi 6,Padova (PD)","3927641185","aricci@uni.it","Asma lieve persistente"));
-        c.insert(new Pazienti("Giulia","Esposito","1987-07-22","SPTGLI87L62F839K","Via Roma 15,Napoli(NA)","3456789123","gesposito@uni.it","Allergia nota alle penicilline,manifestata con eruzione cutanea diffusa e prurito.Evitare tutti gli antibiotici della stessa classe."));
-        c.insert(new Pazienti("Luca","Ferrari","1993-09-30","FRRLCA93P30H501Y","Via Milano 23,Torino(TO)","3294567812","lferrari@uni.it","Storia di lieve anemia da carenza di ferro,in trattamento con integratori orali.Controlli ematici in miglioramento."));
-        c.insert(new Pazienti("Francesca","Russo","1991-12-05","RSSFNC91T45F205Z","Via Venezia 78,Bologna(BO)","3389123456","frusso@uni.it",null));
-        c.insert(new Pazienti("Sara","Gallo","1994-04-18","GLLSRA94D58H501W","Via Firenze 34,Genova(GE)","3478912345","sgallo@uni.it","Lieve ipertensione controllata con monitoraggio domiciliare della pressione arteriosa."));
-
-
-       List<Pazienti> list = c.select(null);
-        for(int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i));
-        }
-
-
-        Pazienti toDelete = new Pazienti();
-        toDelete.setNome("");
-        toDelete.setCognome("");
-        toDelete.setDataNascita("");
-        toDelete.setCodiceFiscale("GLLSRA94D58H501W");
-        toDelete.setIndirizzo("");
-        toDelete.setTelefono("");
-        toDelete.setEmail("");
-        toDelete.setNoteCliniche("");
-
-        c.delete(toDelete);
-
-        list = c.select(null);
-
-        for(int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i));
-        }
-
-    }
-
     @Override
     public List<Pazienti> select(Pazienti p) throws DAOException {
 
         if (p == null){
-            p = new Pazienti("", "", "", "", "", "", "", ""); // Cerca tutti gli elementi
+            p = new Pazienti("", "", "", "", "", "", "", "");
         }
 
         ArrayList<Pazienti> lista = new ArrayList<>();
@@ -125,13 +84,10 @@ public class PazientiDAOMySQLImpl implements DAO<Pazienti> {
 
     }
 
-
     @Override
     public void insert(Pazienti p) throws DAOException {
 
-
         verifyObject(p);
-
 
         String query = "INSERT INTO pazienti (nome, cognome, dataNascita, codiceFiscale, indirizzo, telefono, email, noteCliniche) VALUES  ('" +
                 p.getNome() + "', '" + p.getCognome() + "', '" +
@@ -144,7 +100,6 @@ public class PazientiDAOMySQLImpl implements DAO<Pazienti> {
         }
         executeUpdate(query);
     }
-
 
     @Override
     public void update(Pazienti p) throws DAOException {
@@ -182,6 +137,5 @@ public class PazientiDAOMySQLImpl implements DAO<Pazienti> {
         throw new DAOException("In insert(): " + e.getMessage());
       }
     }
-
 
 }

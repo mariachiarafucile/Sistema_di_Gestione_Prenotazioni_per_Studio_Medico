@@ -3,7 +3,6 @@ package it.unicas.project.template.address.model.dao.mysql;
 import it.unicas.project.template.address.model.FasceOrarie;
 import it.unicas.project.template.address.model.dao.DAO;
 import it.unicas.project.template.address.model.dao.DAOException;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -31,7 +30,7 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
     public List<FasceOrarie> select(FasceOrarie f) throws DAOException {
 
         if (f == null) {
-            f = new FasceOrarie(null, "", "", ""); // cerca tutti
+            f = new FasceOrarie(null, "", "", "");
         }
 
         ArrayList<FasceOrarie> lista = new ArrayList<>();
@@ -128,7 +127,6 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
 
 
     }
-
 
     @Override
     public void update(FasceOrarie f) throws DAOException {

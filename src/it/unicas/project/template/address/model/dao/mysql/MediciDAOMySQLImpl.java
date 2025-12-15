@@ -3,8 +3,6 @@ package it.unicas.project.template.address.model.dao.mysql;
 import it.unicas.project.template.address.model.Medici;
 import it.unicas.project.template.address.model.dao.DAO;
 import it.unicas.project.template.address.model.dao.DAOException;
-
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -27,48 +25,15 @@ public class MediciDAOMySQLImpl implements DAO<Medici> {
         return dao;
     }
 
-    public static void main(String args[]) throws DAOException {
-        MediciDAOMySQLImpl c = new MediciDAOMySQLImpl();
-
-        c.insert(new Medici("Chiara","Neri","Neurologia","3275678901","chiara.neri@uni.it","neuro321"));
-        c.insert(new Medici("Lorenzo","Marini","Ortopedia","3296789012","lorenzo.marini@uni.it","orto654"));
-        c.insert(new Medici("Elena","Greco","Dermatologia","3317890123","elena.greco@uni.it","derma987"));
-        c.insert(new Medici("Matteo","Bruno","Pediatria","3338901234","matteo.bruno@uni.it","pedi321"));
-        c.insert(new Medici("Federica","Galli","Cardiologia","3359012345","federica.galli@uni.it","cardio654"));
-        c.insert(new Medici("Davide","Fontana","Angiologo","3370123456","davide.fontana@uni.it","angio987"));
-
-        List<Medici> list = c.select(null);
-        for(int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i));
-        }
-
-
-        Medici toDelete = new Medici();
-        toDelete.setNome("");
-        toDelete.setCognome("");
-        toDelete.setSpecializzazione("");
-        toDelete.setTelefono("");
-        toDelete.setEmail("chiara.neri@uni.it");
-        toDelete.setPassword("");
-
-        c.delete(toDelete);
-
-        list = c.select(null);
-
-        for(int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i));
-        }
-
-    }
-
     @Override
     public List<Medici> select(Medici m) throws DAOException {
 
         if (m == null){
-            m = new Medici("", "", "", "", "", ""); // Cerca tutti gli elementi
+            m = new Medici("", "", "", "", "", "");
         }
 
         ArrayList<Medici> lista = new ArrayList<>();
+
         try{
 
             if (m == null || m.getEmail() == null){
@@ -119,8 +84,6 @@ public class MediciDAOMySQLImpl implements DAO<Medici> {
         return false;
     }
 
-
-
     @Override
     public void delete(Medici m) throws DAOException {
         if (m == null || m.getEmail() == null){
@@ -138,13 +101,10 @@ public class MediciDAOMySQLImpl implements DAO<Medici> {
 
     }
 
-
     @Override
     public void insert(Medici m) throws DAOException {
 
-
         verifyObject(m);
-
 
         String query = "INSERT INTO medici (nome, cognome, specializzazione, telefono, email, password) VALUES  ('" +
                 m.getNome() + "', '" + m.getCognome() + "', '" +
@@ -156,7 +116,6 @@ public class MediciDAOMySQLImpl implements DAO<Medici> {
         }
         executeUpdate(query);
     }
-
 
     @Override
     public void update(Medici m) throws DAOException {

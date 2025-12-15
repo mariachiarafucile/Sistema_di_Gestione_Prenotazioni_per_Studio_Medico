@@ -3,7 +3,6 @@ package it.unicas.project.template.address.model.dao.mysql;
 import it.unicas.project.template.address.model.Prenotazioni;
 import it.unicas.project.template.address.model.dao.DAO;
 import it.unicas.project.template.address.model.dao.DAOException;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;

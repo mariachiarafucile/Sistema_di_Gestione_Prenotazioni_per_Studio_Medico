@@ -3,7 +3,6 @@ package it.unicas.project.template.address.model.dao.mysql;
 import it.unicas.project.template.address.model.FasceMedici;
 import it.unicas.project.template.address.model.dao.DAO;
 import it.unicas.project.template.address.model.dao.DAOException;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -106,7 +105,6 @@ public class FasceMediciDAOMySQLImpl implements DAO<FasceMedici> {
 
     @Override
     public void update(FasceMedici fm) throws DAOException {
-        // Non ha molto senso aggiornare la PK in una tabella ponte, quindi lo lasciamo vuoto
         throw new DAOException("Update non supportato per FasceMedici");
     }
 
