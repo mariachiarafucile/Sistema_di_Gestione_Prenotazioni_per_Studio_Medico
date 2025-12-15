@@ -13,7 +13,7 @@ Il sistema offre funzionalità per la gestione di pazienti e medici, prenotazion
 - [Prerequisiti](#prerequisiti)
 - [Installazione](#installazione)
 - [Configurazione Database](#configurazione-database)
-- [Avvio dell’applicazione](#avvio-dellapplicazione)
+- [Avvio dell’applicazione](#avvio-dell-applicazione)
 
 
 ##Funzionalità principali
@@ -30,13 +30,13 @@ Il sistema offre funzionalità per la gestione di pazienti e medici, prenotazion
 ## Architettura del progetto
 Il progetto segue il pattern architetturale MVC (Model-View-Controller), con separazione tra logica applicativa, interfaccia grafica e accesso ai dati, al fine di migliorare manutenibilità e chiarezza del codice.
 
-##Prerequisiti
+## Prerequisiti
 Per eseguire l’applicazione è necessario disporre di:
 - Java JDK 
 - Un database relazionale installato (MySQL)
 - Un IDE Java (IntelliJ IDEA)
 
-##Installazione
+## Installazione
 1. Clonare o scaricare il repository
 2. Importare il progetto all’interno di un IDE Java
 3. Configurare la connessione al database
@@ -44,6 +44,10 @@ Per eseguire l’applicazione è necessario disporre di:
 # Configurazione database
 L’applicazione utilizza un database relazionale per la memorizzazione dei dati.
 Prima dell’avvio è necessario configurare i parametri di connessione al database (nome del database, username e password) nel file di configurazione previsto dal progetto.
+
+## Avvio dell'applicazione
+L’applicazione può essere avviata direttamente dall’IDE.
+
 
 
 
