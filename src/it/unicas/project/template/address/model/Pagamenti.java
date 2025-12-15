@@ -22,9 +22,9 @@ public class Pagamenti {
     }
 
     public Pagamenti(Integer idPagamento, String stato, Double importo, String emailSegretario, Integer visitaIdVisita) {
-        this.idPagamento = new SimpleIntegerProperty(idPagamento);
-        this.stato = new SimpleStringProperty(stato);
-        this.importo = new SimpleDoubleProperty(importo);
+        this.idPagamento = new SimpleIntegerProperty(idPagamento != null ? idPagamento : -1);
+        this.stato = new SimpleStringProperty(stato != null ? stato : "");
+        this.importo = new SimpleDoubleProperty(importo != null ? importo : 0.0);
         this.emailSegretario = new SimpleStringProperty(emailSegretario);
         this.visitaIdVisita = new SimpleIntegerProperty(visitaIdVisita);
     }
