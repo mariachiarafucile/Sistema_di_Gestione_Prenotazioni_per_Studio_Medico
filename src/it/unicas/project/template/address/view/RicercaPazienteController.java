@@ -1,7 +1,7 @@
 package it.unicas.project.template.address.view;
 
 import it.unicas.project.template.address.MainApp;
-import it.unicas.project.template.address.model.AlertUtils;
+import it.unicas.project.template.address.util.AlertUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -18,11 +17,10 @@ import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import it.unicas.project.template.address.model.Pazienti;
 
-import java.io.IOException;
 import java.util.List;
 import it.unicas.project.template.address.model.dao.mysql.PazientiDAOMySQLImpl;
 
-import static it.unicas.project.template.address.model.AlertUtils.showErrorAlert;
+import static it.unicas.project.template.address.util.AlertUtils.showErrorAlert;
 
 public class RicercaPazienteController {
 
@@ -46,6 +44,8 @@ public class RicercaPazienteController {
     private Button prenotaBtn;
     @FXML
     private Button modificaNoteBtn;
+    @FXML
+    private Button aggiungiPrescrizioneBtn;
 
     private Pazienti pazienteTrovato;
 
@@ -133,6 +133,8 @@ public class RicercaPazienteController {
             if ("MEDICO".equals(loginMode)) {
                 modificaNoteBtn.setVisible(true);
                 modificaNoteBtn.setManaged(true);
+                aggiungiPrescrizioneBtn.setVisible(true);
+                aggiungiPrescrizioneBtn.setManaged(true);
             }
 
             risultatiBox.getChildren().addAll(
@@ -216,6 +218,34 @@ public class RicercaPazienteController {
         stage.showAndWait();
     }
 
+    @FXML
+    private void onAggiungiPrescrizione() {
+        if (pazienteTrovato == null) return;
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ListaVisite.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("Modifica Prescrizioni");
+
+            // **prima carichi la scena**
+            stage.setScene(new Scene(loader.load()));
+
+            // **solo dopo il load puoi prendere il controller**
+            ListaVisiteController controller = loader.getController();
+            controller.setDialogStage(stage);
+            controller.setCodiceFiscale(pazienteTrovato.getCodiceFiscale());
+            controller.setRuoloUtente(loginMode); // passa MEDICO o SEGRETARIO
+            controller.setModalitaPrescrizione(true); // solo prescrizioni modificabili
+
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showErrorAlert("Errore aprendo la finestra prescrizioni: " + e.getMessage());
+        }
+    }
+
 
     @FXML
     private void onPrenotazioni() {
@@ -226,7 +256,28 @@ public class RicercaPazienteController {
     private void apriListaVisite() {
         if (pazienteTrovato == null) return;
 
-       mainApp.showListaVisiteDialog(pazienteTrovato.getCodiceFiscale());
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ListaVisite.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("Lista Visite");
+
+            // **prima carichi la scena**
+            stage.setScene(new Scene(loader.load()));
+
+            // **solo dopo il load puoi prendere il controller**
+            ListaVisiteController controller = loader.getController();
+            controller.setDialogStage(stage);
+            controller.setCodiceFiscale(pazienteTrovato.getCodiceFiscale());
+            controller.setRuoloUtente(loginMode); // passa MEDICO o SEGRETARIO
+            controller.setModalitaPrescrizione(false); // importo/stato modificabili
+
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showErrorAlert("Errore aprendo la finestra visite: " + e.getMessage());
+        }
     }
 
 }
