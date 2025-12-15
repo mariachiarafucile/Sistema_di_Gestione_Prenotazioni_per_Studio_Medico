@@ -19,9 +19,8 @@ import javafx.stage.Stage;
 import java.time.*;
 import java.time.format.TextStyle;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static it.unicas.project.template.address.model.AlertUtils.showErrorAlert;
+import static it.unicas.project.template.address.util.AlertUtils.showErrorAlert;
 
 public class FormPrenotazioneController {
 
