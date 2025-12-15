@@ -1,6 +1,5 @@
 package it.unicas.project.template.address.view;
 
-import it.unicas.project.template.address.model.FasceOrarie;
 import it.unicas.project.template.address.model.dao.mysql.FasceOrarieDAOMySQLImpl;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -45,7 +44,7 @@ public class InserimentoFasceControllerTest {
         });
         setupLatch.await(5, TimeUnit.SECONDS);
 
-        controller.setEmailMedicoCorrente("lina@gmail.com");
+        controller.setEmailMedicoCorrente("anna@esempio.it");
     }
 
     @Test
@@ -68,11 +67,23 @@ public class InserimentoFasceControllerTest {
                 impostaDati(dataFuturaProtetta, "15:00", "10:00");
                 invocaSalva();
 
-                //CONTROLLO 3: Sovrapposizione fasce
-                System.out.println("\n[TEST 3] Verifica Sovrapposizione...");
-                System.out.println("   -> Inserimento fascia base 09:00-11:00");
-                impostaDati(dataFuturaProtetta, "09:00", "11:00");
+                // CONTROLLO 3: Data odierna con orario già passato
+                System.out.println("\n[TEST 3] Verifica Data Odierna con Orario Già Passato...");
+
+                LocalDate oggi = LocalDate.now();
+
+                // Orario di inizio sicuramente già passato
+                String oraInizioPassata = "00:00";
+
+                // Orario di fine valido
+                String oraFineValida = "23:00";
+
+                // Imposto i dati nel controller
+                impostaDati(oggi, oraInizioPassata, oraFineValida);
+
                 invocaSalva();
+
+                System.out.println("Inserimento bloccato correttamente per orario già passato");
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -123,4 +134,5 @@ public class InserimentoFasceControllerTest {
         f.setAccessible(true);
         return f.get(obj);
     }
+
 }

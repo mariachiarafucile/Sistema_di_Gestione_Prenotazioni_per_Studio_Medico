@@ -169,7 +169,7 @@ public class InserimentoFasceController {
             LocalTime oraAttuale = LocalTime.now();
 
             if (inizio.isBefore(oraAttuale)) {
-                showErrorAlert("Non puoi selezionare un orario di inizio già passato per la giornata di oggi!");
+                showErrorAlert("Non puoi selezionare un orario di inizio già passato per la \ngiornata di oggi!");
                 return;
             }
         }
