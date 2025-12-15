@@ -18,8 +18,7 @@
     <TableView fx:id="visiteTable" prefWidth="550" prefHeight="400">
         <columns>
             <TableColumn fx:id="dataCol" text="Data/Ora" prefWidth="150"/>
-            <TableColumn fx:id="prescrizioneCol" text="Prescrizione" prefWidth="250"/>
-            <TableColumn fx:id="segretarioCol" text="Segretario" prefWidth="150"/>
+            <TableColumn fx:id="prescrizioneCol" text="Prescrizione" prefWidth="300"/>
             <TableColumn fx:id="importoCol" text="Importo" prefWidth="100"/>
             <TableColumn fx:id="statoCol" text="Stato" prefWidth="100"/>
         </columns>
