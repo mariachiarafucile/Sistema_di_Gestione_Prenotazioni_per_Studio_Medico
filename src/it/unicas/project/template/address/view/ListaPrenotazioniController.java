@@ -1,7 +1,7 @@
 package it.unicas.project.template.address.view;
 
 import it.unicas.project.template.address.MainApp;
-import it.unicas.project.template.address.model.AlertUtils;
+import it.unicas.project.template.address.util.AlertUtils;
 import it.unicas.project.template.address.model.FasceMedici;
 import it.unicas.project.template.address.model.FasceOrarie;
 import it.unicas.project.template.address.model.Prenotazioni;
