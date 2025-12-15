@@ -2,13 +2,13 @@ package it.unicas.project.template.address;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.prefs.Preferences;
 
-import it.unicas.project.template.address.model.Amici;
-import it.unicas.project.template.address.model.Pazienti;
-import it.unicas.project.template.address.model.Prenotazioni;
-import it.unicas.project.template.address.model.dao.mysql.DAOMySQLSettings;
+import it.unicas.project.template.address.model.*;
+import it.unicas.project.template.address.model.dao.DAOException;
+import it.unicas.project.template.address.model.dao.mysql.*;
 import it.unicas.project.template.address.view.*;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -28,7 +28,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import static it.unicas.project.template.address.model.AlertUtils.alertExit;
+import static it.unicas.project.template.address.util.AlertUtils.alertExit;
 
 public class MainApp extends Application {
 
@@ -59,14 +59,75 @@ public class MainApp extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("My Clinic App");
 
-// Set application icon
+        // Mostra il logo
         primaryStage.getIcons().add(new Image("file:resources/images/logo.png"));
 
-// Mostra subito la schermata di identificazione
+        try {
+            SegretariDAOMySQLImpl segDAO = SegretariDAOMySQLImpl.getInstance();
+
+            if (!segDAO.existsByEmail("segretario@sistema.it")) {
+                Segretari sistema = new Segretari(
+                        "segretario@sistema.it",
+                        "Segretario",
+                        "di Sistema",
+                        "SYSTEM"
+                );
+                segDAO.insert(sistema);
+            }
+
+        } catch (DAOException e) {
+            e.printStackTrace();
+            // oppure logger.severe(e.getMessage());
+        }
+
+
+        // Gestisce prenotazioni scadute
+        gestisciPrenotazioniScadute();
+
+        // Mostra subito la schermata di identificazione
         showIdentificazione();
 
         primaryStage.show();
 
+    }
+
+    private void gestisciPrenotazioniScadute() {
+        try {
+            //Ritorna solo le prenotazioni scadute
+            List<Prenotazioni> prenotazioni = PrenotazioniDAOMySQLImpl.getInstance().selectPrenotazioniScadute();
+
+            for (Prenotazioni p : prenotazioni) {
+                // Recupera la fascia oraria
+                FasceOrarie fascia = (FasceOrarie) FasceOrarieDAOMySQLImpl.getInstance()
+                        .select(new FasceOrarie(p.getFasciaOrariaId(), null, null, null)).get(0);
+
+                // Crea nuova visita
+                Visite visita = new Visite();
+                visita.setDataOra(fascia.getData() + " " + fascia.getOraInizio() + ":00");
+                visita.setPazienteCodiceFiscale(p.getPazienteCodiceFiscale());
+                visita.setPrescrizione("");
+                visita.setSegretarioEmail("segretario@sistema.it"); // segretario di sistema
+
+                //Inserisce visita e recupera ID generato
+                VisiteDAOMySQLImpl.getInstance().insert(visita);
+
+                Pagamenti pagamento = new Pagamenti(
+                        null,            // idPagamento sarà generato dal DB
+                        "da saldare",               // stato
+                        0.0,                        // importo
+                        visita.getSegretarioEmail(),// email segretario
+                        visita.getIdVisita()        // visitaIdVisita
+                );
+
+                PagamentiDAOMySQLImpl.getInstance().insert(pagamento);
+
+                // Elimina prenotazione scaduta
+                PrenotazioniDAOMySQLImpl.getInstance().delete(p);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void showIdentificazione() {
