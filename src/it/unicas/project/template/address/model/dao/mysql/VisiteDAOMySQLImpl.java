@@ -116,12 +116,14 @@ public class VisiteDAOMySQLImpl implements DAO<Visite> {
     @Override
     public void insert(Visite v) throws DAOException {
 
-
         verifyObject(v);
 
+        String query = "INSERT INTO visite (dataOra, prescrizione, pazienteCodiceFiscale, segretarioEmail) VALUES ('"
+                + v.getDataOra() + "', '"
+                + v.getPrescrizione() + "', '"
+                + v.getPazienteCodiceFiscale() + "', '"
+                + v.getSegretarioEmail() + "');";
 
-        String query = "INSERT INTO visite (dataOra, prescrizione, pazienteCodiceFiscale, segretarioEmail) VALUES  ('" + v.getDataOra() + "', '" +
-                "', '" + v.getPrescrizione() + "', '" + v.getPazienteCodiceFiscale() + "', '" + v.getSegretarioEmail() + "');";
         try {
             logger.info("SQL: " + query);
         } catch (NullPointerException nullPointerException){
