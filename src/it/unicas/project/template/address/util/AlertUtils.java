@@ -1,4 +1,4 @@
-package it.unicas.project.template.address.model;
+package it.unicas.project.template.address.util;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
