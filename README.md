@@ -16,10 +16,32 @@ Il sistema offre funzionalità per la gestione di pazienti e medici, prenotazion
 - [Avvio dell’applicazione](#avvio-dell-applicazione)
 
 
-##Funzionalità principali
+## Funzionalità principali
+1️⃣ Gestione degli utenti
+L’applicazione permette agli utenti di identificarsi come:
+-Medico
+-Segretario
 
+Ogni utente può:
+-Registrare un account personale
+-Accedere all’applicazione con le proprie credenziali
 
+L’accesso alle funzionalità dell’applicazione deve essere controllato mediante autenticazione e autorizzazione, in conformità con il ruolo dell’utente (Medico o Segretario).
 
+2️⃣ Funzionalità per i Medici
+1. Inserire le proprie fasce orarie di disponibilità.
+2. Ricercare i dati di un paziente tramite codice fiscale.
+3. Inserire prescrizioni per un paziente associato a una visita registrata.
+4. Modificare le note cliniche relative al paziente.
+
+3️⃣ Funzionalità per i Segretari
+1. Ricercare i dati di un paziente tramite codice fiscale.
+2. Modificare i dati anagrafici di un paziente.
+3. Visualizzare l’elenco delle visite di un paziente.
+4. Modificare l’importo e lo stato di pagamento di ogni visita.
+5. Visualizzare un calendario con le prenotazioni di un paziente.
+6. Creare nuove prenotazioni sulla base delle fasce orarie di disponibilità dei medici, con suggerimento automatico delle fasce disponibili.
+7. Scaricare report mensili sul totale delle visite e dei pagamenti.
 
 ## Tecnologie utilizzate
 - Java, linguaggio di programmazione utilizzato per lo sviluppo dell’applicazione  
