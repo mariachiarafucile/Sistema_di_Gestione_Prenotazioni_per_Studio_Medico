@@ -1,20 +1,23 @@
 package it.unicas.project.template.address.view;
 
-import it.unicas.project.template.address.model.Pagamenti;
-import it.unicas.project.template.address.model.Visite;
+import it.unicas.project.template.address.model.*;
 import it.unicas.project.template.address.model.dao.DAOException;
 import it.unicas.project.template.address.model.dao.mysql.PagamentiDAOMySQLImpl;
 import it.unicas.project.template.address.model.dao.mysql.VisiteDAOMySQLImpl;
+import it.unicas.project.template.address.util.AlertUtils;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.ComboBoxTableCell;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 
-import static it.unicas.project.template.address.model.AlertUtils.showErrorAlert;
+import static it.unicas.project.template.address.util.AlertUtils.showErrorAlert;
 
 import java.util.List;
 
@@ -33,10 +36,13 @@ public class ListaVisiteController {
     private TableColumn<Visite, String> segretarioCol;
 
     @FXML
-    private TableColumn<Visite, String> importoCol;
+    private TableColumn<Visite, Double> importoCol;
 
     @FXML
     private TableColumn<Visite, String> statoCol;
+
+    private boolean soloPrescrizione = false;
+    private String ruoloUtente = "SEGRETARIO"; // default
 
     private Stage dialogStage;
     private String codiceFiscalePaziente;
@@ -50,7 +56,33 @@ public class ListaVisiteController {
         caricaVisite();
     }
 
-    @FXML
+    public void setRuoloUtente(String ruolo) {
+        this.ruoloUtente = ruolo;
+        aggiornaEditable();
+    }
+
+    public void setModalitaPrescrizione(boolean value) {
+        this.soloPrescrizione = value;
+        aggiornaEditable();
+    }
+
+    // Nuovo metodo per settare quali colonne sono editabili
+    private void aggiornaEditable() {
+            visiteTable.setEditable(true);
+
+            if ("MEDICO".equals(ruoloUtente)) {
+                prescrizioneCol.setEditable(true);
+                importoCol.setEditable(false);
+                statoCol.setEditable(false);
+            } else {
+                prescrizioneCol.setEditable(false);
+                importoCol.setEditable(true);
+                statoCol.setEditable(true);
+            }
+    }
+
+
+        @FXML
     private void initialize() {
 
         visiteTable.sceneProperty().addListener((obs, oldScene, newScene) -> {
@@ -70,29 +102,94 @@ public class ListaVisiteController {
 
         dataCol.setCellValueFactory(cell -> cell.getValue().dataOraProperty());
         prescrizioneCol.setCellValueFactory(cell -> cell.getValue().prescrizioneProperty());
-        segretarioCol.setCellValueFactory(cell -> cell.getValue().segretarioEmailProperty());
+
+        // Rende editabile la colonna prescrizione e salva su DB
+        prescrizioneCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        prescrizioneCol.setOnEditCommit(event -> {
+                Visite visita = event.getRowValue();
+                String nuovaPrescrizione = event.getNewValue();
+                visita.setPrescrizione(nuovaPrescrizione); // aggiorna l'oggetto in memoria
+
+                try {
+                    VisiteDAOMySQLImpl.getInstance().update(visita); // salva su DB
+                    AlertUtils.showConfirmationAlert("Prescrizione aggiornata correttamente");
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                    AlertUtils.showErrorAlert("Errore aggiornando la prescrizione: " + e.getMessage());
+                }
+
+           visiteTable.refresh();
+        });
+
         importoCol.setCellValueFactory(cell -> {
-
-            int idVisita = cell.getValue().getIdVisita();
-            System.out.println("Visita id: " + idVisita); // DEBUG
-
-            // cerca pagamento relativo alla visita
             try {
-                Pagamenti pagamento = ((PagamentiDAOMySQLImpl) PagamentiDAOMySQLImpl.getInstance()).selectByVisitaId(cell.getValue().getIdVisita());
-                System.out.println("Pagamento trovato: " + pagamento); // DEBUG
+                Pagamenti pagamento = PagamentiDAOMySQLImpl.getInstance()
+                        .selectByVisitaId(cell.getValue().getIdVisita());
                 if (pagamento != null && pagamento.getImporto() != null) {
-                    return new SimpleStringProperty(String.format("%.2f", pagamento.getImporto()));
+                    return pagamento.importoProperty().asObject();
                 }
             } catch (DAOException e) {
                 e.printStackTrace();
             }
-            return new SimpleStringProperty("");
+            return new SimpleDoubleProperty(0.0).asObject(); // fallback
+        });
+
+        // Creazione di una cella editabile con controllo che valore inserito sia compatibile con tipo Double
+        importoCol.setCellFactory(TextFieldTableCell.forTableColumn(new javafx.util.StringConverter<Double>() {
+            @Override
+            public String toString(Double value) {
+                return value != null ? value.toString() : "";
+            }
+
+            @Override
+            public Double fromString(String input) {
+                try {
+                    return Double.parseDouble(input); // prova a convertire in Double
+                } catch (NumberFormatException e) {
+                    AlertUtils.showErrorAlert("Valore non valido! Inserire un numero.");
+                    return null; // segnala valore non valido
+                }
+            }
+        }));
+
+        importoCol.setOnEditCommit(event -> {
+            Visite visita = event.getRowValue();
+            Double nuovoImporto = event.getNewValue();
+
+            // Se il valore inserito non è valido, torna al valore precedente
+            if (nuovoImporto == null) {
+                visiteTable.refresh(); // ripristina valore precedente
+                return;
+            }
+
+            try {
+                PagamentiDAOMySQLImpl dao = PagamentiDAOMySQLImpl.getInstance();
+                Pagamenti pagamento = dao.selectByVisitaId(visita.getIdVisita());
+
+                if (pagamento != null) {
+                    pagamento.setImporto(nuovoImporto);
+                    dao.update(pagamento);
+
+                    AlertUtils.showConfirmationAlert(
+                            "Importo aggiornato correttamente a " + nuovoImporto + "€"
+                    );
+                }
+
+                visiteTable.refresh();
+
+            } catch (DAOException e) {
+                e.printStackTrace();
+                AlertUtils.showErrorAlert("Errore aggiornando l'importo: " + e.getMessage());
+            }
         });
 
         statoCol.setCellValueFactory(cell -> {
             try {
-                Pagamenti pagamento = ((PagamentiDAOMySQLImpl) PagamentiDAOMySQLImpl.getInstance()).selectByVisitaId(cell.getValue().getIdVisita());
-                if (pagamento != null) {
+                Pagamenti pagamento =
+                        ((PagamentiDAOMySQLImpl) PagamentiDAOMySQLImpl.getInstance())
+                                .selectByVisitaId(cell.getValue().getIdVisita());
+
+                if (pagamento != null && pagamento.getStato() != null) {
                     return new SimpleStringProperty(pagamento.getStato());
                 }
             } catch (DAOException e) {
@@ -101,9 +198,40 @@ public class ListaVisiteController {
             return new SimpleStringProperty("");
         });
 
+        // tipo di cella (ComboBox)
+        statoCol.setCellFactory(
+                ComboBoxTableCell.forTableColumn("pagata", "da saldare")
+        );
+
+        // salvataggio su DB
+        statoCol.setOnEditCommit(event -> {
+            Visite visita = event.getRowValue();
+            String nuovoStato = event.getNewValue();
+
+            try {
+                PagamentiDAOMySQLImpl dao =
+                        (PagamentiDAOMySQLImpl) PagamentiDAOMySQLImpl.getInstance();
+
+                Pagamenti pagamento = dao.selectByVisitaId(visita.getIdVisita());
+
+                if (pagamento != null) {
+                    pagamento.setStato(nuovoStato);
+                    dao.update(pagamento);
+
+                    AlertUtils.showConfirmationAlert("Stato aggiornato correttamente a '" + nuovoStato + "'");
+                }
+
+                visiteTable.refresh();
+
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
     private void caricaVisite() {
+
         try {
             // Filtra le visite per CF
             Visite filtro = new Visite();
