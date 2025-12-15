@@ -12,9 +12,6 @@ public class MedicoDashboardController {
     private Button ricercaPazienteButton;
 
     @FXML
-    private Button calendarioButton;
-
-    @FXML
     private Button fasceOrarieButton;
 
     private MainApp mainApp;

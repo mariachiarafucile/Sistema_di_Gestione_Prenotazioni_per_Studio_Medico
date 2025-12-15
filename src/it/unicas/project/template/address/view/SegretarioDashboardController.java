@@ -12,24 +12,21 @@ import javafx.stage.Stage;
 public class SegretarioDashboardController {
 
     @FXML
-    private ImageView iconaRicerca;
-    @FXML
-    private ImageView iconaAggiungi;
-    @FXML
-    private ImageView iconaPortafoglio;
-
-    @FXML
     private Button ricercaButton;
     @FXML
     private Button aggiungiButton;
     @FXML
     private Button portafoglioButton;
 
-    @FXML
-    private VBox pannelloPrincipale;
-
     private Stage stage;
     private MainApp mainApp;
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+    public void setMainApp(MainApp mainApp) {
+        this.mainApp = mainApp;
+    }
 
 
     @FXML
@@ -38,13 +35,12 @@ public class SegretarioDashboardController {
             try {
                 Image img = new Image(getClass().getResourceAsStream("/images/iconaRicerca.png"));
                 ImageView iv = new ImageView(img);
-                iv.setFitWidth(75);   // dimensione icona
+                iv.setFitWidth(75);
                 iv.setFitHeight(75);
                 iv.setPreserveRatio(true);
 
                 ricercaButton.setGraphic(iv);
-                ricercaButton.setText(""); // nessun testo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                ricercaButton.setStyle("-fx-content-display: center;"); // centra la grafica
+                ricercaButton.setStyle("-fx-content-display: center;");
             } catch (Exception e) {
                 System.out.println("Errore caricamento immagine iconaRicerca: " + e.getMessage());
             }
@@ -56,13 +52,12 @@ public class SegretarioDashboardController {
             try {
                 Image img = new Image(getClass().getResourceAsStream("/images/iconaAggiungi.png"));
                 ImageView iv = new ImageView(img);
-                iv.setFitWidth(75);   // dimensione icona
+                iv.setFitWidth(75);
                 iv.setFitHeight(75);
                 iv.setPreserveRatio(true);
 
                 aggiungiButton.setGraphic(iv);
-                aggiungiButton.setText(""); // Rivedi testo
-                aggiungiButton.setStyle("-fx-content-display: center;"); // centra la grafica
+                aggiungiButton.setStyle("-fx-content-display: center;");
             } catch (Exception e) {
                 System.out.println("Errore caricamento immagine iconaAggiungi: " + e.getMessage());
             }
@@ -74,27 +69,18 @@ public class SegretarioDashboardController {
             try {
                 Image img = new Image(getClass().getResourceAsStream("/images/iconaPortafoglio.png"));
                 ImageView iv = new ImageView(img);
-                iv.setFitWidth(75);   // dimensione icona
+                iv.setFitWidth(75);
                 iv.setFitHeight(75);
                 iv.setPreserveRatio(true);
 
                 portafoglioButton.setGraphic(iv);
-                portafoglioButton.setText(""); // Rivedi testo
-                portafoglioButton.setStyle("-fx-content-display: center;"); // centra la grafica
+                portafoglioButton.setStyle("-fx-content-display: center;");
             } catch (Exception e) {
                 System.out.println("Errore caricamento immagine iconaPortafoglio: " + e.getMessage());
             }
 
             portafoglioButton.setOnAction(e -> mainApp.ShowReportDialog());
         }
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public void setMainApp(MainApp mainApp) {
-        this.mainApp = mainApp;
     }
 
 }

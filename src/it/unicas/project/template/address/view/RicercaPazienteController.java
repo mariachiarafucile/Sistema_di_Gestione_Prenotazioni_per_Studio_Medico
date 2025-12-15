@@ -16,7 +16,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import it.unicas.project.template.address.model.Pazienti;
-
 import java.util.List;
 import it.unicas.project.template.address.model.dao.mysql.PazientiDAOMySQLImpl;
 
@@ -26,14 +25,8 @@ public class RicercaPazienteController {
 
     @FXML
     private TextField cfField;
-
     @FXML
     private Button cercaButton;
-
-    private MainApp mainApp;
-
-    private Stage dialogStage;
-
     @FXML
     private VBox risultatiBox;
     @FXML
@@ -47,6 +40,10 @@ public class RicercaPazienteController {
     @FXML
     private Button aggiungiPrescrizioneBtn;
 
+    private MainApp mainApp;
+
+    private Stage dialogStage;
+
     private Pazienti pazienteTrovato;
 
     private String loginMode; // "MEDICO" o "SEGRETARIO"
@@ -54,14 +51,16 @@ public class RicercaPazienteController {
     public void setLoginRole(String role) {
         this.loginMode = role;
     }
-
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
+    }
+    public void setDialogStage(Stage stage) {
+        this.dialogStage = stage;
     }
 
     @FXML
     private void initialize() {
-        // Quando la scena è pronta, allora carichiamo il logo
+        //caricamento logo
         cfField.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 newScene.windowProperty().addListener((obs2, oldWindow, newWindow) -> {
@@ -78,9 +77,7 @@ public class RicercaPazienteController {
         });
     }
 
-    public void setDialogStage(Stage stage) {
-        this.dialogStage = stage;
-    }
+
     @FXML
     private void onCerca() {
         String cf = cfField.getText();
@@ -178,7 +175,7 @@ public class RicercaPazienteController {
     @FXML
     private void onModificaNoteCliniche() {
 
-        // Apri una finestra di dialogo SOLO per modificare le note cliniche
+        // Apri una finestra di dialogo per modificare le note cliniche
         TextField input = new TextField(pazienteTrovato.getNoteCliniche());
         Stage stage = new Stage();
         try {
@@ -205,7 +202,7 @@ public class RicercaPazienteController {
             stage.close();
 
             // Aggiorno solo la GUI
-            onCerca(); // ricarica i dati mostrati
+            onCerca();
         });
 
         HBox buttons = new HBox(salva);
@@ -227,10 +224,8 @@ public class RicercaPazienteController {
             Stage stage = new Stage();
             stage.setTitle("Modifica Prescrizioni");
 
-            // **prima carichi la scena**
             stage.setScene(new Scene(loader.load()));
 
-            // **solo dopo il load puoi prendere il controller**
             ListaVisiteController controller = loader.getController();
             controller.setDialogStage(stage);
             controller.setCodiceFiscale(pazienteTrovato.getCodiceFiscale());
@@ -261,14 +256,12 @@ public class RicercaPazienteController {
             Stage stage = new Stage();
             stage.setTitle("Lista Visite");
 
-            // **prima carichi la scena**
             stage.setScene(new Scene(loader.load()));
 
-            // **solo dopo il load puoi prendere il controller**
             ListaVisiteController controller = loader.getController();
             controller.setDialogStage(stage);
             controller.setCodiceFiscale(pazienteTrovato.getCodiceFiscale());
-            controller.setRuoloUtente(loginMode); // passa MEDICO o SEGRETARIO
+            controller.setRuoloUtente(loginMode);
             controller.setModalitaPrescrizione(false); // importo/stato modificabili
 
             stage.initModality(Modality.APPLICATION_MODAL);

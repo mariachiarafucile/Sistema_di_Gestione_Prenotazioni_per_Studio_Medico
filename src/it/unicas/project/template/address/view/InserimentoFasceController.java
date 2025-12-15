@@ -12,7 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
 import java.time.*;
 import java.time.format.TextStyle;
 import java.util.List;
@@ -41,6 +40,8 @@ public class InserimentoFasceController {
 
     private String emailMedicoCorrente;
 
+    public void setMainApp(MainApp mainApp) { this.mainApp = mainApp; }
+    public void setDialogStage(Stage dialogStage) { this.dialogStage = dialogStage; }
     public void setEmailMedicoCorrente(String email) {
         this.emailMedicoCorrente = email;
     }
@@ -79,13 +80,12 @@ public class InserimentoFasceController {
             popolaCalendario();
         });
 
-        // ORARI DI INIZIO: 09:00 → 19:30
+        // ORARI DI INIZIO: 09:00 -> 19:30
         for (int h = 9; h <= 19; h++) {
             oraInizioCombo.getItems().add(String.format("%02d:00", h));
             oraInizioCombo.getItems().add(String.format("%02d:30", h));
         }
-
-        // ORARI DI FINE: 09:30 → 20:00
+        // ORARI DI FINE: 09:30 -> 20:00
         // Primo orario fisso: 09:30
         oraFineCombo.getItems().add("09:30");
 
@@ -227,7 +227,6 @@ public class InserimentoFasceController {
             FasceMedici fasceMedico = new FasceMedici(fascia.getIdFasciaOraria(), emailMedicoCorrente);
             fasceMedicoDAO.insert(fasceMedico);
 
-            //Mostra conferma
             showConfirmationAlert("Fascia oraria inserita correttamente.");
             dialogStage.close();
 
@@ -239,6 +238,4 @@ public class InserimentoFasceController {
         dialogStage.close();
     }
 
-    public void setMainApp(MainApp mainApp) { this.mainApp = mainApp; }
-    public void setDialogStage(Stage dialogStage) { this.dialogStage = dialogStage; }
 }

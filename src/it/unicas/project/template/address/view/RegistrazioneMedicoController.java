@@ -32,7 +32,7 @@ public class RegistrazioneMedicoController {
 
     @FXML
     private void initialize() {
-        // Quando la scena è pronta, allora carichiamo il logo
+        //caricamento logo
         nomeField.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 newScene.windowProperty().addListener((obs2, oldWindow, newWindow) -> {
@@ -109,7 +109,7 @@ public class RegistrazioneMedicoController {
             nomeField.getScene().getWindow().hide();
 
             // Reindirizza alla pagina di login
-            mainApp.showLogin("MEDICO");  // Metodo nel MainApp per mostrare il login
+            mainApp.showLogin("MEDICO");
 
         } catch (DAOException e) {
 

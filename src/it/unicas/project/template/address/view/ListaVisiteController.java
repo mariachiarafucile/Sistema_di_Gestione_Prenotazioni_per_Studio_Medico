@@ -33,9 +33,6 @@ public class ListaVisiteController {
     private TableColumn<Visite, String> prescrizioneCol;
 
     @FXML
-    private TableColumn<Visite, String> segretarioCol;
-
-    @FXML
     private TableColumn<Visite, Double> importoCol;
 
     @FXML
@@ -82,7 +79,7 @@ public class ListaVisiteController {
     }
 
 
-        @FXML
+    @FXML
     private void initialize() {
 
         visiteTable.sceneProperty().addListener((obs, oldScene, newScene) -> {
@@ -144,10 +141,10 @@ public class ListaVisiteController {
             @Override
             public Double fromString(String input) {
                 try {
-                    return Double.parseDouble(input); // prova a convertire in Double
+                    return Double.parseDouble(input);
                 } catch (NumberFormatException e) {
                     AlertUtils.showErrorAlert("Valore non valido! Inserire un numero.");
-                    return null; // segnala valore non valido
+                    return null;
                 }
             }
         }));
@@ -158,7 +155,7 @@ public class ListaVisiteController {
 
             // Se il valore inserito non è valido, torna al valore precedente
             if (nuovoImporto == null) {
-                visiteTable.refresh(); // ripristina valore precedente
+                visiteTable.refresh();
                 return;
             }
 
@@ -198,12 +195,10 @@ public class ListaVisiteController {
             return new SimpleStringProperty("");
         });
 
-        // tipo di cella (ComboBox)
         statoCol.setCellFactory(
                 ComboBoxTableCell.forTableColumn("pagata", "da saldare")
         );
 
-        // salvataggio su DB
         statoCol.setOnEditCommit(event -> {
             Visite visita = event.getRowValue();
             String nuovoStato = event.getNewValue();

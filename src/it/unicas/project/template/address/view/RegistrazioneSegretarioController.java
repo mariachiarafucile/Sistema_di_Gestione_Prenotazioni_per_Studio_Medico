@@ -28,13 +28,12 @@ public class RegistrazioneSegretarioController {
     private MainApp mainApp;
 
     public void setMainApp(MainApp mainApp) {
-
         this.mainApp = mainApp;
     }
 
     @FXML
     private void initialize() {
-        // Quando la scena è pronta, allora carichiamo il logo
+        //caricamento logo
         nomeField.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 newScene.windowProperty().addListener((obs2, oldWindow, newWindow) -> {
@@ -102,13 +101,10 @@ public class RegistrazioneSegretarioController {
         e.printStackTrace();
         showErrorAlert("L'email inserita è già utilizzata da un altro utente.");
     }
-
-
     }
 
     @FXML
     private void onBack() {
-
         nomeField.getScene().getWindow().hide();
     }
 

@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
 import java.time.LocalDate;
 
 import static it.unicas.project.template.address.util.AlertUtils.showConfirmationAlert;
@@ -161,7 +160,7 @@ public class ModificaPazienteController {
 
       try {
             DAO dao = PazientiDAOMySQLImpl.getInstance();
-            dao.update(pazienteDaModificare);  // UPDATE INVECE DI INSERT
+            dao.update(pazienteDaModificare);
             showConfirmationAlert("Dati del paziente aggiornati correttamente.");
         } catch (DAOException e) {
             e.printStackTrace();

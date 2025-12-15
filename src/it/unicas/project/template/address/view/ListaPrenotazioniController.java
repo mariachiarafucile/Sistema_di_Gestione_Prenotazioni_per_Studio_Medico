@@ -18,7 +18,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -171,7 +170,7 @@ public class ListaPrenotazioniController {
                 Hyperlink btnModifica = new Hyperlink("Modifica");
                 btnModifica.setOnAction(event -> {
                     try {
-                        //Recupero la fascia oraria e il mediico associati alla prenotazione
+                        //Recupero la fascia oraria e il medico associati alla prenotazione
                         FasceMedici fm = new FasceMedici(
                                 p.getFasciaOrariaId(),
                                 p.getMedicoEmail()
@@ -185,8 +184,6 @@ public class ListaPrenotazioniController {
                                 (FasceMediciDAOMySQLImpl) FasceMediciDAOMySQLImpl.getInstance();
 
                         daoFm.insert(fm);   // reinserisco la disponibilità
-
-
 
                     } catch (Exception ex) {
                         ex.printStackTrace();

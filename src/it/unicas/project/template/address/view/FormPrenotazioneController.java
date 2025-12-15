@@ -15,7 +15,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-
 import java.time.*;
 import java.time.format.TextStyle;
 import java.util.*;
@@ -24,7 +23,6 @@ import static it.unicas.project.template.address.util.AlertUtils.showErrorAlert;
 
 public class FormPrenotazioneController {
 
-    // ==== FXML ====
     @FXML private GridPane calendarioGrid;
     @FXML private Label giornoSelezionatoLabel;
     @FXML private ComboBox<String> oraInizioCombo;
@@ -34,7 +32,6 @@ public class FormPrenotazioneController {
     @FXML private Label meseLabel;
     @FXML private TextField medicoField;
 
-    // ==== Stato ====
     private String codiceFiscalePaziente;
     private Stage dialogStage;
     private LocalDate giornoSelezionato;
@@ -44,10 +41,14 @@ public class FormPrenotazioneController {
     private final DAO<Prenotazioni> daoPren = PrenotazioniDAOMySQLImpl.getInstance();
     private final DAO<FasceOrarie> daoFasce = FasceOrarieDAOMySQLImpl.getInstance();
 
-    // Cache fasce del medico per il mese corrente
     private Map<LocalDate, List<FasceOrarie>> fascePerData = new HashMap<>();
 
-
+    public void setPazienteCF(String cf) {
+        this.codiceFiscalePaziente = cf;
+    }
+    public void setDialogStage(Stage stage) {
+        this.dialogStage = stage;
+    }
     public void setPrenotazioneDaModificare(Prenotazioni p) {
         this.prenotazioneDaModificare = p;
     }
@@ -175,7 +176,6 @@ public class FormPrenotazioneController {
         }
     }
 
-    // ===== Colora giorni =====
     private void coloraGiorni() {
         for (var n : calendarioGrid.getChildren()) {
             if (!(n instanceof Label)) continue;
@@ -214,15 +214,6 @@ public class FormPrenotazioneController {
             oraInizioCombo.getItems().add(f.getOraInizio());
             oraFineCombo.getItems().add(f.getOraFine());
         }
-    }
-
-    // ===== Setters =====
-    public void setPazienteCF(String cf) {
-        this.codiceFiscalePaziente = cf;
-    }
-
-    public void setDialogStage(Stage stage) {
-        this.dialogStage = stage;
     }
 
 
@@ -267,7 +258,6 @@ public class FormPrenotazioneController {
                 prenotazioneDaModificare.setFasciaOrariaId(fasciaId);
                 daoPren.update(prenotazioneDaModificare);
             } else {
-
                 // Crea la prenotazione e salva nel DB
                 Prenotazioni p = new Prenotazioni(null, codiceFiscalePaziente, medico, fasciaId);
                 daoPren.insert(p);

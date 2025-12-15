@@ -33,10 +33,7 @@ public class LoginController {
      */
     public void setLoginMode(String loginMode) {
         this.loginMode = loginMode;
-
-        // if (titleLabel != null) {
         titleLabel.setText("Login ");
-        //  }
     }
 
     @FXML

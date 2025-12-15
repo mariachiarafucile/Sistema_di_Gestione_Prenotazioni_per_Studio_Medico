@@ -36,12 +36,18 @@ public class ReportController {
     private Stage dialogStage;
     private MainApp mainApp;
 
-    // Campi per salvare i valori correnti del report
     private int currentVisitePagate = 0;
     private int currentVisiteDaSaldare = 0;
     private double currentTotaleIncassato = 0.0;
     private double currentTotaleDaIncassare = 0.0;
     private String currentMese = "";
+
+    public void setDialogStage(Stage dialogStage) {
+        this.dialogStage = dialogStage;
+    }
+    public void setMainApp(MainApp mainApp) {
+        this.mainApp = mainApp;
+    }
 
 
     @FXML
@@ -123,7 +129,7 @@ public class ReportController {
 
     }
 
-    // --- Metodo per salvare il report in CSV ---
+    //Metodo per salvare il report in CSV
     private void scaricaReport() {
         if (currentMese.isEmpty()) {
             System.out.println("Seleziona un mese prima di scaricare il report.");
@@ -149,11 +155,4 @@ public class ReportController {
         }
     }
 
-    public void setDialogStage(Stage dialogStage) {
-        this.dialogStage = dialogStage;
-    }
-
-    public void setMainApp(MainApp mainApp) {
-        this.mainApp = mainApp;
-    }
 }

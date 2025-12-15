@@ -33,10 +33,13 @@ public class RegistrazionePazienteController {
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
+    public void setDialogStage(Stage stage) {
+        this.dialogStage = stage;
+    }
 
     @FXML
     private void initialize() {
-        // Quando la scena è pronta, allora carichiamo il logo
+        //caricamento logo
         nomeField.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 newScene.windowProperty().addListener((obs2, oldWindow, newWindow) -> {
@@ -53,9 +56,6 @@ public class RegistrazionePazienteController {
         });
     }
 
-    public void setDialogStage(Stage stage) {
-        this.dialogStage = stage;
-    }
 
     @FXML
     private void onRegistra() {
