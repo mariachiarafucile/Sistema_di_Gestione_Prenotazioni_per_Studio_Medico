@@ -21,6 +21,13 @@ import java.util.*;
 
 import static it.unicas.project.template.address.util.AlertUtils.showErrorAlert;
 
+/**
+ * Controller del form di prenotazione.
+ *
+ * Gestisce la selezione del medico, del giorno e della fascia oraria
+ * per la creazione o modifica di una prenotazione.
+ *
+ */
 public class FormPrenotazioneController {
 
     @FXML private GridPane calendarioGrid;
@@ -43,16 +50,36 @@ public class FormPrenotazioneController {
 
     private Map<LocalDate, List<FasceOrarie>> fascePerData = new HashMap<>();
 
+    /**
+     * Imposta il codice fiscale del paziente.
+     *
+     * @param cf
+     */
     public void setPazienteCF(String cf) {
         this.codiceFiscalePaziente = cf;
     }
+
+    /**
+     * Imposta lo stage del dialog.
+     *
+     * @param stage
+     */
     public void setDialogStage(Stage stage) {
         this.dialogStage = stage;
     }
+
+    /**
+     * Imposta la prenotazione da modificare.
+     *
+     * @param p
+     */
     public void setPrenotazioneDaModificare(Prenotazioni p) {
         this.prenotazioneDaModificare = p;
     }
 
+    /**
+     * Inizializza il controller.
+     */
     @FXML
     private void initialize() {
 
@@ -95,7 +122,9 @@ public class FormPrenotazioneController {
 
     }
 
-    // ===== Calendar Layout =====
+    /**
+     * Popola il calendario del mese corrente.
+     */
     private void popolaCalendarioBase() {
         calendarioGrid.getChildren().clear();
 
@@ -152,7 +181,9 @@ public class FormPrenotazioneController {
         coloraGiorni();
     }
 
-    // ===== Load fasce per mese =====
+    /**
+     * Carica le fasce orarie del medico selezionato.
+     */
     private void caricaFasceMedico() {
         fascePerData.clear();
 
@@ -176,6 +207,9 @@ public class FormPrenotazioneController {
         }
     }
 
+    /**
+     * Colora i giorni del calendario in base alla disponibilità.
+     */
     private void coloraGiorni() {
         for (var n : calendarioGrid.getChildren()) {
             if (!(n instanceof Label)) continue;
@@ -196,6 +230,12 @@ public class FormPrenotazioneController {
         }
     }
 
+    /**
+     * Restituisce lo stile base per le celle del calendario.
+     *
+     * @param bg
+     * @return
+     */
     private String baseStyle(String bg) {
         return "-fx-padding: 8;" +
                 "-fx-border-color: #cccccc;" +
@@ -203,7 +243,11 @@ public class FormPrenotazioneController {
                 "-fx-background-color: " + bg + ";";
     }
 
-    // ===== Riempie combo orari dal DB =====
+    /**
+     * Aggiorna le fasce orarie disponibili per la data selezionata.
+     *
+     * @param data
+     */
     private void aggiornaOrariDisponibili(LocalDate data) {
         oraInizioCombo.getItems().clear();
         oraFineCombo.getItems().clear();
@@ -216,7 +260,9 @@ public class FormPrenotazioneController {
         }
     }
 
-
+    /**
+     * Salva la prenotazione.
+     */
     @FXML
     private void onSalva() {
         try {
@@ -286,6 +332,9 @@ public class FormPrenotazioneController {
         }
     }
 
+    /**
+     * Annulla l'operazione e chiude il dialog.
+     */
     @FXML
     private void onAnnulla() {
         dialogStage.close();

@@ -15,6 +15,15 @@ import javafx.stage.Stage;
 import static it.unicas.project.template.address.util.AlertUtils.showConfirmationAlert;
 import static it.unicas.project.template.address.util.AlertUtils.showErrorAlert;
 
+/**
+ * Controller per la registrazione di un medico.
+ *
+ * Gestisce la visualizzazione del form di registrazione, la validazione
+ * dei campi (nome, cognome, specializzazione, telefono, email, password)
+ * e l'inserimento del nuovo medico nel database.
+ * Mostra messaggi di conferma o di errore in base all'esito.
+ *
+ */
 public class RegistrazioneMedicoController {
 
     @FXML private TextField nomeField;
@@ -26,10 +35,18 @@ public class RegistrazioneMedicoController {
 
     private MainApp mainApp;
 
+    /**
+     * Imposta il riferimento all'applicazione principale.
+     *
+     * @param mainApp
+     */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
 
+    /**
+     * Inizializza il controller e carica il logo nella finestra.
+     */
     @FXML
     private void initialize() {
         //caricamento logo
@@ -49,6 +66,11 @@ public class RegistrazioneMedicoController {
         });
     }
 
+    /**
+     * Gestisce il click sul pulsante "Registrati".
+     * Valida i campi, crea un oggetto Medici e lo inserisce nel database.
+     * Mostra alert di conferma o errore e chiude la finestra se la registrazione ha successo.
+     */
     @FXML
     private void onRegister() {
         String nome = nomeField.getText();
@@ -125,20 +147,27 @@ public class RegistrazioneMedicoController {
                 }
 
             } else {
+                System.out.println("Errore: " + msg);
                 showErrorAlert("Errore durante la registrazione: " + msg);
             }
         }
 
     }
 
+    /**
+     * Gestisce il click sul pulsante "Indietro", chiudendo la finestra di registrazione.
+     */
     @FXML
     private void onBack() {
         // Chiude la finestra di registrazione
         nomeField.getScene().getWindow().hide();
     }
 
-
-    // Metodo di utilità per verificare se un numero di telefono è valido
+    /**
+     * Verifica se il numero di telefono è valido (10 cifre).
+     *
+     * @param telefono
+     */
     private boolean telefonoValido(String telefono) {
         // Controllo lunghezza
         if (telefono.length() != 10) {
@@ -154,7 +183,12 @@ public class RegistrazioneMedicoController {
 
         return true;
     }
-    // Metodo di utilità per verificare se un'email è valida
+
+    /**
+     * Verifica se l'email è valida.
+     *
+     * @param email
+     */
     private boolean emailValida(String email) {
         int atIndex = email.indexOf("@");
         int dotIndex = email.lastIndexOf(".");

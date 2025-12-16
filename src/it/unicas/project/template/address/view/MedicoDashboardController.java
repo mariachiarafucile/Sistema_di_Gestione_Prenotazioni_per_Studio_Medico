@@ -6,6 +6,12 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * Controller per la dashboard del medico.
+ *
+ * Permette l'accesso rapido alla ricerca paziente e alla gestione delle fasce orarie.
+ *
+ */
 public class MedicoDashboardController {
 
     @FXML
@@ -18,10 +24,27 @@ public class MedicoDashboardController {
 
     private String emailMedicoCorrente;
 
+    /**
+     * Imposta il riferimento all'applicazione principale.
+     *
+     * @param mainApp
+     */
+    public void setMainApp(MainApp mainApp) {
+        this.mainApp = mainApp;
+    }
+
+    /**
+     * Imposta l'email del medico corrente.
+     *
+     * @param email
+     */
     public void setEmailMedicoCorrente(String email) {
         this.emailMedicoCorrente = email;
     }
 
+    /**
+     * Inizializza la dashboard caricando le icone e configurando i pulsanti.
+     */
     @FXML
     private void initialize() {
         // Carica immagini
@@ -64,7 +87,4 @@ public class MedicoDashboardController {
         }
     }
 
-    public void setMainApp(MainApp mainApp) {
-        this.mainApp = mainApp;
-    }
 }

@@ -23,6 +23,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Controller per la visualizzazione delle prenotazioni del paziente.
+ *
+ * Mostra un calendario mensile con le prenotazioni presenti
+ * e consente la creazione, modifica ed eliminazione delle prenotazioni.
+ *
+ */
 public class ListaPrenotazioniController {
 
     @FXML
@@ -51,21 +58,39 @@ public class ListaPrenotazioniController {
 
     private String giornoSelezionato = null;
 
+    /**
+     * Imposta il riferimento all'applicazione principale.
+     *
+     * @param mainApp
+     */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
 
+    /**
+     * Imposta lo stage del dialog.
+     *
+     * @param stage
+     */
     public void setDialogStage(Stage stage) {
         this.dialogStage = stage;
         this.dialogStage.setWidth(800);
         this.dialogStage.setHeight(600);
     }
 
+    /**
+     * Imposta il codice fiscale del paziente.
+     *
+     * @param cf
+     */
     public void setPazienteCF(String cf) {
         this.codiceFiscalePaziente = cf;
         caricaPrenotazioni();
     }
 
+    /**
+     * Inizializza il controller.
+     */
     @FXML
     private void initialize() {
         rootVBox.sceneProperty().addListener((obs, oldScene, newScene) -> {
@@ -91,6 +116,9 @@ public class ListaPrenotazioniController {
         disegnaCalendario();
     }
 
+    /**
+     * Disegna il calendario del mese corrente.
+     */
     private void disegnaCalendario() {
         calendarioGrid.getChildren().clear();
 
@@ -149,6 +177,12 @@ public class ListaPrenotazioniController {
         }
     }
 
+    /**
+     * Mostra le prenotazioni del giorno selezionato.
+     *
+     * @param data
+     * @param lista
+     */
     private void mostraPrenotazioniGiorno(String data, List<Prenotazioni> lista) {
 
         giornoSelezionato = data;
@@ -242,18 +276,26 @@ public class ListaPrenotazioniController {
         }
     }
 
-
+    /**
+     * Ricarica le prenotazioni del paziente.
+     */
     private void caricaPrenotazioni() {
         aggiornaEtichettaMese();
         disegnaCalendario();
     }
 
+    /**
+     * Apre il form per una nuova prenotazione.
+     */
     @FXML
     private void onNuovaPrenotazione() {
         mainApp.showFormPrenotazioneDialog(codiceFiscalePaziente, null);
         caricaPrenotazioni();
     }
 
+    /**
+     * Visualizza il mese precedente.
+     */
     @FXML
     private void mesePrecedente() {
         currentMonth = currentMonth.minusMonths(1);
@@ -261,6 +303,9 @@ public class ListaPrenotazioniController {
         disegnaCalendario();
     }
 
+    /**
+     * Visualizza il mese successivo.
+     */
     @FXML
     private void meseSuccessivo() {
         currentMonth = currentMonth.plusMonths(1);
@@ -268,6 +313,9 @@ public class ListaPrenotazioniController {
         disegnaCalendario();
     }
 
+    /**
+     * Aggiorna l'etichetta del mese corrente.
+     */
     private void aggiornaEtichettaMese() {
         if (meseLabel != null) {
             String meseAnno = currentMonth.getMonth().toString() + " " + currentMonth.getYear();

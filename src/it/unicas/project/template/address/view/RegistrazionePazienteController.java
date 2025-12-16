@@ -16,6 +16,17 @@ import java.time.LocalDate;
 import static it.unicas.project.template.address.util.AlertUtils.showConfirmationAlert;
 import static it.unicas.project.template.address.util.AlertUtils.showErrorAlert;
 
+/**
+ * Controller per la registrazione di un paziente.
+ *
+ * Gestisce la visualizzazione del form di registrazione paziente,
+ * la validazione dei dati inseriti (nome, cognome, data di nascita,
+ * codice fiscale, indirizzo, telefono, email, note cliniche) e
+ * l'inserimento del nuovo paziente nel database.
+ *
+ * Mostra messaggi di conferma o di errore in base all'esito.
+ *
+ */
 public class RegistrazionePazienteController {
 
     @FXML private TextField nomeField;
@@ -30,13 +41,27 @@ public class RegistrazionePazienteController {
     private MainApp mainApp;
     private Stage dialogStage;
 
+    /**
+     * Imposta il riferimento all'applicazione principale.
+     *
+     * @param mainApp
+     */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
+
+    /**
+     * Imposta il riferimento alla finestra di dialogo.
+     *
+     * @param stage
+     */
     public void setDialogStage(Stage stage) {
         this.dialogStage = stage;
     }
 
+    /**
+     * Inizializza il controller, caricando il logo nell'applicazione.
+     */
     @FXML
     private void initialize() {
         //caricamento logo
@@ -56,7 +81,11 @@ public class RegistrazionePazienteController {
         });
     }
 
-
+    /**
+     * Gestisce il click sul pulsante "Conferma".
+     * Valida i campi, crea un oggetto Pazienti e lo inserisce nel database.
+     * Mostra alert di conferma o di errore e chiude la finestra se la registrazione ha successo.
+     */
     @FXML
     private void onRegistra() {
         String nome = nomeField.getText();
@@ -156,11 +185,19 @@ public class RegistrazionePazienteController {
         if (dialogStage != null) dialogStage.close();
     }
 
+    /**
+     * Gestisce il click sul pulsante "Annulla", chiudendo la finestra di registrazione.
+     */
     @FXML
     private void onAnnulla() {
         if (dialogStage != null) dialogStage.close();
     }
 
+    /**
+     * Verifica se il numero di telefono inserito è valido (10 cifre).
+     *
+     * @param telefono
+     */
     private boolean telefonoValido(String telefono) {
         if (telefono.length() != 10) {
             return false;
@@ -174,6 +211,11 @@ public class RegistrazionePazienteController {
         return true;
     }
 
+    /**
+     * Verifica se l'email inserita è valida.
+     *
+     * @param email
+     */
     private boolean emailValida(String email) {
         int atIndex = email.indexOf("@");
         int dotIndex = email.lastIndexOf(".");

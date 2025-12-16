@@ -21,6 +21,14 @@ import static it.unicas.project.template.address.util.AlertUtils.showErrorAlert;
 
 import java.util.List;
 
+/**
+ * Controller per la visualizzazione delle visite del paziente.
+ *
+ * Mostra una tabella con data, prescrizione, importo e stato delle visite
+ * e consente di modificare le colonne editabili in base al ruolo utente
+ * (medico o segretario).
+ *
+ */
 public class ListaVisiteController {
 
     @FXML
@@ -44,26 +52,49 @@ public class ListaVisiteController {
     private Stage dialogStage;
     private String codiceFiscalePaziente;
 
+    /**
+     * Imposta lo stage del dialog.
+     *
+     * @param stage
+     */
     public void setDialogStage(Stage stage) {
         this.dialogStage = stage;
     }
 
+    /**
+     * Imposta il codice fiscale del paziente.
+     *
+     * @param cf
+     */
     public void setCodiceFiscale(String cf) {
         this.codiceFiscalePaziente = cf;
         caricaVisite();
     }
 
+    /**
+     * Imposta il ruolo dell'utente.
+     *
+     * @param ruolo
+     */
     public void setRuoloUtente(String ruolo) {
         this.ruoloUtente = ruolo;
         aggiornaEditable();
     }
 
+    /**
+     * Imposta la modalità di sola prescrizione.
+     *
+     * @param value
+     */
     public void setModalitaPrescrizione(boolean value) {
         this.soloPrescrizione = value;
         aggiornaEditable();
     }
 
-    // Nuovo metodo per settare quali colonne sono editabili
+    /**
+     * Aggiorna quali colonne della tabella sono editabili
+     * in base al ruolo e alla modalità.
+     */
     private void aggiornaEditable() {
             visiteTable.setEditable(true);
 
@@ -78,7 +109,9 @@ public class ListaVisiteController {
             }
     }
 
-
+    /**
+     * Inizializza il controller e configura le colonne della tabella.
+     */
     @FXML
     private void initialize() {
 
@@ -225,6 +258,9 @@ public class ListaVisiteController {
 
     }
 
+    /**
+     * Carica le visite del paziente e le mostra nella tabella.
+     */
     private void caricaVisite() {
 
         try {
@@ -238,10 +274,14 @@ public class ListaVisiteController {
             visiteTable.setItems(obs);
 
         } catch (Exception e) {
+            e.printStackTrace();
             showErrorAlert("Errore nel caricamento visite: " + e.getMessage());
         }
     }
 
+    /**
+     * Chiude il dialog.
+     */
     @FXML
     private void onChiudi() {
         dialogStage.close();

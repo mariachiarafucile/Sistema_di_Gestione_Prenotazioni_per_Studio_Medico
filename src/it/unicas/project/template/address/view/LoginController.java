@@ -12,6 +12,13 @@ import javafx.scene.control.*;
 
 import static it.unicas.project.template.address.util.AlertUtils.showErrorAlert;
 
+/**
+ * Controller per la schermata di login.
+ *
+ * Permette l'accesso di medici e segretari
+ * e gestisce la registrazione e il ritorno alla schermata di identificazione.
+ *
+ */
 public class LoginController {
 
     @FXML
@@ -24,18 +31,29 @@ public class LoginController {
     private MainApp mainApp;
     private String loginMode; // "MEDICO" o "SEGRETARIO"
 
+    /**
+     * Imposta il riferimento all'applicazione principale.
+     *
+     * @param mainApp
+     */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
 
     /**
-     * Imposta se siamo nel login Medico o Segretario.
+     * Imposta la modalità di login (medico o segretario).
+     *
+     * @param loginMode
      */
     public void setLoginMode(String loginMode) {
         this.loginMode = loginMode;
         titleLabel.setText("Login ");
     }
 
+    /**
+     * Esegue il login verificando le credenziali.
+     *
+     */
     @FXML
     private void onLogin() throws DAOException {
         String user = usernameField.getText();
@@ -45,6 +63,7 @@ public class LoginController {
                 + user + " / " + pass);
 
         if (user.isEmpty() || pass.isEmpty()) {
+            System.out.println("Errore: credenziali non valide.");
             showErrorAlert("Credenziali non valide. Riprova.");
             return;
         }
@@ -54,6 +73,7 @@ public class LoginController {
             boolean valid = ((MediciDAOMySQLImpl) dao).existsMedico(user, pass);
 
             if (!valid) {
+                System.out.println("Errore: credenziali non valide.");
                 showErrorAlert("Credenziali non valide. Riprova.");
                 return;
             }
@@ -64,6 +84,7 @@ public class LoginController {
             boolean valid = ((SegretariDAOMySQLImpl) dao).existsSegretario(user, pass);
 
             if (!valid) {
+                System.out.println("Errore: credenziali non valide.");
                 showErrorAlert("Credenziali non valide. Riprova.");
                 return;
                }
@@ -71,7 +92,9 @@ public class LoginController {
             }
         }
 
-
+    /**
+     * Apre la schermata di registrazione corrispondente al ruolo.
+     */
     @FXML
     private void onRegister() {
 
@@ -82,6 +105,9 @@ public class LoginController {
         }
     }
 
+    /**
+     * Torna alla schermata di identificazione.
+     */
     @FXML
     private void onBack() {
         mainApp.showIdentificazione();

@@ -20,6 +20,13 @@ import java.util.Locale;
 import static it.unicas.project.template.address.util.AlertUtils.showConfirmationAlert;
 import static it.unicas.project.template.address.util.AlertUtils.showErrorAlert;
 
+/**
+ * Controller per l'inserimento delle fasce orarie del medico.
+ *
+ * Permette di selezionare una data dal calendario e
+ * inserire una nuova fascia oraria associata al medico.
+ *
+ */
 public class InserimentoFasceController {
 
     @FXML private GridPane calendarioGrid;
@@ -40,12 +47,32 @@ public class InserimentoFasceController {
 
     private String emailMedicoCorrente;
 
+    /**
+     * Imposta il riferimento all'applicazione principale.
+     *
+     * @param mainApp
+     */
     public void setMainApp(MainApp mainApp) { this.mainApp = mainApp; }
+
+    /**
+     * Imposta lo stage del dialog.
+     *
+     * @param dialogStage
+     */
     public void setDialogStage(Stage dialogStage) { this.dialogStage = dialogStage; }
+
+    /**
+     * Imposta l'email del medico corrente.
+     *
+     * @param email
+     */
     public void setEmailMedicoCorrente(String email) {
         this.emailMedicoCorrente = email;
     }
 
+    /**
+     * Inizializza il controller.
+     */
     @FXML
     private void initialize() {
 
@@ -99,6 +126,9 @@ public class InserimentoFasceController {
 
     }
 
+    /**
+     * Popola il calendario del mese corrente.
+     */
     private void popolaCalendario() {
         calendarioGrid.getChildren().clear();
 
@@ -144,6 +174,9 @@ public class InserimentoFasceController {
         }
     }
 
+    /**
+     * Salva la fascia oraria selezionata.
+     */
     @FXML
     private void salvaFascia() {
         if (giornoSelezionato == null || oraInizioCombo.getValue() == null || oraFineCombo.getValue() == null) {

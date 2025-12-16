@@ -15,6 +15,14 @@ import java.time.LocalDate;
 import static it.unicas.project.template.address.util.AlertUtils.showConfirmationAlert;
 import static it.unicas.project.template.address.util.AlertUtils.showErrorAlert;
 
+/**
+ * Controller per la modifica dei dati di un paziente.
+ *
+ * Gestisce la visualizzazione e l'aggiornamento dei campi del paziente,
+ * con validazioni su nome, cognome, data di nascita, codice fiscale,
+ * indirizzo, telefono ed email.
+ *
+ */
 public class ModificaPazienteController {
 
     @FXML private TextField nomeField;
@@ -34,10 +42,27 @@ public class ModificaPazienteController {
 
     private boolean okClicked = false;
 
+    /**
+     * Imposta il riferimento all'applicazione principale.
+     *
+     * @param mainApp
+     */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
 
+    /**
+     * Imposta lo stage di dialogo per la finestra.
+     *
+     * @param stage
+     */
+    public void setDialogStage(Stage stage) {
+        this.dialogStage = stage;
+    }
+
+    /**
+     * Inizializza il controller e carica il logo nella finestra.
+     */
     @FXML
     private void initialize() {
         // Caricamento del logo
@@ -57,11 +82,11 @@ public class ModificaPazienteController {
         });
     }
 
-    public void setDialogStage(Stage stage) {
-        this.dialogStage = stage;
-    }
-
-    // Metodo per riempire automaticamente i campi
+    /**
+     * Carica i dati del paziente nei campi del form.
+     *
+     * @param p
+     */
     public void setPaziente(Pazienti p) {
         this.pazienteDaModificare = p;
 
@@ -75,6 +100,10 @@ public class ModificaPazienteController {
         noteClinicheField.setText(p.getNoteCliniche());
     }
 
+    /**
+     * Gestisce il click sul pulsante "Registra", validando i campi
+     * e aggiornando il paziente nel database.
+     */
     @FXML
     private void onRegistra() {
         // VALIDAZIONI INPUT
@@ -172,11 +201,19 @@ public class ModificaPazienteController {
         if (dialogStage != null) dialogStage.close();
     }
 
+    /**
+     * Chiude la finestra senza salvare modifiche.
+     */
     @FXML
     private void onAnnulla() {
         if (dialogStage != null) dialogStage.close();
     }
 
+    /**
+     * Controlla se il numero di telefono è valido (10 cifre).
+     *
+     * @param telefono
+     */
     private boolean telefonoValido(String telefono) {
         if (telefono.length() != 10) return false;
         for (char c : telefono.toCharArray()) {
@@ -185,6 +222,11 @@ public class ModificaPazienteController {
         return true;
     }
 
+    /**
+     * Controlla se l'email è valida.
+     *
+     * @param email
+     */
     private boolean emailValida(String email) {
         int atIndex = email.indexOf("@");
         int dotIndex = email.lastIndexOf(".");
@@ -194,6 +236,10 @@ public class ModificaPazienteController {
         return true;
     }
 
+    /**
+     * Ritorna true se l'utente ha cliccato OK per salvare le modifiche.
+     *
+     */
     public boolean isOkClicked() {
         return okClicked;
     }

@@ -14,6 +14,16 @@ import javafx.scene.image.Image;
 
 import static it.unicas.project.template.address.util.AlertUtils.*;
 
+/**
+ * Controller per la registrazione di un segretario.
+ *
+ * Gestisce la visualizzazione del form di registrazione segretario,
+ * la validazione dei dati inseriti (nome, cognome, email, password)
+ * e l'inserimento del nuovo segretario nel database.
+ *
+ * Mostra messaggi di conferma o di errore in base all'esito della registrazione.
+ *
+ */
 public class RegistrazioneSegretarioController {
 
     @FXML
@@ -27,10 +37,18 @@ public class RegistrazioneSegretarioController {
 
     private MainApp mainApp;
 
+    /**
+     * Imposta il riferimento all'applicazione principale.
+     *
+     * @param mainApp
+     */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
 
+    /**
+     * Inizializza il controller, caricando il logo nell'applicazione.
+     */
     @FXML
     private void initialize() {
         //caricamento logo
@@ -50,6 +68,11 @@ public class RegistrazioneSegretarioController {
         });
     }
 
+    /**
+     * Gestisce il click sul pulsante "Registrati".
+     * Valida i campi, crea un oggetto Segretari e lo inserisce nel database.
+     * Mostra alert di conferma o di errore e chiude la finestra se la registrazione ha successo.
+     */
     @FXML
     private void onRegister() {
         String nome = nomeField.getText();
@@ -103,12 +126,19 @@ public class RegistrazioneSegretarioController {
     }
     }
 
+    /**
+     * Gestisce il click sul pulsante "Indietro", chiudendo la finestra di registrazione.
+     */
     @FXML
     private void onBack() {
         nomeField.getScene().getWindow().hide();
     }
 
-    // Metodo di utilità per verificare se un'email è valida
+    /**
+     * Verifica se l'email inserita è valida.
+     *
+     * @param email
+     */
     private boolean emailValida(String email) {
         int atIndex = email.indexOf("@");
         int dotIndex = email.lastIndexOf(".");
