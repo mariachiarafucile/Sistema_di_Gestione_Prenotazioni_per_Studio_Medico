@@ -15,14 +15,31 @@ import java.lang.reflect.Method;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Test JUnit per la classe RegistrazioneMedicoController.
+ *Verifica la validazione dei campi durante la registrazione di un medico,
+ * controllando nome, cognome, specializzazione, telefono, email e password.
+ */
+
 public class RegistrazioneMedicoControllerTest {
+
+    /**
+     * Inizializza l'ambiente JavaFX prima dell'esecuzione dei test.
+     */
 
     @BeforeClass
     public static void initJFX() throws InterruptedException {
+
         final CountDownLatch latch = new CountDownLatch(1);
         Platform.startup(latch::countDown);
         latch.await();
+
     }
+
+    /**
+     * Test principale per verificare la validazione completa dei dati inseriti
+     * durante la registrazione di un medico.
+     */
 
     @Test
     public void testValidazioneCompleta() throws Exception {
@@ -48,24 +65,61 @@ public class RegistrazioneMedicoControllerTest {
         eseguiAzione("Mario", "Rossi", "mario@test", "password", "Cardiologia", "1234567890");
 
         System.out.println(">>> Tutti i test completati con successo <<<");
+
     }
+
+    /**
+     * Esegue un'azione di test sul controller simulando l'inserimento dei dati.
+     *
+     * @param nome
+     * @param cognome
+     * @param email
+     * @param password
+     */
 
     private void eseguiAzione(String nome, String cognome, String email, String password) throws Exception {
+
         eseguiAzione(nome, cognome, email, password, "Cardiologia", "1234567890");
+
     }
 
+    /**
+     * Esegue un'azione di test sul controller simulando l'inserimento dei dati.
+     *
+     * @param nome
+     * @param cognome
+     * @param email
+     * @param password
+     * @param specializzazione
+     */
+
     private void eseguiAzione(String nome, String cognome, String email, String password, String specializzazione) throws Exception {
+
         eseguiAzione(nome, cognome, email, password, specializzazione, "1234567890");
+
     }
+
+    /**
+     * Esegue un'azione di test sul controller simulando l'inserimento dei dati.
+     *
+     * @param nome nome del medico
+     * @param cognome cognome del medico
+     * @param email email del medico
+     * @param password password del medico
+     * @param specializzazione specializzazione del medico
+     * @param telefono numero di telefono del medico
+     */
 
     private void eseguiAzione(String nome, String cognome, String email, String password, String specializzazione, String telefono) throws Exception {
 
         RegistrazioneMedicoController controller = new RegistrazioneMedicoController();
 
         DAO mockDao = new DAO<Medici>() {
+
             @Override
             public void insert(Medici m) throws DAOException {
                 System.out.println("insert chiamato per: " + m.getEmail());
+
             }
 
             @Override
@@ -116,12 +170,23 @@ public class RegistrazioneMedicoControllerTest {
         if (!finished) {
             throw new RuntimeException("Test bloccato su eseguiAzione: " + nome + " / " + cognome + " / " + email);
         }
+
     }
 
+    /**
+     * Imposta il valore di un campo privato del controller.
+     *
+     * @param obj
+     * @param name
+     * @param val
+     */
+
     private void setPrivateField(Object obj, String name, Object val) throws Exception {
+
         Field f = obj.getClass().getDeclaredField(name);
         f.setAccessible(true);
         f.set(obj, val);
+
     }
 }
 
