@@ -10,12 +10,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Classe DAO per la gestione delle entità Medici.
+ */
+
 public class MediciDAOMySQLImpl implements DAO<Medici> {
+
+    /**
+     * Costruttore privato della classe.
+     */
 
     private MediciDAOMySQLImpl(){}
 
     private static DAO dao = null;
     private static Logger logger = null;
+
+    /**
+     * Restituisce un'istanza del DAO.
+     * Se l'istanza non esiste, viene creata e inizializzato il logger.
+     */
 
     public static DAO getInstance(){
         if (dao == null){
@@ -24,6 +37,12 @@ public class MediciDAOMySQLImpl implements DAO<Medici> {
         }
         return dao;
     }
+
+    /**
+     * Seleziona un medico dal database in base all'indirizzo email.
+     *
+     * @param m
+     */
 
     @Override
     public List<Medici> select(Medici m) throws DAOException {
@@ -46,6 +65,7 @@ public class MediciDAOMySQLImpl implements DAO<Medici> {
 
             try{
                 logger.info("SQL: " + sql);
+
             } catch(NullPointerException nullPointerException){
                 logger.severe("SQL: " + sql);
             }
@@ -66,7 +86,14 @@ public class MediciDAOMySQLImpl implements DAO<Medici> {
         return lista;
     }
 
-    //Query per la ricerca delle credenziali del medico
+    /**
+     * Verifica l'esistenza di un medico nel database sulla base
+     * delle credenziali fornite.
+     *
+     * @param email
+     * @param password
+     */
+
     public boolean existsMedico(String email, String password) throws DAOException {
         String sql = "SELECT COUNT(*) AS cnt FROM medici WHERE email='" + email +
                 "' AND password='" + password + "';";
@@ -84,6 +111,12 @@ public class MediciDAOMySQLImpl implements DAO<Medici> {
         return false;
     }
 
+    /**
+     * Elimina un medico dal database.
+     *
+     * @param m
+     */
+
     @Override
     public void delete(Medici m) throws DAOException {
         if (m == null || m.getEmail() == null){
@@ -93,6 +126,7 @@ public class MediciDAOMySQLImpl implements DAO<Medici> {
 
         try{
             logger.info("SQL: " + query);
+
         } catch (NullPointerException nullPointerException){
             System.out.println("SQL: " + query);
         }
@@ -100,6 +134,12 @@ public class MediciDAOMySQLImpl implements DAO<Medici> {
         executeUpdate(query);
 
     }
+
+    /**
+     * Inserisce un nuovo medico nel database.
+     *
+     * @param m
+     */
 
     @Override
     public void insert(Medici m) throws DAOException {
@@ -111,11 +151,18 @@ public class MediciDAOMySQLImpl implements DAO<Medici> {
                 m.getSpecializzazione() + "', '" + m.getTelefono() + "', '" + m.getEmail() + "', '" + m.getPassword() + "');";
         try {
             logger.info("SQL: " + query);
+
         } catch (NullPointerException nullPointerException){
             System.out.println("SQL: " + query);
         }
         executeUpdate(query);
     }
+
+    /**
+     * Aggiorna i dati di un medico esistente nel database.
+     *
+     * @param m
+     */
 
     @Override
     public void update(Medici m) throws DAOException {
@@ -130,6 +177,12 @@ public class MediciDAOMySQLImpl implements DAO<Medici> {
 
     }
 
+    /**
+     * Verifica la validità dell'oggetto.
+     *
+     * @param m
+     */
+
     private void verifyObject(Medici m) throws DAOException {
         if (m == null || m.getEmail() == null
                 || m.getNome() == null
@@ -140,6 +193,12 @@ public class MediciDAOMySQLImpl implements DAO<Medici> {
             throw new DAOException("In select: any field can be null");
         }
     }
+
+    /**
+     * Esegue una query di aggiornamento sul database.
+     *
+     * @param query
+     */
 
     private void executeUpdate(String query) throws DAOException{
         try {
