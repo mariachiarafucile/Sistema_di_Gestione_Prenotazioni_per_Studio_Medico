@@ -195,6 +195,8 @@ public class ListaPrenotazioniController {
                     AlertUtils.showQuestionAlert("Vuoi eliminare questa prenotazione?", () -> {
                         try {
                             daoPren.delete(p);
+                            System.out.println("Prenotazione eliminata: " + p);
+
                             caricaPrenotazioni();
 
                             //Ricreo la riga nella tabella ponte
