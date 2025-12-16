@@ -11,17 +11,36 @@ import java.lang.reflect.Method;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Test JUnit per la classe RegistrazionePazienteController.
+ * Verifica la validazione dei dati durante la registrazione di un paziente,
+ * controllando nome, cognome, data di nascita, codice fiscale, indirizzo,
+ * telefono, email e note cliniche.
+ */
+
 public class RegistrazionePazienteControllerTest {
+
+    /**
+     * Inizializza l'ambiente JavaFX prima dell'esecuzione dei test.
+     */
 
     @BeforeClass
     public static void initJFX() throws InterruptedException {
+
         final CountDownLatch latch = new CountDownLatch(1);
         Platform.startup(latch::countDown);
         latch.await();
+
     }
+
+    /**
+     * Test principale che verifica la validazione completa dei campi del modulo
+     * di registrazione paziente.
+     */
 
     @Test
     public void testValidazioneCompleta() throws Exception {
+
         // CONTROLLO 1: Nome Errato
         System.out.println("[STEP 1] Test Nome Errato (Mario123)...");
         eseguiAzione("Mario123", "Rossi", "2000-01-01", "RSSMRA00A01F205X",
@@ -63,7 +82,22 @@ public class RegistrazionePazienteControllerTest {
                 "Via Roma 1", "1234567890", "mario@test", "Note cliniche");
 
         System.out.println(">>> Tutti i test completati con successo <<<");
+
     }
+
+    /**
+     * Esegue una singola azione di test sul controller simulando
+     * l'inserimento dei dati del paziente.
+     *
+     * @param nome
+     * @param cognome
+     * @param dataNascita
+     * @param cf
+     * @param indirizzo
+     * @param telefono
+     * @param email
+     * @param note
+     */
 
     private void eseguiAzione(String nome, String cognome, String dataNascita,
                               String cf, String indirizzo, String telefono,
@@ -109,21 +143,35 @@ public class RegistrazionePazienteControllerTest {
                 m.invoke(controller);
 
             } catch (Exception ex) {
+
                 ex.printStackTrace();
+
             } finally {
                 latch.countDown();
             }
+
         });
 
         boolean finished = latch.await(5, TimeUnit.SECONDS);
         if (!finished) {
             throw new RuntimeException("Test bloccato su eseguiAzione: " + nome + " / " + cognome + " / " + email);
         }
+
     }
 
+    /**
+     * Imposta il valore di un campo privato del controller.
+     *
+     * @param obj
+     * @param name
+     * @param val
+     */
+
     private void setPrivateField(Object obj, String name, Object val) throws Exception {
+
         Field f = obj.getClass().getDeclaredField(name);
         f.setAccessible(true);
         f.set(obj, val);
+
     }
 }
