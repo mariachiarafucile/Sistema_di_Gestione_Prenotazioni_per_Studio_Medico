@@ -83,7 +83,7 @@ public class InserimentoFasceController {
                     if (newWindow != null) {
                         try {
                             Image logo = new Image(
-                                    CalendarioMedicoController.class.getResourceAsStream("/images/logo.png")
+                                    getClass().getResourceAsStream("/images/logo.png")
                             );
                             ((Stage) newWindow).getIcons().add(logo);
                         } catch (Exception e) {
