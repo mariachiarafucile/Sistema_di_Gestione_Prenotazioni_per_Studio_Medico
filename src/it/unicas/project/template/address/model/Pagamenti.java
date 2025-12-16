@@ -12,7 +12,6 @@ public class Pagamenti {
     private DoubleProperty importo;
     private StringProperty emailSegretario;
     private IntegerProperty visitaIdVisita;
-    //wrapper
 
     /**
      * Default constructor.

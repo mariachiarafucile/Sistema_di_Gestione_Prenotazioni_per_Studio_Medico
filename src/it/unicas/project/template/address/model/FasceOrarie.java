@@ -17,7 +17,7 @@ public class FasceOrarie {
         if (idFasciaOraria != null) {
             this.idFasciaOraria = new SimpleIntegerProperty(idFasciaOraria);
         } else {
-            this.idFasciaOraria = null; // resta null finché DB non genera l'ID
+            this.idFasciaOraria = null;
         }
         this.data = new SimpleStringProperty(data);
         this.oraInizio = new SimpleStringProperty(oraInizio);

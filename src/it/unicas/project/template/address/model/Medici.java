@@ -13,8 +13,6 @@ public class Medici {
     private StringProperty telefono;
     private StringProperty email;
     private StringProperty password;
-    //wrapper
-
 
     /**
      * Default constructor.

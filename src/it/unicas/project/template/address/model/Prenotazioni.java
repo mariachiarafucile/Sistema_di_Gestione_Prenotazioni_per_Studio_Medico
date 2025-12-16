@@ -17,7 +17,7 @@ public class Prenotazioni {
         if (idPrenotazioni != null) {
             this.idPrenotazioni = new SimpleIntegerProperty(idPrenotazioni);
         } else {
-            this.idPrenotazioni = null; // resta null finché DB non genera l'ID
+            this.idPrenotazioni = null;
         }
         this.pazienteCodiceFiscale = new SimpleStringProperty(pazienteCodiceFiscale);
         this.medicoEmail = new SimpleStringProperty(medicoEmail);

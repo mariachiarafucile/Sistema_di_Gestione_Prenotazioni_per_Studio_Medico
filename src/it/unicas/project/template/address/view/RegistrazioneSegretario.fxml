@@ -18,7 +18,7 @@
     <Label text="Crea il tuo account"
            style="-fx-font-size: 28px; -fx-font-weight: bold;"/>
 
-    <!-- Riquadro bianco centrale più piccolo -->
+    <!-- Riquadro bianco centrale -->
     <HBox alignment="CENTER">
         <VBox spacing="10" alignment="CENTER"
               prefWidth="300" maxWidth="300" prefHeight="220"

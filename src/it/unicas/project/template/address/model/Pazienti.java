@@ -15,7 +15,6 @@ public class Pazienti {
     private StringProperty telefono;
     private StringProperty email;
     private StringProperty noteCliniche;
-    //wrapper
 
     /**
      * Default constructor.

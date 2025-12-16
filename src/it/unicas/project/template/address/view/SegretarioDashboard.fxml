@@ -22,7 +22,7 @@
             <Label text="Scegli un'opzione dal menu"
                    style="-fx-font-size: 18px; -fx-text-fill: #555555;"/>
 
-            <!-- HBox con le tre icone e titoli sotto -->
+
             <HBox alignment="CENTER"
                   spacing="50">
 

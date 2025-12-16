@@ -12,7 +12,6 @@ public class Visite {
     private StringProperty prescrizione;
     private StringProperty pazienteCodiceFiscale;
     private StringProperty segretarioEmail;
-    //wrapper
 
     /**
      * Default constructor.
@@ -30,9 +29,8 @@ public class Visite {
     }
 
     public Integer getIdVisita() {
-        return idVisita.get(); // sicuro, non sarà mai null
+        return idVisita.get();
     }
-
 
     public void setIdVisita(Integer idVisita) {
         if (this.idVisita == null){
@@ -44,6 +42,7 @@ public class Visite {
     public IntegerProperty idVisitaProperty() {
         return idVisita;
     }
+
     public String getDataOra() {
         return dataOra.get();
     }

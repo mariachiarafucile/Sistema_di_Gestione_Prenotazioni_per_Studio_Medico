@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
 
 <VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
       fx:id="rootVBox"
@@ -15,19 +14,19 @@
                style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
     </HBox>
 
-    <!-- bottone per nuova prenotazione -->
+    <!-- Bottone per nuova prenotazione -->
     <HBox spacing="10" alignment="TOP_RIGHT">
         <Button text="Nuova Prenotazione" fx:id="nuovaPrenotazioneBtn" onAction="#onNuovaPrenotazione"/>
     </HBox>
 
-    <!-- Controllo mese con frecce -->
+    <!-- Controllo mese -->
     <HBox spacing="10" alignment="CENTER">
         <Button text="◀" onAction="#mesePrecedente"/>
         <Label fx:id="meseLabel" text="Gennaio 2025" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
         <Button text="▶" onAction="#meseSuccessivo"/>
     </HBox>
 
-    <!-- Calendario centrato -->
+    <!-- Calendario -->
     <HBox alignment="CENTER">
         <GridPane fx:id="calendarioGrid" hgap="2" vgap="2" style="-fx-background-color: #e0f7fa;"/>
     </HBox>

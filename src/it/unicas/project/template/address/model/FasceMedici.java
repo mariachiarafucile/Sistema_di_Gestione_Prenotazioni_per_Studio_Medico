@@ -13,12 +13,11 @@ public class FasceMedici {
         if (idFasciaOraria != null) {
             this.idFasciaOraria = new SimpleIntegerProperty(idFasciaOraria);
         } else {
-            this.idFasciaOraria = null; // resta null finché DB non genera l'ID della fascia
+            this.idFasciaOraria = null;
         }
         this.medicoEmail = new SimpleStringProperty(medicoEmail);
     }
 
-    // Getter e Setter
     public Integer getIdFasciaOraria() {
         if (idFasciaOraria == null) {
             idFasciaOraria = new SimpleIntegerProperty(-1);

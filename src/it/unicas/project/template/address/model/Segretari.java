@@ -11,7 +11,6 @@ public class Segretari {
     private StringProperty cognome;
     private StringProperty email;
     private StringProperty password;
-    //wrapper
 
     /**
      * Default constructor.
