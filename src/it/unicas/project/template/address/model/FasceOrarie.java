@@ -2,6 +2,9 @@ package it.unicas.project.template.address.model;
 
 import javafx.beans.property.*;
 
+/**
+ * Modello che rappresenta una fascia oraria.
+ */
 public class FasceOrarie {
 
     private IntegerProperty idFasciaOraria;
@@ -9,10 +12,21 @@ public class FasceOrarie {
     private StringProperty oraInizio;
     private StringProperty oraFine;
 
+    /**
+     * Costruttore di default.
+     */
     public FasceOrarie() {
         this(null, "", "", "");
     }
 
+    /**
+     * Costruttore con parametri.
+     *
+     * @param idFasciaOraria identificativo della fascia oraria
+     * @param data data della fascia oraria
+     * @param oraInizio orario di inizio
+     * @param oraFine orario di fine
+     */
     public FasceOrarie(Integer idFasciaOraria, String data, String oraInizio, String oraFine) {
         if (idFasciaOraria != null) {
             this.idFasciaOraria = new SimpleIntegerProperty(idFasciaOraria);

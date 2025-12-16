@@ -3,7 +3,7 @@ package it.unicas.project.template.address.model;
 import javafx.beans.property.*;
 
 /**
- * Model class for Visite.
+ * Modello che rappresenta una visita.
  */
 public class Visite {
 
@@ -14,12 +14,21 @@ public class Visite {
     private StringProperty segretarioEmail;
 
     /**
-     * Default constructor.
+     * Costruttore di default.
      */
     public Visite() {
         this(null, null, null, null,null);
     }
 
+    /**
+     * Costruttore con parametri.
+     *
+     * @param idVisita
+     * @param dataOra
+     * @param prescrizione
+     * @param pazienteCodiceFiscale
+     * @param segretarioEmail
+     */
     public Visite(Integer idVisita, String dataOra, String prescrizione, String pazienteCodiceFiscale, String segretarioEmail) {
         this.idVisita = new SimpleIntegerProperty(idVisita != null ? idVisita : 0);
         this.dataOra = new SimpleStringProperty(dataOra);

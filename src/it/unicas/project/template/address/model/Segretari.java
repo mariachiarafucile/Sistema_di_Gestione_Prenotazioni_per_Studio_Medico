@@ -3,7 +3,7 @@ package it.unicas.project.template.address.model;
 import javafx.beans.property.*;
 
 /**
- * Model class for Segretari.
+ * Modello che rappresenta un segretario.
  */
 public class Segretari {
 
@@ -13,12 +13,20 @@ public class Segretari {
     private StringProperty password;
 
     /**
-     * Default constructor.
+     * Costruttore di default.
      */
     public Segretari() {
         this(null, null, null, null);
     }
 
+    /**
+     * Costruttore con parametri.
+     *
+     * @param nome
+     * @param cognome
+     * @param email
+     * @param password
+     */
     public Segretari(String nome, String cognome, String email, String password) {
         this.nome = new SimpleStringProperty(nome);
         this.cognome = new SimpleStringProperty(cognome);

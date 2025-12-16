@@ -8,7 +8,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
+/**
+ * Controller della dashboard del segretario.
+ * Gestisce le funzionalità principali disponibili per il ruolo SEGRETARIO,
+ * come la ricerca dei pazienti, l'aggiunta di nuovi pazienti
+ * e l'accesso alla sezione report/portafoglio.
+ */
 public class SegretarioDashboardController {
 
     @FXML
@@ -21,14 +26,27 @@ public class SegretarioDashboardController {
     private Stage stage;
     private MainApp mainApp;
 
+    /**
+     * Imposta lo stage principale della dashboard.
+     *
+     * @param stage
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
+
+    /**
+     * Imposta il riferimento all'applicazione principale.
+     *
+     * @param mainApp
+     */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
 
-
+    /**
+     * Inizializza il controller caricando il logo nell'applicazione.
+     */
     @FXML
     private void initialize() {
         if (ricercaButton != null) {

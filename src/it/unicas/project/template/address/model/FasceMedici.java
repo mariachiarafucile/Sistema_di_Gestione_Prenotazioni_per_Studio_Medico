@@ -2,13 +2,25 @@ package it.unicas.project.template.address.model;
 
 import javafx.beans.property.*;
 
+/**
+ * Modello che rappresenta l'associazione tra una fascia oraria e un medico.
+ */
 public class FasceMedici {
 
     private IntegerProperty idFasciaOraria;
     private StringProperty medicoEmail;
 
+    /**
+     * Costruttore di default.
+     */
     public FasceMedici() { this(null, "");}
 
+    /**
+     * Costruttore con parametri.
+     *
+     * @param idFasciaOraria
+     * @param medicoEmail
+     */
     public FasceMedici(Integer idFasciaOraria, String medicoEmail) {
         if (idFasciaOraria != null) {
             this.idFasciaOraria = new SimpleIntegerProperty(idFasciaOraria);

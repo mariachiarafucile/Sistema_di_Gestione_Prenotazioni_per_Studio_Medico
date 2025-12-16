@@ -3,7 +3,7 @@ package it.unicas.project.template.address.model;
 import javafx.beans.property.*;
 
 /**
- * Model class for Medici.
+ * Modello che rappresenta un medico.
  */
 public class Medici {
 
@@ -15,12 +15,22 @@ public class Medici {
     private StringProperty password;
 
     /**
-     * Default constructor.
+     * Costruttore di default.
      */
     public Medici() {
         this(null, null, null, null, null, null);
     }
 
+    /**
+     * Costruttore con parametri.
+     *
+     * @param nome
+     * @param cognome
+     * @param specializzazione
+     * @param telefono
+     * @param email
+     * @param password
+     */
     public Medici(String nome, String cognome, String specializzazione, String telefono, String email, String password) {
         this.nome = new SimpleStringProperty(nome);
         this.cognome = new SimpleStringProperty(cognome);

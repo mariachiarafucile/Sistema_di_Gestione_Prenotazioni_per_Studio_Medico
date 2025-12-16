@@ -3,7 +3,7 @@ package it.unicas.project.template.address.model;
 import javafx.beans.property.*;
 
 /**
- * Model class for Pagamenti.
+ * Modello che rappresenta un pagamento.
  */
 public class Pagamenti {
 
@@ -14,12 +14,21 @@ public class Pagamenti {
     private IntegerProperty visitaIdVisita;
 
     /**
-     * Default constructor.
+     * Costruttore di default.
      */
     public Pagamenti() {
         this(null, null, null, null, null);
     }
 
+    /**
+     * Costruttore con parametri.
+     *
+     * @param idPagamento
+     * @param stato
+     * @param importo
+     * @param emailSegretario
+     * @param visitaIdVisita
+     */
     public Pagamenti(Integer idPagamento, String stato, Double importo, String emailSegretario, Integer visitaIdVisita) {
         this.idPagamento = new SimpleIntegerProperty(idPagamento != null ? idPagamento : -1);
         this.stato = new SimpleStringProperty(stato != null ? stato : "");

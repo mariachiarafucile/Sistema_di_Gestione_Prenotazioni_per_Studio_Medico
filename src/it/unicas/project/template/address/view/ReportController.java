@@ -12,7 +12,11 @@ import javafx.stage.Stage;
 import it.unicas.project.template.address.model.dao.mysql.PagamentiDAOMySQLImpl;
 import it.unicas.project.template.address.model.dao.DAOException;
 
-
+/**
+ * Controller della vista di report mensile dei pagamenti.
+ * Gestisce la visualizzazione dei dati relativi le visite
+ * (pagate e da saldare) e permette il download del report in formato CSV.
+ */
 public class ReportController {
 
     @FXML
@@ -42,14 +46,27 @@ public class ReportController {
     private double currentTotaleDaIncassare = 0.0;
     private String currentMese = "";
 
+    /**
+     * Imposta lo stage della finestra di dialogo.
+     *
+     * @param dialogStage
+     */
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
     }
+
+    /**
+     * Imposta il riferimento all'applicazione principale.
+     *
+     * @param mainApp
+     */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
 
-
+    /**
+     * Inizializza il controller caricando il logo nell'applicazione.
+     */
     @FXML
     private void initialize() {
 
@@ -105,6 +122,11 @@ public class ReportController {
 
     }
 
+    /**
+     * Aggiorna i dati del report in base al mese selezionato.
+     *
+     * @param mese
+     */
     private void aggiornaReport(int mese) {
         try {
             PagamentiDAOMySQLImpl.ReportResult r = ((PagamentiDAOMySQLImpl) PagamentiDAOMySQLImpl.getInstance()).getReportByMonth(mese);
@@ -129,7 +151,11 @@ public class ReportController {
 
     }
 
-    //Metodo per salvare il report in CSV
+    /**
+     * Salva il report corrente in un file CSV.
+     * Il file viene creato nella directory di esecuzione dell'applicazione
+     * e contiene i dati relativi al mese selezionato.
+     */
     private void scaricaReport() {
         if (currentMese.isEmpty()) {
             System.out.println("Seleziona un mese prima di scaricare il report.");

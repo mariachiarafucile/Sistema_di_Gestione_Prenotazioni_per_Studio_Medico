@@ -21,6 +21,12 @@ import it.unicas.project.template.address.model.dao.mysql.PazientiDAOMySQLImpl;
 
 import static it.unicas.project.template.address.util.AlertUtils.showErrorAlert;
 
+/**
+ * Controller della vista di ricerca del paziente.
+ * Gestisce la ricerca di un paziente tramite codice fiscale,
+ * la visualizzazione dei dati anagrafici e l’accesso alle operazioni
+ * consentite in base al ruolo dell’utente (MEDICO o SEGRETARIO).
+ */
 public class RicercaPazienteController {
 
     @FXML
@@ -48,16 +54,37 @@ public class RicercaPazienteController {
 
     private String loginMode; // "MEDICO" o "SEGRETARIO"
 
+    /**
+     * Imposta il ruolo dell'utente loggato.
+     *
+     * @param role
+     */
     public void setLoginRole(String role) {
         this.loginMode = role;
     }
+
+    /**
+     * Imposta il riferimento all'applicazione principale.
+     *
+     * @param mainApp
+     */
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
+
+    /**
+     * Imposta lo stage della finestra di dialogo.
+     *
+     * @param stage
+     */
     public void setDialogStage(Stage stage) {
         this.dialogStage = stage;
     }
 
+
+    /**
+     * Inizializza il controller caricando il logo nell'applicazione.
+     */
     @FXML
     private void initialize() {
         //caricamento logo
@@ -77,7 +104,11 @@ public class RicercaPazienteController {
         });
     }
 
-
+    /**
+     * Gestisce l'azione di ricerca del paziente.
+     * Esegue la ricerca tramite codice fiscale, visualizza i dati
+     * del paziente trovato e abilita i pulsanti in base al ruolo utente.
+     */
     @FXML
     private void onCerca() {
         String cf = cfField.getText();
@@ -86,16 +117,13 @@ public class RicercaPazienteController {
             return;
         }
 
-        // --- LOGICA DI RICERCA DEL PAZIENTE ---
         try {
-            // Pulisco eventuali risultati precedenti
+
             risultatiBox.getChildren().clear();
 
-            // Creo un oggetto filtro con il CF
             Pazienti filtro = new Pazienti();
             filtro.setCodiceFiscale(cf.trim());
 
-            // Uso il DAO esistente per cercare il paziente
             List<Pazienti> lista = PazientiDAOMySQLImpl.getInstance().select(filtro);
 
             if (lista.isEmpty()) {
@@ -103,11 +131,9 @@ public class RicercaPazienteController {
                 return;
             }
 
-            // CF è univoco, prendo il primo elemento
             Pazienti p = lista.get(0);
             this.pazienteTrovato = p;
 
-            // Creo le label per visualizzare i dati
             Label nomeLbl = new Label("Nome: " + p.getNome());
             Label cognomeLbl = new Label("Cognome: " + p.getCognome());
             Label cfLbl = new Label("Codice Fiscale: " + p.getCodiceFiscale());
@@ -118,7 +144,6 @@ public class RicercaPazienteController {
             Label noteLbl = new Label("Note cliniche: " + (p.getNoteCliniche() != null ? p.getNoteCliniche() : "-"));
 
             if ("SEGRETARIO".equals(loginMode)) {
-                // Rende visibili i bottoni centrati in fondo
                 modificaBtn.setVisible(true);
                 modificaBtn.setManaged(true);
                 visiteBtn.setVisible(true);
@@ -146,6 +171,11 @@ public class RicercaPazienteController {
         System.out.println("Ricerca paziente con CF: " + cf);
     }
 
+    /**
+     * Gestisce la modifica dei dati anagrafici del paziente.
+     * Apre la finestra di modifica e aggiorna la visualizzazione
+     * in caso di conferma.
+     */
     @FXML
     private void onModifica() {
 
@@ -153,7 +183,6 @@ public class RicercaPazienteController {
 
         if (ok) {
 
-            // Qui mettiamo tutto il codice che aggiorna la GUI
             risultatiBox.getChildren().clear();
 
             Label nomeLbl = new Label("Nome: " + pazienteTrovato.getNome());
@@ -172,10 +201,14 @@ public class RicercaPazienteController {
         }
     }
 
+    /**
+     * Gestisce la modifica delle note cliniche del paziente.
+     * Permette al medico di aggiornare le note cliniche
+     * e salva le modifiche nel database.
+     */
     @FXML
     private void onModificaNoteCliniche() {
 
-        // Apri una finestra di dialogo per modificare le note cliniche
         TextField input = new TextField(pazienteTrovato.getNoteCliniche());
         Stage stage = new Stage();
         try {
@@ -191,17 +224,17 @@ public class RicercaPazienteController {
         box.setPadding(new Insets(15));
         Button salva = new Button("Salva");
         salva.setOnAction(e -> {
-            //Aggiorno l'oggetto in memoria
+
             pazienteTrovato.setNoteCliniche(input.getText());
-            // Aggiorno il DB
+
             try {
                 PazientiDAOMySQLImpl.getInstance().update(pazienteTrovato);
             } catch (Exception ex) {
+                ex.printStackTrace();
                 showErrorAlert("Errore aggiornamento DB: " + ex.getMessage());
             }
             stage.close();
 
-            // Aggiorno solo la GUI
             onCerca();
         });
 
@@ -215,6 +248,10 @@ public class RicercaPazienteController {
         stage.showAndWait();
     }
 
+    /**
+     * Apre la finestra per l'aggiunta o modifica delle prescrizioni,
+     * da parte del MEDICO.
+     */
     @FXML
     private void onAggiungiPrescrizione() {
         if (pazienteTrovato == null) return;
@@ -241,12 +278,19 @@ public class RicercaPazienteController {
         }
     }
 
-
+    /**
+     * Apre la lista delle prenotazioni associate al paziente.
+     */
     @FXML
     private void onPrenotazioni() {
         mainApp.showListaPrenotazioniDialog(pazienteTrovato.getCodiceFiscale());
     }
 
+    /**
+     * Apre la lista delle visite del paziente.
+     * Consente la visualizzazione o modifica delle visite
+     * in base al ruolo dell'utente (SEGRETARIO o MEDICO).
+     */
     @FXML
     private void apriListaVisite() {
         if (pazienteTrovato == null) return;

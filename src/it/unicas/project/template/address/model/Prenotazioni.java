@@ -2,6 +2,9 @@ package it.unicas.project.template.address.model;
 
 import javafx.beans.property.*;
 
+/**
+ * Modello che rappresenta una prenotazione.
+ */
 public class Prenotazioni {
 
     private IntegerProperty idPrenotazioni;
@@ -9,10 +12,21 @@ public class Prenotazioni {
     private StringProperty medicoEmail;
     private IntegerProperty fasciaOrariaId;
 
+    /**
+     * Costruttore di default.
+     */
     public Prenotazioni() {
         this(null, "", "", null);
     }
 
+    /**
+     * Costruttore con parametri.
+     *
+     * @param idPrenotazioni
+     * @param pazienteCodiceFiscale
+     * @param medicoEmail
+     * @param fasciaOrariaId
+     */
     public Prenotazioni(Integer idPrenotazioni, String pazienteCodiceFiscale, String medicoEmail, Integer fasciaOrariaId) {
         if (idPrenotazioni != null) {
             this.idPrenotazioni = new SimpleIntegerProperty(idPrenotazioni);
