@@ -11,13 +11,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Classe DAO per la gestione dei pagamenti.
+ */
+
 public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
+
+    /**
+     * Costruttore privato della classe.
+     */
 
     private PagamentiDAOMySQLImpl(){}
 
     private static Logger logger = null;
 
     private static PagamentiDAOMySQLImpl instance = null;
+
+    /**
+     * Restituisce un'istanza del DAO.
+     * Se l'istanza non esiste, viene creata e inizializzato il logger.
+     */
 
     public static PagamentiDAOMySQLImpl getInstance() {
         if (instance == null) {
@@ -26,6 +39,12 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
         }
         return instance;
     }
+
+    /**
+     * Seleziona un pagamento in base all'ID.
+     *
+     * @param g
+     */
 
     @Override
     public List<Pagamenti> select(Pagamenti g) throws DAOException {
@@ -47,9 +66,11 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
 
             try{
                 logger.info("SQL: " + sql);
+
             } catch(NullPointerException nullPointerException){
                 logger.severe("SQL: " + sql);
             }
+
             ResultSet rs = st.executeQuery(sql);
             while(rs.next()) {
                 lista.add(new Pagamenti(rs.getInt("idPagamento"),
@@ -66,8 +87,15 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
         return lista;
     }
 
+    /**
+     * Elimina un pagamento dal database.
+     *
+     * @param g
+     */
+
     @Override
     public void delete(Pagamenti g) throws DAOException {
+
         if (g == null || g.getIdPagamento() == null){
             throw new DAOException("In delete: idPagamento cannot be null");
         }
@@ -75,6 +103,7 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
 
         try{
             logger.info("SQL: " + query);
+
         } catch (NullPointerException nullPointerException){
             System.out.println("SQL: " + query);
         }
@@ -82,6 +111,12 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
         executeUpdate(query);
 
     }
+
+    /**
+     * Inserisce un nuovo pagamento nel database.
+     *
+     * @param g
+     */
 
     @Override
     public void insert(Pagamenti g) throws DAOException {
@@ -115,6 +150,12 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
         }
     }
 
+    /**
+     * Aggiorna un pagamento esistente nel database.
+     *
+     * @param g
+     */
+
     @Override
     public void update(Pagamenti g) throws DAOException {
 
@@ -128,6 +169,12 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
 
     }
 
+    /**
+     * Verifica la validità dell'oggetto Pagamenti.
+     *
+     * @param g
+     */
+
     private void verifyObject(Pagamenti g) throws DAOException {
         if (g == null || g.getStato() == null
                 || g.getImporto() == null
@@ -136,6 +183,12 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
             throw new DAOException("In select: any field can be null");
         }
     }
+
+    /**
+     * Esegue una query di aggiornamento sul database.
+     *
+     * @param query
+     */
 
     private void executeUpdate(String query) throws DAOException{
         try {
@@ -148,6 +201,12 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
             throw new DAOException("In insert(): " + e.getMessage());
         }
     }
+
+    /**
+     * Recupera il pagamento associato a una visita identificata tramite ID.
+     *
+     * @param idVisita
+     */
 
     public Pagamenti selectByVisitaId(Integer idVisita) throws DAOException {
         Pagamenti p = null;
@@ -171,6 +230,9 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
         return p;
     }
 
+    /**
+     * Classe di supporto per la generazione di report mensili sui pagamenti.
+     */
 
     public static class ReportResult {
         public int visitePagate;
@@ -179,7 +241,14 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
         public double totaleDaIncassare;
     }
 
+    /**
+     * Restituisce un report dei pagamenti relativi a un mese specifico.
+     *
+     * @param mese
+     */
+
     public ReportResult getReportByMonth(int mese) throws DAOException {
+
         ReportResult result = new ReportResult();
 
         String query = "SELECT " +
@@ -209,7 +278,6 @@ public class PagamentiDAOMySQLImpl implements DAO<Pagamenti> {
 
         return result;
     }
-
 
 }
 
