@@ -10,13 +10,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Classe DAO per la gestione delle prenotazioni.
+ */
+
 public class PrenotazioniDAOMySQLImpl implements DAO<Prenotazioni> {
 
     private static Logger logger = null;
 
+    /**
+     * Costruttore privato per impedire l'istanziazione diretta.
+     */
+
     private PrenotazioniDAOMySQLImpl(){}
 
     private static PrenotazioniDAOMySQLImpl dao = null;
+
+    /**
+     * Restituisce istanza della classe.
+     * Se l'istanza non esiste, viene creata e inizializzato il logger.
+     */
 
     public static PrenotazioniDAOMySQLImpl getInstance() {
         if (dao == null) {
@@ -25,6 +38,15 @@ public class PrenotazioniDAOMySQLImpl implements DAO<Prenotazioni> {
         }
         return dao;
     }
+
+    /**
+     * Seleziona una lista di prenotazioni dal database in base ai criteri
+     * specificati nell'oggetto passato come parametro.
+     * La selezione viene effettuata utilizzando il codice fiscale
+     * del paziente.
+     *
+     * @param q
+     */
 
     @Override
     public List<Prenotazioni> select(Prenotazioni q) throws DAOException {
@@ -47,6 +69,7 @@ public class PrenotazioniDAOMySQLImpl implements DAO<Prenotazioni> {
 
             try {
                 logger.info("SQL: " + sql);
+
             } catch (NullPointerException nullPointerException) {
                 System.out.println("SQL: " + sql);
             }
@@ -71,8 +94,15 @@ public class PrenotazioniDAOMySQLImpl implements DAO<Prenotazioni> {
         return lista;
     }
 
+    /**
+     * Elimina una prenotazione dal database.
+     *
+     * @param q
+     */
+
     @Override
     public void delete(Prenotazioni q) throws DAOException {
+
         if (q == null || q.getIdPrenotazioni() == null) {
             throw new DAOException("In delete: idPrenotazioni cannot be null");
         }
@@ -81,12 +111,19 @@ public class PrenotazioniDAOMySQLImpl implements DAO<Prenotazioni> {
 
         try {
             logger.info("SQL: " + sql);
+
         } catch (NullPointerException nullPointerException) {
             System.out.println("SQL: " + sql);
         }
 
         executeUpdate(sql);
     }
+
+    /**
+     * Inserisce una nuova prenotazione nel database.
+     *
+     * @param q
+     */
 
     @Override
     public void insert(Prenotazioni q) throws DAOException {
@@ -101,6 +138,7 @@ public class PrenotazioniDAOMySQLImpl implements DAO<Prenotazioni> {
 
         try {
             logger.info("SQL: " + sql);
+
         } catch (NullPointerException nullPointerException) {
             System.out.println("SQL: " + sql);
         }
@@ -108,13 +146,12 @@ public class PrenotazioniDAOMySQLImpl implements DAO<Prenotazioni> {
         try {
             Statement st = DAOMySQLSettings.getStatement();
 
-            // Esegui l'insert e richiedi l'ID generato
             st.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
                 int generatedId = rs.getInt(1);
-                q.setIdPrenotazioni(generatedId);  // assegna l'ID all'oggetto
+                q.setIdPrenotazioni(generatedId);
             }
 
             DAOMySQLSettings.closeStatement(st);
@@ -124,6 +161,12 @@ public class PrenotazioniDAOMySQLImpl implements DAO<Prenotazioni> {
         }
 
     }
+
+    /**
+     * Aggiorna una prenotazione esistente nel database.
+     *
+     * @param q
+     */
 
     @Override
     public void update(Prenotazioni q) throws DAOException {
@@ -140,6 +183,12 @@ public class PrenotazioniDAOMySQLImpl implements DAO<Prenotazioni> {
         executeUpdate(sql);
     }
 
+    /**
+     * Verifica la validità dell'oggetto.
+     *
+     * @param q
+     */
+
     private void verifyObject(Prenotazioni q) throws DAOException {
         if (q == null ||
                 q.getIdPrenotazioni() == null ||
@@ -150,15 +199,28 @@ public class PrenotazioniDAOMySQLImpl implements DAO<Prenotazioni> {
         }
     }
 
+    /**
+     * Esegue una query di aggiornamento.
+     *
+     * @param query
+     */
+
     private void executeUpdate(String query) throws DAOException {
         try {
             Statement st = DAOMySQLSettings.getStatement();
             int n = st.executeUpdate(query);
             DAOMySQLSettings.closeStatement(st);
+
         } catch (SQLException e) {
             throw new DAOException("In executeUpdate(): " + e.getMessage());
         }
     }
+
+    /**
+     * Restituisce l'elenco delle prenotazioni scadute.
+     * Una prenotazione è considerata scaduta se la data e l'ora di fine
+     * della fascia oraria associata sono precedenti all'istante corrente.
+     */
 
     public List<Prenotazioni> selectPrenotazioniScadute() throws DAOException {
 
