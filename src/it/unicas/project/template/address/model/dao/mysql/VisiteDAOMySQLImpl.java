@@ -10,12 +10,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Classe DAO per la gestione delle visite.
+ */
+
 public class VisiteDAOMySQLImpl implements DAO<Visite> {
+
+    /**
+     * Costruttore privato della classe.
+     */
 
     private VisiteDAOMySQLImpl(){}
 
     private static VisiteDAOMySQLImpl instance = null;
     private static Logger logger = null;
+
+    /**
+     * Restituisce l'istanza della classe.
+     * Se l'istanza non esiste, viene creata e inizializzato il logger.
+     */
 
     public static VisiteDAOMySQLImpl getInstance(){
         if (instance == null) {
@@ -24,6 +37,12 @@ public class VisiteDAOMySQLImpl implements DAO<Visite> {
         }
         return instance;
     }
+
+    /**
+     * Seleziona una visita dal database in base all'ID della visita.
+     *
+     * @param v
+     */
 
     @Override
     public List<Visite> select(Visite v) throws DAOException {
@@ -45,6 +64,7 @@ public class VisiteDAOMySQLImpl implements DAO<Visite> {
 
             try{
                 logger.info("SQL: " + sql);
+
             } catch(NullPointerException nullPointerException){
                 logger.severe("SQL: " + sql);
             }
@@ -64,8 +84,15 @@ public class VisiteDAOMySQLImpl implements DAO<Visite> {
         return lista;
     }
 
+    /**
+     * Elimina una visita dal database.
+     *
+     * @param v
+     */
+
     @Override
     public void delete(Visite v) throws DAOException {
+
         if (v == null || v.getIdVisita() == null){
             throw new DAOException("In delete: idVisita cannot be null");
         }
@@ -73,6 +100,7 @@ public class VisiteDAOMySQLImpl implements DAO<Visite> {
 
         try{
             logger.info("SQL: " + query);
+
         } catch (NullPointerException nullPointerException){
             System.out.println("SQL: " + query);
         }
@@ -80,6 +108,12 @@ public class VisiteDAOMySQLImpl implements DAO<Visite> {
         executeUpdate(query);
 
     }
+
+    /**
+     * Inserisce una nuova visita nel database.
+     *
+     * @param v
+     */
 
     @Override
     public void insert(Visite v) throws DAOException {
@@ -94,22 +128,31 @@ public class VisiteDAOMySQLImpl implements DAO<Visite> {
 
         try {
             logger.info("SQL: " + query);
+
         } catch (NullPointerException nullPointerException){
             System.out.println("SQL: " + query);
         }
+
         try {
             Statement st = DAOMySQLSettings.getStatement();
-            st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);  // Esegue l'inserimento e permette di recuperare l'id
+            st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
-                v.setIdVisita(rs.getInt(1));  // Aggiorna l’oggetto con l’id generato dal DB
+                v.setIdVisita(rs.getInt(1));
             }
             DAOMySQLSettings.closeStatement(st);
+
         } catch (SQLException e) {
             throw new DAOException("Errore insert(): " + e.getMessage());
         }
 
     }
+
+    /**
+     * Aggiorna i dati di una visita esistente nel database.
+     *
+     * @param v
+     */
 
     @Override
     public void update(Visite v) throws DAOException {
@@ -124,6 +167,12 @@ public class VisiteDAOMySQLImpl implements DAO<Visite> {
 
     }
 
+    /**
+     * Verifica la validità dell'oggetto.
+     *
+     * @param v
+     */
+
     private void verifyObject(Visite v) throws DAOException {
         if (v == null || v.getIdVisita() == null
                 || v.getDataOra() == null
@@ -133,7 +182,14 @@ public class VisiteDAOMySQLImpl implements DAO<Visite> {
         }
     }
 
+    /**
+     * Esegue una query di aggiornamento sul database.
+     *
+     * @param query
+     */
+
     private void executeUpdate(String query) throws DAOException{
+
         try {
             Statement st = DAOMySQLSettings.getStatement();
             int n = st.executeUpdate(query);
@@ -145,7 +201,15 @@ public class VisiteDAOMySQLImpl implements DAO<Visite> {
         }
     }
 
+    /**
+     * Seleziona tutte le visite associate a un determinato paziente,
+     * identificato dal codice fiscale.
+     *
+     * @param codiceFiscale
+     */
+
     public List<Visite> selectByCF(String codiceFiscale) throws DAOException {
+
         ArrayList<Visite> lista = new ArrayList<>();
 
         try {
