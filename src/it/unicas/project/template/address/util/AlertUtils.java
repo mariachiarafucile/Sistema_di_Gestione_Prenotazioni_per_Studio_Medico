@@ -7,10 +7,22 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.util.Optional;
 
+/**
+ * Classe di utilità per la gestione degli alert in JavaFX.
+ * Fornisce metodi statici per mostrare alert di errore, conferma, domanda e
+ * uscita dall'applicazione.
+ */
+
 public class AlertUtils {
 
-    // Alert di errore
+    /**
+     * Mostra un alert di errore con il messaggio specificato.
+     *
+     * @param message
+     */
+
     public static void showErrorAlert(String message) {
+
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setContentText(message);
 
@@ -18,15 +30,22 @@ public class AlertUtils {
             Image logo = new Image(AlertUtils.class.getResourceAsStream("/images/logo.png"));
             Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
             stage.getIcons().add(logo);
+
         } catch (Exception e) {
-            //ignora
+           System.out.println("Logo non trovato");
         }
 
         alert.showAndWait();
     }
 
-    // Alert di conferma
+    /**
+     * Mostra un alert di conferma con il messaggio specificato.
+     *
+     * @param message
+     */
+
     public static void showConfirmationAlert(String message) {
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(message);
 
@@ -34,14 +53,23 @@ public class AlertUtils {
             Image logo = new Image(AlertUtils.class.getResourceAsStream("/images/logo.png"));
             Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
             stage.getIcons().add(logo);
+
         } catch (Exception e) {
-            // ignora
+            System.out.println("Logo non trovato");
         }
 
         alert.showAndWait();
     }
 
+    /**
+     * Mostra un alert di domanda con opzioni "Sì" e "No".
+
+     * @param message
+     * @param onYes
+     */
+
     public static void showQuestionAlert(String message, Runnable onYes) {
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText(message);
 
@@ -49,6 +77,7 @@ public class AlertUtils {
             Image logo = new Image(AlertUtils.class.getResourceAsStream("/images/logo.png"));
             Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
             stage.getIcons().add(logo);
+
         } catch (Exception e) {
             System.out.println("Logo non trovato");
         }
@@ -65,6 +94,11 @@ public class AlertUtils {
         }
     }
 
+    /**
+     * Mostra un alert di conferma per l'uscita dall'applicazione.
+     * Se l'utente conferma, l'applicazione viene chiusa.
+     */
+
     public static void alertExit() {
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -76,7 +110,7 @@ public class AlertUtils {
             Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
             stage.getIcons().add(logo);
         } catch (Exception e) {
-            //ignora
+            System.out.println("Logo non trovato");
         }
 
         ButtonType buttonTypeOne = new ButtonType("Si");
