@@ -10,14 +10,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Classe DAO per la gestione delle associazioni tra fasce orarie e medici.
+ */
+
 public class FasceMediciDAOMySQLImpl implements DAO<FasceMedici> {
 
     private static DAO dao = null;
     private static Logger logger = null;
 
+    /**
+     * Costruttore privato della classe.
+     */
+
     private FasceMediciDAOMySQLImpl() {}
 
+    /**
+     * Restituisce un'istanza del DAO
+     *. Se l'istanza non esiste, viene creata e inizializzato il logger.
+     */
+
     public static DAO getInstance() {
+
         if (dao == null) {
             dao = new FasceMediciDAOMySQLImpl();
             logger = Logger.getLogger(FasceMediciDAOMySQLImpl.class.getName());
@@ -25,8 +39,16 @@ public class FasceMediciDAOMySQLImpl implements DAO<FasceMedici> {
         return dao;
     }
 
+    /**
+     * Seleziona le associazioni tra fasce orarie e medici
+     * in base all'email del medico.
+     *
+     * @param fm
+     */
+
     @Override
     public List<FasceMedici> select(FasceMedici fm) throws DAOException {
+
         if (fm == null) {
             fm = new FasceMedici(null, "");
         }
@@ -44,6 +66,7 @@ public class FasceMediciDAOMySQLImpl implements DAO<FasceMedici> {
 
             try {
                 logger.info("SQL: " + sql);
+
             } catch (NullPointerException npe) {
                 System.out.println("SQL: " + sql);
             }
@@ -51,9 +74,11 @@ public class FasceMediciDAOMySQLImpl implements DAO<FasceMedici> {
             ResultSet rs = st.executeQuery(sql);
 
             while (rs.next()) {
+
                 lista.add(new FasceMedici(
                         rs.getInt("fasciaOraria_id"),
                         rs.getString("medicoEmail")
+
                 ));
             }
 
@@ -66,8 +91,15 @@ public class FasceMediciDAOMySQLImpl implements DAO<FasceMedici> {
         return lista;
     }
 
+    /**
+     * Elimina un'associazione tra una fascia oraria e un medico dal database.
+     *
+     * @param fm
+     */
+
     @Override
     public void delete(FasceMedici fm) throws DAOException {
+
         if (fm == null || fm.getIdFasciaOraria() == null || fm.getMedicoEmail() == null) {
             throw new DAOException("In delete: idFsciaOraria and medicoEmail cannot be null");
         }
@@ -78,12 +110,20 @@ public class FasceMediciDAOMySQLImpl implements DAO<FasceMedici> {
 
         try {
             logger.info("SQL: " + sql);
+
         } catch (NullPointerException npe) {
             System.out.println("SQL: " + sql);
+
         }
 
         executeUpdate(sql);
     }
+
+    /**
+     * Inserisce una nuova associazione tra una fascia oraria e un medico nel database.
+     *
+     * @param fm
+     */
 
     @Override
     public void insert(FasceMedici fm) throws DAOException {
@@ -96,6 +136,7 @@ public class FasceMediciDAOMySQLImpl implements DAO<FasceMedici> {
 
         try {
             logger.info("SQL: " + sql);
+
         } catch (NullPointerException npe) {
             System.out.println("SQL: " + sql);
         }
@@ -103,24 +144,48 @@ public class FasceMediciDAOMySQLImpl implements DAO<FasceMedici> {
         executeUpdate(sql);
     }
 
+    /**
+     * Metodo per l'aggiornamento dell'entità FasceMedici.
+     *
+     * @param fm
+     */
+
     @Override
     public void update(FasceMedici fm) throws DAOException {
+
         throw new DAOException("Update non supportato per FasceMedici");
+
     }
 
+    /**
+     * Verifica la validità dell'oggetto.
+     *
+     * @param fm
+     */
+
     private void verifyObject(FasceMedici fm) throws DAOException {
+
         if (fm == null || fm.getIdFasciaOraria() == null || fm.getMedicoEmail() == null) {
             throw new DAOException("In verifyObject: fields cannot be null");
         }
     }
 
+    /**
+     * Esegue una query di aggiornamento sul database.
+     *
+     * @param query
+     */
+
     private void executeUpdate(String query) throws DAOException {
+
         try {
             Statement st = DAOMySQLSettings.getStatement();
             int n = st.executeUpdate(query);
             DAOMySQLSettings.closeStatement(st);
+
         } catch (SQLException e) {
             throw new DAOException("In executeUpdate(): " + e.getMessage());
+
         }
     }
 }
