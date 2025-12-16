@@ -17,12 +17,23 @@ import java.time.LocalDate;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Test JUnit per la classe InserimentoFasceController.
+ * Verifica la correttezza dei controlli di validazione delle fasce orarie:
+ * date passate, orari invertiti e orari già passati nella giornata corrente.
+ */
+
 public class InserimentoFasceControllerTest {
 
     private InserimentoFasceController controller;
 
+    /**
+     * Inizializza l'ambiente JavaFX e il controller prima di ogni test.
+     */
+
     @Before
     public void setUp() throws Exception {
+
         new JFXPanel();
         controller = new InserimentoFasceController();
 
@@ -47,8 +58,13 @@ public class InserimentoFasceControllerTest {
         controller.setEmailMedicoCorrente("anna@esempio.it");
     }
 
+    /**
+     * Esegue tutti i controlli principali del form di inserimento fasce orarie.
+     */
+
     @Test
     public void testTuttiIControlli() throws Exception {
+
         CountDownLatch testLatch = new CountDownLatch(1);
 
         Platform.runLater(() -> {
@@ -96,43 +112,86 @@ public class InserimentoFasceControllerTest {
         System.out.println("\n>>> Tutti i test completati con successo <<<");
     }
 
+    /**
+     * Configura l'interfaccia grafica simulata del controller.
+     */
+
     private void setupInterfacciaGrafica() throws Exception {
+
         ComboBox<String> oraInizio = new ComboBox<>();
         ComboBox<String> oraFine = new ComboBox<>();
+
         for (int h = 9; h <= 20; h++) {
             String h1 = String.format("%02d:00", h);
             String h2 = String.format("%02d:30", h);
             oraInizio.getItems().addAll(h1, h2);
             oraFine.getItems().addAll(h1, h2);
         }
+
         setPrivateField(controller, "oraInizioCombo", oraInizio);
         setPrivateField(controller, "oraFineCombo", oraFine);
         setPrivateField(controller, "giornoSelezionatoLabel", new Label());
         setPrivateField(controller, "calendarioGrid", new GridPane());
+
     }
 
+    /**
+     * Invoca il metodo privato 'salvaFascia' del controller.
+     */
+
     private void invocaSalva() throws Exception {
+
         Method m = controller.getClass().getDeclaredMethod("salvaFascia");
         m.setAccessible(true);
         m.invoke(controller);
+
     }
 
+    /**
+     * Imposta i valori della fascia oraria nel controller.
+     *
+     * @param d
+     * @param in
+     * @param fine
+     */
+
     private void impostaDati(LocalDate d, String in, String fine) throws Exception {
+
         setPrivateField(controller, "giornoSelezionato", d);
         ((ComboBox<String>) getPrivateField(controller, "oraInizioCombo")).setValue(in);
         ((ComboBox<String>) getPrivateField(controller, "oraFineCombo")).setValue(fine);
+
     }
 
+    /**
+     * Imposta un campo privato del controller.
+     *
+     * @param obj
+     * @param name
+     * @param val
+     */
+
     private void setPrivateField(Object obj, String name, Object val) throws Exception {
+
         Field f = obj.getClass().getDeclaredField(name);
         f.setAccessible(true);
         f.set(obj, val);
+
     }
 
+    /**
+     * Recupera il valore di un campo privato del controller.
+     *
+     * @param obj
+     * @param name
+     */
+
     private Object getPrivateField(Object obj, String name) throws Exception {
+
         Field f = obj.getClass().getDeclaredField(name);
         f.setAccessible(true);
         return f.get(obj);
+
     }
 
 }
