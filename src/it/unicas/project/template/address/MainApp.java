@@ -18,20 +18,31 @@ import javafx.stage.Stage;
 
 import static it.unicas.project.template.address.util.AlertUtils.alertExit;
 
+/**
+ * Classe principale dell'applicazione.
+ * Gestisce l'avvio dell'applicazione, il caricamento delle schermate e la gestione delle prenotazioni scadute.
+ */
+
 public class MainApp extends Application {
 
     private Stage primaryStage;
-    private BorderPane rootLayout;
 
     /**
-     * Constructor
+     * Costruttore
      */
+
     public MainApp() {
     }
 
+    /**
+     * Avvia l'applicazione, inizializza il stage principale e mostra la schermata di identificazione.
+     *
+     * @param primaryStage
+     */
 
     @Override
     public void start(Stage primaryStage) {
+
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("My Clinic App");
 
@@ -55,34 +66,35 @@ public class MainApp extends Application {
             e.printStackTrace();
         }
 
-        // Gestisce prenotazioni scadute
         gestisciPrenotazioniScadute();
 
-        // Mostra subito la schermata di identificazione
         showIdentificazione();
 
         primaryStage.show();
 
     }
 
+    /**
+     * Gestisce tutte le prenotazioni scadute trasformandole in visite e
+     * generando i pagamenti corrispondenti.
+     */
+
     private void gestisciPrenotazioniScadute() {
         try {
-            //Ritorna solo le prenotazioni scadute
+
             List<Prenotazioni> prenotazioni = PrenotazioniDAOMySQLImpl.getInstance().selectPrenotazioniScadute();
 
             for (Prenotazioni p : prenotazioni) {
-                // Recupera la fascia oraria
+
                 FasceOrarie fascia = (FasceOrarie) FasceOrarieDAOMySQLImpl.getInstance()
                         .select(new FasceOrarie(p.getFasciaOrariaId(), null, null, null)).get(0);
 
-                // Crea nuova visita
                 Visite visita = new Visite();
                 visita.setDataOra(fascia.getData() + " " + fascia.getOraInizio() + ":00");
                 visita.setPazienteCodiceFiscale(p.getPazienteCodiceFiscale());
                 visita.setPrescrizione("");
                 visita.setSegretarioEmail("segretario@sistema.it");
 
-                //Inserisce visita e recupera ID generato
                 VisiteDAOMySQLImpl.getInstance().insert(visita);
 
                 Pagamenti pagamento = new Pagamenti(
@@ -95,7 +107,6 @@ public class MainApp extends Application {
 
                 PagamentiDAOMySQLImpl.getInstance().insert(pagamento);
 
-                // Elimina prenotazione scaduta
                 PrenotazioniDAOMySQLImpl.getInstance().delete(p);
             }
 
@@ -103,6 +114,10 @@ public class MainApp extends Application {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Mostra la schermata di identificazione iniziale.
+     */
 
     public void showIdentificazione() {
         try {
@@ -119,7 +134,6 @@ public class MainApp extends Application {
                 alertExit();
             });
 
-            // Collega controller ↔ main app
             IdentificazioneController controller = loader.getController();
             controller.setMainApp(this);
 
@@ -130,6 +144,12 @@ public class MainApp extends Application {
         }
 
     }
+
+    /**
+     * Mostra la schermata di login per un ruolo specifico.
+     *
+     * @param role
+     */
 
     public void showLogin(String role) {
         try {
@@ -149,14 +169,18 @@ public class MainApp extends Application {
         }
     }
 
+    /**
+     * Mostra il dialog per la registrazione di un segretario.
+     */
+
     public void showRegistrazioneSegretario() {
+
         try {
-            // 1. Carica il FXML della registrazione del segretario
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/RegistrazioneSegretario.fxml"));
             VBox page = loader.load();
 
-            // 2. Crea un nuovo stage per la finestra di registrazione
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Registrazione Segretario");
             dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -164,7 +188,6 @@ public class MainApp extends Application {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
-            // 3. Passa riferimento al MainApp nel controller
             RegistrazioneSegretarioController controller = loader.getController();
             controller.setMainApp(this);
 
@@ -175,14 +198,18 @@ public class MainApp extends Application {
         }
     }
 
+    /**
+     * Mostra il dialog per la registrazione di un medico.
+     */
+
     public void showRegistrazioneMedico() {
+
         try {
-            // 1. Carica il FXML della registrazione del medico
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/RegistrazioneMedico.fxml"));
             VBox page = loader.load();
 
-            // 2. Crea un nuovo stage per la finestra di registrazione
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Registrazione Medico");
             dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -190,7 +217,6 @@ public class MainApp extends Application {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
-            // 3. Passa riferimento al MainApp nel controller
             RegistrazioneMedicoController controller = loader.getController();
             controller.setMainApp(this);
 
@@ -201,18 +227,21 @@ public class MainApp extends Application {
         }
     }
 
+    /**
+     * Mostra la dashboard per il segretario.
+     */
+
     public void showSegretarioDashboard() {
+
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/SegretarioDashboard.fxml"));
             BorderPane dashboard = loader.load();
 
-            // Crea la scena con la dashboard
             Scene scene = new Scene(dashboard);
             primaryStage.setScene(scene);
             primaryStage.show();
 
-            // Passa il riferimento al MainApp nel controller
             SegretarioDashboardController controller = loader.getController();
             controller.setMainApp(this);
 
@@ -221,38 +250,49 @@ public class MainApp extends Application {
         }
     }
 
+    /**
+     * Mostra la dashboard per il medico corrente.
+     *
+     * @param emailMedicoCorrente
+     */
+
     public void showMedicoDashboard(String emailMedicoCorrente) {
+
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/MedicoDashboard.fxml"));
             BorderPane dashboard = loader.load();
 
-            // Crea la scena con la dashboard
             Scene scene = new Scene(dashboard);
             primaryStage.setScene(scene);
             primaryStage.show();
 
-            // Passa il riferimento al MainApp nel controller
             MedicoDashboardController controller = loader.getController();
             controller.setMainApp(this);
 
-            // Passa l'email del medico corrente
-              controller.setEmailMedicoCorrente(emailMedicoCorrente);
+            controller.setEmailMedicoCorrente(emailMedicoCorrente);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Mostra la finestra di ricerca paziente.
+     *
+     * @param loginMode
+     */
+
     public void showRicercaPazienteDialog(String loginMode) {
+
         System.out.println("Apri pannello di Ricerca Paziente");
+
         try {
-            // 1. Carica l'FXML della ricerca pazienti
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/RicercaPaziente.fxml"));
             VBox page = loader.load();
 
-            // 2. Crea un nuovo stage per la finestra
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Ricerca Pazienti");
             dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -261,13 +301,11 @@ public class MainApp extends Application {
             Scene scene = new Scene(page, 500, 600);
             dialogStage.setScene(scene);
 
-            // 3. Passa riferimento al MainApp nel controller
             RicercaPazienteController controller = loader.getController();
 
             controller.setMainApp(this);
             controller.setDialogStage(dialogStage);
 
-            // Passa il ruolo di login
             controller.setLoginRole(loginMode);
 
             dialogStage.showAndWait();
@@ -277,8 +315,16 @@ public class MainApp extends Application {
         }
     }
 
+    /**
+     * Mostra la finestra per l'inserimento delle fasce orarie di un medico.
+     *
+     * @param emailMedicoCorrente
+     */
+
     public void showInserimentoFasceDialog(String emailMedicoCorrente) {
+
         System.out.println("Apri pannello Inserimento Fasce Orarie");
+
         try {
 
             FXMLLoader loader = new FXMLLoader();
@@ -296,7 +342,7 @@ public class MainApp extends Application {
             InserimentoFasceController controller = loader.getController();
             controller.setMainApp(this);
             controller.setDialogStage(dialogStage);
-            // Passa l'email del medico corrente
+
             controller.setEmailMedicoCorrente(emailMedicoCorrente);
 
             dialogStage.showAndWait();
@@ -306,10 +352,16 @@ public class MainApp extends Application {
         }
     }
 
+    /**
+     * Mostra la finestra per la registrazione di un nuovo paziente.
+     */
 
     public void showAggiungiPazienteDialog() {
+
         System.out.println("Apri pannello Aggiungi Paziente");
+
         try {
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/RegistrazionePaziente.fxml"));
             VBox page = loader.load();
@@ -332,10 +384,16 @@ public class MainApp extends Application {
         }
     }
 
+    /**
+     * Mostra la finestra del report mensile.
+     */
 
     public void ShowReportDialog() {
+
         System.out.println("Apri pannello Report");
+
         try {
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/Report.fxml"));
             VBox page = loader.load();
@@ -358,9 +416,16 @@ public class MainApp extends Application {
         }
     }
 
+    /**
+     * Mostra la finestra per modificare i dati di un paziente.
+     *
+     * @param p
+     */
 
     public boolean showModificaPazienteDialog(Pazienti p) {
+
         try {
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/ModificaPaziente.fxml"));
             VBox page = loader.load();
@@ -386,8 +451,16 @@ public class MainApp extends Application {
         }
     }
 
+    /**
+     * Mostra la lista delle prenotazioni di un paziente.
+     *
+     * @param codiceFiscale
+     */
+
     public void showListaPrenotazioniDialog(String codiceFiscale) {
+
         try {
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/it/unicas/project/template/address/view/ListaPrenotazioni.fxml"));
 
@@ -413,6 +486,13 @@ public class MainApp extends Application {
         }
     }
 
+    /**
+     * Mostra il form per creare o modificare una prenotazione.
+     *
+     * @param codiceFiscalePaziente
+     * @param prenotazioneDaModificare
+     */
+
     public boolean showFormPrenotazioneDialog(String codiceFiscalePaziente, Prenotazioni prenotazioneDaModificare) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -427,7 +507,6 @@ public class MainApp extends Application {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
-            // Passaggio dati al controller
             FormPrenotazioneController controller = loader.getController();
             controller.setDialogStage(dialogStage);
             controller.setPazienteCF(codiceFiscalePaziente);
@@ -443,15 +522,4 @@ public class MainApp extends Application {
         }
     }
 
-    /**
-     * Returns the main stage.
-     * @return
-     */
-    public Stage getPrimaryStage() {
-        return primaryStage;
-    }
-
-    public static void main(String[] args) {
-        MainApp.launch(args);
-    }
 }
