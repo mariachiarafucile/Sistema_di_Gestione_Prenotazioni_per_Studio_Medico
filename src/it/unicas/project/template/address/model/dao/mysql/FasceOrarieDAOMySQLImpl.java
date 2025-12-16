@@ -10,21 +10,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Classe DAO per la gestione delle entità FasceOrarie.
+ */
+
 public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
 
     private static DAO dao = null;
     private static Logger logger = null;
 
+    /**
+     * Costruttore privato della classe.
+     */
+
     private FasceOrarieDAOMySQLImpl() {
     }
 
+    /**
+     * Restituisce un'istanza del DAO.
+     * Se l'istanza non esiste, viene creata e inizializzato il logger.
+     */
+
     public static DAO getInstance() {
+
         if (dao == null) {
             dao = new FasceOrarieDAOMySQLImpl();
             logger = Logger.getLogger(FasceOrarieDAOMySQLImpl.class.getName());
         }
         return dao;
     }
+
+    /**
+     * Seleziona una fascia oraria dal database in base all'ID della fascia oraria.
+     *
+     * @param f
+     */
 
     @Override
     public List<FasceOrarie> select(FasceOrarie f) throws DAOException {
@@ -47,6 +67,7 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
 
             try {
                 logger.info("SQL: " + sql);
+
             } catch (NullPointerException nullPointerException) {
                 System.out.println("SQL: " + sql);
             }
@@ -71,8 +92,15 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
         return lista;
     }
 
+    /**
+     * Elimina una fascia oraria dal database.
+     *
+     * @param f
+     */
+
     @Override
     public void delete(FasceOrarie f) throws DAOException {
+
         if (f == null || f.getIdFasciaOraria() == null) {
             throw new DAOException("In delete: idFasciaOraria cannot be null");
         }
@@ -81,12 +109,19 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
 
         try {
             logger.info("SQL: " + sql);
+
         } catch (NullPointerException nullPointerException) {
             System.out.println("SQL: " + sql);
         }
 
         executeUpdate(sql);
     }
+
+    /**
+     * Inserisce una nuova fascia oraria nel database.
+     *
+     * @param f
+     */
 
     @Override
     public void insert(FasceOrarie f) throws DAOException {
@@ -103,15 +138,14 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
 
         try {
             logger.info("SQL: " + sql);
+
         } catch (NullPointerException nullPointerException) {
             System.out.println("SQL: " + sql);
         }
 
-
         try {
             Statement st = DAOMySQLSettings.getStatement();
 
-            // Esegui l'insert e recupera le chiavi generate
             st.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
             ResultSet rs = st.getGeneratedKeys();
@@ -121,12 +155,18 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
             }
 
             DAOMySQLSettings.closeStatement(st);
+
         } catch (SQLException e) {
             throw new DAOException("In insert(): " + e.getMessage());
         }
 
-
     }
+
+    /**
+     * Aggiorna una fascia oraria esistente nel database.
+     *
+     * @param f
+     */
 
     @Override
     public void update(FasceOrarie f) throws DAOException {
@@ -143,7 +183,14 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
         executeUpdate(sql);
     }
 
+    /**
+     * Verifica la validità dell'oggetto FasceOrarie.
+     *
+     * @param f
+     */
+
     private void verifyObject(FasceOrarie f) throws DAOException {
+
         if (f == null || f.getIdFasciaOraria() == null ||
                 f.getData() == null ||
                 f.getOraInizio() == null ||
@@ -152,17 +199,32 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
         }
     }
 
+    /**
+     * Esegue una query di aggiornamento sul database.
+     *
+     * @param query
+     */
+
     private void executeUpdate(String query) throws DAOException {
+
         try {
             Statement st = DAOMySQLSettings.getStatement();
             int n = st.executeUpdate(query);
             DAOMySQLSettings.closeStatement(st);
+
         } catch (SQLException e) {
             throw new DAOException("In executeUpdate(): " + e.getMessage());
         }
     }
 
+    /**
+     * Restituisce tutte le fasce orarie associate a un determinato medico.
+     *
+     * @param emailMedico
+     */
+
     public List<FasceOrarie> findByMedico(String emailMedico) throws DAOException {
+
         List<FasceOrarie> lista = new ArrayList<>();
 
         String sql = "SELECT f.idFasciaOraria, f.data, f.oraInizio, f.oraFine " +
@@ -193,6 +255,12 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
         return lista;
     }
 
+    /**
+     * Seleziona le fasce orarie in base a data e orari.
+     *
+     * @param f
+     */
+
     public List<FasceOrarie> selectByDataOra(FasceOrarie f) throws DAOException {
 
         ArrayList<FasceOrarie> lista = new ArrayList<>();
@@ -207,6 +275,7 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
 
             try {
                 logger.info("SQL: " + sql);
+
             } catch (NullPointerException nullPointerException) {
                 System.out.println("SQL: " + sql);
             }
@@ -231,6 +300,14 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
         return lista;
     }
 
+    /**
+     * Seleziona le fasce orarie associate a una specifica data
+     * e a un determinato medico.
+     *
+     * @param data
+     * @param emailMedico
+     */
+
     public List<FasceOrarie> selectByDataAndMedico(String data, String emailMedico) throws DAOException {
 
         ArrayList<FasceOrarie> lista = new ArrayList<>();
@@ -247,6 +324,7 @@ public class FasceOrarieDAOMySQLImpl implements DAO<FasceOrarie> {
 
             try {
                 logger.info("SQL: " + sql);
+
             } catch (NullPointerException nullPointerException) {
                 System.out.println("SQL: " + sql);
             }
