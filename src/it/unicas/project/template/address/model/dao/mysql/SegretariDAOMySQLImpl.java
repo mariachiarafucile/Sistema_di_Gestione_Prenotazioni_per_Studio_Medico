@@ -10,13 +10,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Classe DAO per la gestione delle entità Segretari.
+ */
+
 public class SegretariDAOMySQLImpl implements DAO<Segretari> {
+
+    /**
+     * Costruttore privato della classe.
+     */
 
     private SegretariDAOMySQLImpl(){}
 
     private static Logger logger = null;
 
     private static SegretariDAOMySQLImpl instance = null;
+
+    /**
+     * Restituisce un'istanza del DAO.
+     * Se l'istanza non esiste, viene creata e inizializzato il logger.
+     */
 
     public static SegretariDAOMySQLImpl getInstance(){
         if (instance == null){
@@ -25,6 +38,12 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
         }
         return instance;
     }
+
+    /**
+     * Seleziona un segretario in base all'email.
+     *
+     * @param s
+     */
 
     @Override
     public List<Segretari> select(Segretari s) throws DAOException {
@@ -47,6 +66,7 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
 
             try{
                 logger.info("SQL: " + sql);
+
             } catch(NullPointerException nullPointerException){
                 logger.severe("SQL: " + sql);
             }
@@ -62,11 +82,19 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
         } catch (SQLException sq){
             throw new DAOException("In select(): " + sq.getMessage());
         }
+
         return lista;
     }
 
-    //Query per la ricerca delle credenziali del segretario
+    /**
+     * Verifica se un segretario esiste nel database tramite email e password.
+     *
+     * @param email
+     * @param password
+     */
+
     public boolean existsSegretario(String email, String password) throws DAOException {
+
         String sql = "SELECT COUNT(*) AS cnt FROM segretari WHERE email='" + email +
                 "' AND password='" + password + "';";
 
@@ -77,14 +105,22 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
             if (rs.next()) {
                 return rs.getInt("cnt") > 0;
             }
+
         } catch (SQLException e) {
             throw new DAOException("In existsSegretario(): " + e.getMessage());
         }
         return false;
     }
 
+    /**
+     * Elimina un segretario dal database.
+     *
+     * @param s
+     */
+
     @Override
     public void delete(Segretari s) throws DAOException {
+
         if (s == null || s.getEmail() == null){
             throw new DAOException("In delete: email cannot be null");
         }
@@ -92,6 +128,7 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
 
         try{
             logger.info("SQL: " + query);
+
         } catch (NullPointerException nullPointerException){
             System.out.println("SQL: " + query);
         }
@@ -99,6 +136,12 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
         executeUpdate(query);
 
     }
+
+    /**
+     * Inserisce un nuovo segretario nel database.
+     *
+     * @param s
+     */
 
     @Override
     public void insert(Segretari s) throws DAOException {
@@ -109,11 +152,18 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
                 s.getNome() + "', '" + s.getCognome() + "', '" + s.getEmail() + "', '" + s.getPassword() + "');";
         try {
             logger.info("SQL: " + query);
+
         } catch (NullPointerException nullPointerException){
             System.out.println("SQL: " + query);
         }
         executeUpdate(query);
     }
+
+    /**
+     * Aggiorna i dati di un segretario esistente.
+     *
+     * @param s
+     */
 
     @Override
     public void update(Segretari s) throws DAOException {
@@ -128,7 +178,14 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
 
     }
 
+    /**
+     * Verifica la validità dei campi dell'oggetto.
+     *
+     * @param s
+     */
+
     private void verifyObject(Segretari s) throws DAOException {
+
         if (s == null || s.getEmail() == null
                 || s.getNome() == null
                 || s.getCognome() == null
@@ -137,7 +194,14 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
         }
     }
 
+    /**
+     * Esegue una query di aggiornamento sul database.
+     *
+     * @param query
+     */
+
     private void executeUpdate(String query) throws DAOException{
+
         try {
             Statement st = DAOMySQLSettings.getStatement();
             int n = st.executeUpdate(query);
@@ -149,7 +213,14 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
         }
     }
 
+    /**
+     * Verifica se esiste un segretario tramite email.
+     *
+     * @param email
+     */
+
     public boolean existsByEmail(String email) throws DAOException {
+
         try {
             Statement st = DAOMySQLSettings.getStatement();
             String sql = "SELECT 1 FROM segretari WHERE email = '" + email + "' LIMIT 1;";
@@ -157,6 +228,7 @@ public class SegretariDAOMySQLImpl implements DAO<Segretari> {
             boolean exists = rs.next();
             DAOMySQLSettings.closeStatement(st);
             return exists;
+
         } catch (SQLException e) {
             throw new DAOException("existsByEmail(): " + e.getMessage());
         }
