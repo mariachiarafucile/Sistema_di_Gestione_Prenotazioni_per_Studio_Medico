@@ -54,10 +54,10 @@ public class MainApp extends Application {
 
             if (!segDAO.existsByEmail("segretario@sistema.it")) {
                 Segretari sistema = new Segretari(
+                        "Sistema",
+                        "Automatico",
                         "segretario@sistema.it",
-                        "Segretario",
-                        "di Sistema",
-                        "SYSTEM"
+                        "system"
                 );
                 segDAO.insert(sistema);
             }
