@@ -10,12 +10,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Classe DAO per la gestione delle entità Pazienti.
+ *
+ */
+
 public class PazientiDAOMySQLImpl implements DAO<Pazienti> {
+
+    /**
+     * Costruttore privato della classe.
+     */
 
     private PazientiDAOMySQLImpl(){}
 
     private static DAO dao = null;
     private static Logger logger = null;
+
+    /**
+     * Restituisce un'istanza del DAO.
+     * Se l'istanza non esiste, viene creata e inizializzato il logger.
+     */
 
     public static DAO getInstance(){
         if (dao == null){
@@ -24,6 +38,12 @@ public class PazientiDAOMySQLImpl implements DAO<Pazienti> {
         }
         return dao;
     }
+
+    /**
+     * Seleziona un paziente in base al codice fiscale.
+     *
+     * @param p
+     */
 
     @Override
     public List<Pazienti> select(Pazienti p) throws DAOException {
@@ -45,6 +65,7 @@ public class PazientiDAOMySQLImpl implements DAO<Pazienti> {
 
             try{
                 logger.info("SQL: " + sql);
+
             } catch(NullPointerException nullPointerException){
                 logger.severe("SQL: " + sql);
             }
@@ -67,6 +88,12 @@ public class PazientiDAOMySQLImpl implements DAO<Pazienti> {
         return lista;
     }
 
+    /**
+     * Elimina un paziente dal database.
+     *
+     * @param p
+     */
+
     @Override
     public void delete(Pazienti p) throws DAOException {
         if (p == null || p.getCodiceFiscale() == null){
@@ -76,6 +103,7 @@ public class PazientiDAOMySQLImpl implements DAO<Pazienti> {
 
         try{
           logger.info("SQL: " + query);
+
         } catch (NullPointerException nullPointerException){
           System.out.println("SQL: " + query);
         }
@@ -83,6 +111,12 @@ public class PazientiDAOMySQLImpl implements DAO<Pazienti> {
         executeUpdate(query);
 
     }
+
+    /**
+     * Inserisce un nuovo paziente nel database.
+     *
+     * @param p
+     */
 
     @Override
     public void insert(Pazienti p) throws DAOException {
@@ -95,11 +129,18 @@ public class PazientiDAOMySQLImpl implements DAO<Pazienti> {
                 p.getIndirizzo() + "', '" + p.getTelefono() + "', '" + p.getEmail() + "', '" + p.getNoteCliniche() + "');";
         try {
           logger.info("SQL: " + query);
+
         } catch (NullPointerException nullPointerException){
           System.out.println("SQL: " + query);
         }
         executeUpdate(query);
     }
+
+    /**
+     * Aggiorna i dati di un paziente esistente.
+     *
+     * @param p
+     */
 
     @Override
     public void update(Pazienti p) throws DAOException {
@@ -114,6 +155,12 @@ public class PazientiDAOMySQLImpl implements DAO<Pazienti> {
 
     }
 
+    /**
+     * Verifica la validità dei campi dell'oggetto.
+     *
+     * @param p
+     */
+
     private void verifyObject(Pazienti p) throws DAOException {
       if (p == null || p.getCodiceFiscale() == null
         || p.getNome() == null
@@ -125,6 +172,12 @@ public class PazientiDAOMySQLImpl implements DAO<Pazienti> {
         throw new DAOException("In select: any field apart from 'noteCliniche' can be null");
       }
     }
+
+    /**
+     * Esegue una query di aggiornamento sul database.
+     *
+     * @param query
+     */
 
     private void executeUpdate(String query) throws DAOException{
       try {
