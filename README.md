@@ -6,7 +6,7 @@
 Applicazione desktop per la gestione di piccoli studi medici e ambulatori, progettata per offrire una soluzione semplice, affidabile e non basata su cloud.  
 Il sistema offre funzionalità per la gestione di pazienti e medici, prenotazione delle visite e pagamenti.
 
-## 📑 Indice
+## Indice
 - [Funzionalità principali](#funzionalità-principali)
 - [Tecnologie utilizzate](#tecnologie-utilizzate)
 - [Architettura del progetto](#architettura-del-sistema)
@@ -17,24 +17,24 @@ Il sistema offre funzionalità per la gestione di pazienti e medici, prenotazion
 
 
 ## Funzionalità principali
-1️⃣ Gestione degli utenti
-L’applicazione permette agli utenti di identificarsi come:\n
--Medico\n
+Gestione degli utenti
+L’applicazione permette agli utenti di identificarsi come:  
+-Medico  
 -Segretario
 
-Ogni utente può:\n
--Registrare un account personale\n
+Ogni utente può:  
+-Registrare un account personale  
 -Accedere all’applicazione con le proprie credenziali
 
 L’accesso alle funzionalità dell’applicazione deve essere controllato mediante autenticazione e autorizzazione, in conformità con il ruolo dell’utente (Medico o Segretario).
 
-2️⃣ Funzionalità per i Medici
+Funzionalità per i Medici
 1. Inserire le proprie fasce orarie di disponibilità.
 2. Ricercare i dati di un paziente tramite codice fiscale.
 3. Inserire prescrizioni per un paziente associato a una visita registrata.
 4. Modificare le note cliniche relative al paziente.
 
-3️⃣ Funzionalità per i Segretari
+Funzionalità per i Segretari
 1. Ricercare i dati di un paziente tramite codice fiscale.
 2. Modificare i dati anagrafici di un paziente.
 3. Visualizzare l’elenco delle visite di un paziente.
