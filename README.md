@@ -63,8 +63,9 @@ Per eseguire l’applicazione è necessario disporre di:
 2. Importare il progetto all’interno di un IDE Java
 3. Configurare la connessione al database
 
-# Configurazione database
-L’applicazione utilizza un database relazionale per la memorizzazione dei dati.
+## Configurazione database
+L’applicazione utilizza un database relazionale per la memorizzazione dei dati.  
+E' presente nella repository lo script relativo allo schema ER da utilizzare.
 Prima dell’avvio è necessario configurare i parametri di connessione al database (nome del database, username e password) nel file di configurazione previsto dal progetto.
 
 ## Avvio dell'applicazione
