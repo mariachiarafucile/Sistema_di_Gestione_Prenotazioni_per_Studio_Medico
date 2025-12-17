@@ -65,7 +65,7 @@ Per eseguire l’applicazione è necessario disporre di:
 
 ## Configurazione database
 L’applicazione utilizza un database relazionale per la memorizzazione dei dati.  
-E' presente nella repository lo script relativo allo schema ER da utilizzare.
+E' presente nella repository lo script relativo allo schema ER da utilizzare.  
 Prima dell’avvio è necessario configurare i parametri di connessione al database (nome del database, username e password) nel file di configurazione previsto dal progetto.
 
 ## Avvio dell'applicazione
