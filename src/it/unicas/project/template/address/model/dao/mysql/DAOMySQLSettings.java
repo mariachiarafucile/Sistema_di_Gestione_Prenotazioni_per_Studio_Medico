@@ -8,9 +8,9 @@ public class DAOMySQLSettings {
 
     public final static String DRIVERNAME = "com.mysql.cj.jdbc.Driver";
     public final static String HOST = "localhost";
-    public final static String USERNAME = "amici";
-    public final static String PWD = "$$Amici2024$$";
-    public final static String SCHEMA = "amici";
+    public final static String USERNAME = ""; //inserire la propria username
+    public final static String PWD = "";  //inserire la propria password
+    public final static String SCHEMA = "studio_medico";
     public final static String PARAMETERS = "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
 
 
@@ -20,9 +20,9 @@ public class DAOMySQLSettings {
 
     //private String driverName = "com.mysql.cj.jdbc.Driver";
     private String host = "localhost";
-    private String userName = "amici";
-    private String pwd = "$Prova2022$";
-    private String schema = "amici";
+    private String userName = "";  //inserire la propria username
+    private String pwd = "";  //inserire la propria password
+    private String schema = "studio_medico";
 
 
     public String getHost() {
@@ -67,6 +67,21 @@ public class DAOMySQLSettings {
     }
 
     private static DAOMySQLSettings currentDAOMySQLSettings = null;
+    private static java.sql.Connection connection = null;
+
+    public static java.sql.Connection getConnection() throws SQLException {
+    if (connection == null || connection.isClosed()) {
+        if (currentDAOMySQLSettings == null) {
+            currentDAOMySQLSettings = getDefaultDAOSettings();
+        }
+        connection = DriverManager.getConnection(
+                "jdbc:mysql://" + currentDAOMySQLSettings.host + "/" + currentDAOMySQLSettings.schema + PARAMETERS,
+                currentDAOMySQLSettings.userName,
+                currentDAOMySQLSettings.pwd
+        );
+    }
+    return connection;
+}
 
     public static DAOMySQLSettings getCurrentDAOMySQLSettings(){
         if (currentDAOMySQLSettings == null){
@@ -88,14 +103,9 @@ public class DAOMySQLSettings {
         currentDAOMySQLSettings = daoMySQLSettings;
     }
 
-
-    public static Statement getStatement() throws SQLException{
-        if (currentDAOMySQLSettings == null){
-            currentDAOMySQLSettings = getDefaultDAOSettings();
-        }
-        return DriverManager.getConnection("jdbc:mysql://" + currentDAOMySQLSettings.host  + "/" + currentDAOMySQLSettings.schema + PARAMETERS, currentDAOMySQLSettings.userName, currentDAOMySQLSettings.pwd).createStatement();
-    }
-
+    public static Statement getStatement() throws SQLException {
+    return getConnection().createStatement();
+}
     public static void closeStatement(Statement st) throws SQLException{
         st.getConnection().close();
         st.close();
