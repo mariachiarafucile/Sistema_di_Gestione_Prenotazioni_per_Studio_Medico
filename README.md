@@ -18,12 +18,12 @@ Il sistema offre funzionalità per la gestione di pazienti e medici, prenotazion
 
 ## Funzionalità principali
 1️⃣ Gestione degli utenti
-L’applicazione permette agli utenti di identificarsi come:
--Medico
+L’applicazione permette agli utenti di identificarsi come:\n
+-Medico\n
 -Segretario
 
-Ogni utente può:
--Registrare un account personale
+Ogni utente può:\n
+-Registrare un account personale\n
 -Accedere all’applicazione con le proprie credenziali
 
 L’accesso alle funzionalità dell’applicazione deve essere controllato mediante autenticazione e autorizzazione, in conformità con il ruolo dell’utente (Medico o Segretario).
